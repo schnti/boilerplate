@@ -1,6 +1,6 @@
 {
-    "name": "getkirby/plainkit",
-    "description": "Kirby Plainkit",
+    "name": "schnti/boilerplate",
+    "description": "schnti's Kirby boilerplate",
     "type": "project",
     "keywords": ["kirby", "cms", "starterkit"],
     "homepage": "https://getkirby.com",
