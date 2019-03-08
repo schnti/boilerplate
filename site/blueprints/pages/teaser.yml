@@ -1,0 +1,17 @@
+title: Teaser - Module
+
+fields:
+
+  title:
+    label: Title
+    type:  text
+
+  text:
+    label: Text
+    type:  textarea
+
+  classes:
+    label: CSS Classes
+    type: tags
+    lower: true
+    index: siblings

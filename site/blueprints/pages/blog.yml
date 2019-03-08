@@ -1,0 +1,32 @@
+title: Blog Artikel - Module
+
+preview: grandparent
+
+fields:
+
+  title:
+    label: Title
+    type:  text
+    width: 3/4
+
+  date:
+    label: Datum
+    type: date
+    format: DD.MM.YYYY
+    default: today
+    width: 1/4
+
+  picture:
+    label: Bild
+    type: select
+    options: images
+
+  text:
+    label: Text
+    type:  textarea
+
+  classes:
+    label: CSS Classes
+    type: tags
+    lower: true
+    index: siblings

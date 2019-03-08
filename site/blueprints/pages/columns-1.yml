@@ -1,0 +1,27 @@
+title: Columns 1 - Module
+
+columns:
+  - width: 2/3
+    fields:
+
+      titleDisplay:
+        label: Anzeigen
+        type: toggle
+        text: Title anzeigen?
+        default: true
+        width: 1/4
+
+      text:
+        label: Text
+        type:  textarea
+
+      classes:
+        label: CSS Classes
+        type: tags
+        lower: true
+        index: siblings
+
+  - width: 1/3
+    sections:
+      gallery:
+        type: files

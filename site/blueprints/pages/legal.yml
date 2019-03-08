@@ -1,0 +1,10 @@
+title: Legal - Module
+
+fields:
+
+  title:
+    label: Title
+    type:  text
+
+  legal:
+    type:  legal

@@ -1,0 +1,88 @@
+title: Gallery - Module
+
+options:
+  preview: "{{ page.parent.url }}/#{{ page.slug }}"
+
+sections:
+
+  fields:
+    type: fields
+    fields:
+      titleDisplay:
+        label: Anzeigen
+        type: toggle
+        text: Title anzeigen?
+        default: true
+        width: 2/4
+
+
+      croping:
+        label: Croping
+        type: toggle
+        text: Bilder quadratisch zuschneiden?
+        default: true
+        width: 2/4
+
+      grid:
+        label: Smartphone hochformat
+        type:  number
+        default: 12
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+      gridSm:
+        label: Smartphone querformat
+        type:  number
+        default: 6
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+      gridMd:
+        label: Tablet hochformat
+        type:  number
+        default: 4
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+      gridLg:
+        label: Tablet querformat
+        type:  number
+        default: 3
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+      gridXl:
+        label: Computer
+        type:  number
+        default: 2
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+  gallery:
+    headline: Gallery
+    type: files
+    template: gallery
+    image:
+      cover: true
+      ratio: 1/1
+    layout: cards
+    text: "{{ file.alt }}"
+
+  fields2:
+    type: fields
+    fields:
+      classes:
+        label: CSS Classes
+        type: tags
+        lower: true
+        index: siblings

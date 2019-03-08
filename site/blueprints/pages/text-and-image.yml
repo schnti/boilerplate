@@ -1,0 +1,49 @@
+title: Text and Image - Module
+
+columns:
+  - width: 2/3
+    fields:
+
+      titleDisplay:
+        label: Anzeigen
+        type: toggle
+        text: Title anzeigen?
+        default: true
+        width: 1/3
+
+      navDisplay:
+        label: Anzeigen
+        type: toggle
+        text: Im OnePager-Menü anzeigen
+        default: true
+        width: 1/3
+
+      position:
+        label: Position Bild
+        type: select
+        default: right
+        options:
+          left: left
+          right: right
+        width: 1/3
+
+      picture:
+        label: Logo
+        type: files
+        max: 1
+
+      text:
+        label: Text
+        type:  textarea
+
+      classes:
+        label: CSS Classes
+        type: tags
+        lower: true
+        index: siblings
+
+  - width: 1/3
+    sections:
+      gallery:
+        type: files
+        max: 1

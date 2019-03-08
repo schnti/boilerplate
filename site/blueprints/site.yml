@@ -1,3 +1,108 @@
 title: Site
-preset: pages
-unlisted: true
+
+
+tabs:
+
+  content:
+    label: Content
+    icon: text
+
+    columns:
+      - width: 3/4
+        sections:
+
+          published:
+            headline: Published Articles
+            type: pages
+            status: listed
+            info: " {{ page.intendedTemplate}}"
+
+          drafts:
+            headline: Drafts
+            type: pages
+            status: draft
+
+          test:
+            headline: Drafts
+            type: pages
+            status: unlisted
+
+          background2:
+            headline: Background
+            type: files
+            info: "{{ file.dimensions }}"
+
+          images:
+            headline: Background
+            type: fields
+            fields:
+              background:
+                label: Pick a theme
+                type: imageradio
+                ratio: 1/1
+                fit: cover
+                gap: true
+                columns: 6
+                options: query
+                query:
+                  fetch: site.images
+                  text: "{{ file.filename }}"
+                  value: "{{ file.id }}"
+                  image: "{{ file.resize(512).url }}"
+
+      - width: 1/4
+        sections:
+          sidebar:
+            type: matomo-sidebar
+            link: false
+
+
+  seo:
+    label: SEO
+    icon: search
+    fields:
+      seoTitle:
+        label: SEO Title
+        type: text
+      seoDescription:
+        label: SEO Description
+        type: text
+
+      author:
+        label: Author
+        type:  text
+
+      description:
+        label: Description
+        type:  textarea
+        validate:
+          maxLength: 255
+
+      keywords:
+        label: Keywords
+        type:  tags
+
+      copyright:
+        label: Copyright
+        type:  textarea
+
+      footerLinks:
+        label: Links
+        type:  textarea
+
+  matomo:
+    label: Besucherstatistik
+    icon: clock
+    columns:
+      - width: 3/4
+        sections:
+          main:
+            type: matomo-main
+            defaults:
+              limit: 8
+              period: month
+      - width: 1/4
+        sections:
+          sidebar:
+            type: matomo-sidebar
+            link: false
