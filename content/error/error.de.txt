@@ -1,0 +1,9 @@
+Title: Seite nicht gefunden
+
+----
+
+Text:
+
+Die angeforderte Seite wurde leider nicht gefunden.
+
+(link: / text: Zur Startseite ...)

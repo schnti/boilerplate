@@ -5,6 +5,12 @@ Icon
 .DS_Store
 .idea
 
+/kirby/
+/vendor/
+
+/site/plugins/
+!/site/plugins/website
+
 # Temporary files
 # ---------------
 

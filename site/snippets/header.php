@@ -26,10 +26,10 @@
     <meta name="theme-color" content="#ea1c42">
 
 </head>
-<body style="background: url(<?= $site->background()->toFile()->resize(2000, null, 30)->url(); ?>) no-repeat center center fixed; background-size: cover;">
+<body>
 
-<!--<header class="header">-->
-<!--	--><?php //snippet('menu'); ?>
-<!--</header>-->
+<header class="header">
+	<?php snippet('menu'); ?>
+</header>
 
 <main class="main">

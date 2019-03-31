@@ -1,10 +1,13 @@
-title: Legal - Module
+title: Legal
 
 fields:
 
-  title:
-    label: Title
-    type:  text
+  verantwortlicheStelle:
+    label: Verantwortliche Stelle
+    type: textarea
+    size: small
 
-  legal:
-    type:  legal
+  text:
+    label: Text
+    type: textarea
+    size: small

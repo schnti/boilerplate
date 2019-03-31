@@ -11,44 +11,20 @@ tabs:
       - width: 3/4
         sections:
 
-          published:
-            headline: Published Articles
+          - headline: Veröffentlicht
             type: pages
             status: listed
-            info: " {{ page.intendedTemplate}}"
+            info: " {{ page.moduleDisplayName}}"
 
-          drafts:
-            headline: Drafts
-            type: pages
-            status: draft
-
-          test:
-            headline: Drafts
+          - headline: Ungelistet
             type: pages
             status: unlisted
+            info: " {{ page.moduleDisplayName}}"
 
-          background2:
-            headline: Background
-            type: files
-            info: "{{ file.dimensions }}"
-
-          images:
-            headline: Background
-            type: fields
-            fields:
-              background:
-                label: Pick a theme
-                type: imageradio
-                ratio: 1/1
-                fit: cover
-                gap: true
-                columns: 6
-                options: query
-                query:
-                  fetch: site.images
-                  text: "{{ file.filename }}"
-                  value: "{{ file.id }}"
-                  image: "{{ file.resize(512).url }}"
+          - headline: Entwürfe
+            type: pages
+            status: draft
+            info: " {{ page.moduleDisplayName}}"
 
       - width: 1/4
         sections:

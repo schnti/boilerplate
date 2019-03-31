@@ -1,3 +1,43 @@
+#AuthType Basic
+#AuthName "Password Protected Area"
+#AuthUserFile /kunden/376913_72202/webseiten/prodax/.htpasswd
+#Require valid-user
+
+
+## Assets Cache
+<FilesMatch "\.(ico|flv|woff|woff2|ttf|jpg|jpeg|png|gif|svg|js|css)$">
+    ExpiresActive on
+    ExpiresDefault "access plus 1 month"
+</FilesMatch>
+
+# SECURITY
+Header unset Content-Security-Policy
+Header always set Content-Security-Policy "default-src 'self' 'unsafe-inline' https://stats.kleiner-als.de; object-src 'none'; report-uri https://csp.kleiner-als.de;"
+# Hilfe: https://report-uri.io/home/generate
+
+Header unset X-Frame-Options
+Header always set X-Frame-Options "SAMEORIGIN"
+Header unset X-Xss-Protection
+Header always set X-Xss-Protection "1; mode=block"
+Header unset X-Content-Type-Options
+Header always set X-Content-Type-Options "nosniff"
+Header unset Referrer-Policy
+Header always set Referrer-Policy "no-referrer-when-downgrade"
+Header unset Feature-Policy
+Header always set Feature-Policy "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'none'; camera 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; midi 'none'; payment 'none'; picture-in-picture 'none'; speaker 'self'; sync-xhr 'none'; usb 'none'; vr 'none'"
+
+## force https
+#Header unset Strict-Transport-Security
+#Header always set Strict-Transport-Security "max-age=31536000;"
+
+#Remove the footer from error pages, which details the version numbers:
+ServerSignature Off
+
+# Hide X-Powered-By and Server headers, sent by downstream application servers:
+# Note you need both below as the "always" one doesn't work with Jboss for some reason
+Header always unset X-Powered-By
+Header unset X-Powered-By
+
 # Kirby .htaccess
 
 # rewrite rules
@@ -20,6 +60,19 @@ RewriteEngine on
 # set the RewriteBase to:
 #
 RewriteBase /
+
+# http to https redirect
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# www redirect
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 # block files and folders beginning with a dot, such as .git
 # except for the .well-known folder, which is used for Let's Encrypt and security.txt
@@ -55,3 +108,11 @@ AddOutputFilterByType DEFLATE application/json
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
 </IfModule>
+
+
+########################################################################
+################################## SEO #################################
+########################################################################
+
+## Alte Webseite
+#Redirect 301 /cms/download.php /de

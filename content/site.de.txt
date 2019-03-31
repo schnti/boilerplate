@@ -1,0 +1,9 @@
+Title: Site Title
+
+----
+
+Copyright: Copyright © (date: Y) XYZ
+
+----
+
+Footerlinks: (link: impressum text: Impressum) | (link: datenschutzerklaerung text: Datenschutzerklärung) | (link: sitemap text: Sitemap)

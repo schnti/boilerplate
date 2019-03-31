@@ -1,5 +1,6 @@
 <?php return [
-	'debug'                         => true,
+	'debug'                         => false,
+	'panel'                         => false,
 	'languages'                     => true,
 	'date'                          => [
 		'handler' => 'strftime'

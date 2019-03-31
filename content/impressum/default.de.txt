@@ -1,0 +1,11 @@
+Title: Impressum
+
+----
+
+Text: 
+
+(legal: disclaimer)
+
+### Programmierung, Umsetzung und Hosting
+timo schneider / kleiner als / webdesign 
+(link: http://kleiner-als.de text: kleiner-als.de)
