@@ -29,7 +29,8 @@
     "schnti/cookie": "^0.1.0",
     "schnti/photoswipe": "^0.1.0",
     "schnti/cachebuster": "^1.0",
-    "schnti/legal": "^0.1"
+    "schnti/legal": "^0.1",
+    "schnti/sitemap": "^1.0"
   },
   "config": {
     "optimize-autoloader": true

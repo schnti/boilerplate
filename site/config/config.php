@@ -15,6 +15,13 @@
 
 	'schnti.autoresize.max' => 2000,
 
+	//	'schnti.sitemap.excludeSites'        => ['error', 'sitemap', 'thankyou'],
+	//	'schnti.sitemap.excludeTemplates'    => [],
+	//	'schnti.sitemap.includeSites'        => ['impressum', 'datenschutzerklaerung'],
+	//	'schnti.sitemap.showUnlistedSites'   => false,
+	//	'schnti.sitemap.importantSites'      => [],
+	//  'schnti.sitemap.showOnePagerModules' => false,
+
 	'schnti.legal.username' => '',
 	'schnti.legal.password' => '',
 	'schnti.legal.cache.data' => false,
