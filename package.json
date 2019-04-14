@@ -1,0 +1,12 @@
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "devDependencies": {
+    "kirby-gulp": "*"
+  },
+  "dependencies": {
+    "jquery": "^3.4.0",
+    "bootstrap": "^4.3.1"
+  }
+}

@@ -1,6 +1,6 @@
 #AuthType Basic
 #AuthName "Password Protected Area"
-#AuthUserFile /kunden/376913_72202/webseiten/prodax/.htpasswd
+#AuthUserFile /kunden/376913_72202/webseiten/XXXXX/public/.htpasswd
 #Require valid-user
 
 
@@ -12,7 +12,7 @@
 
 # SECURITY
 Header unset Content-Security-Policy
-Header always set Content-Security-Policy "default-src 'self' 'unsafe-inline' https://stats.kleiner-als.de; object-src 'none'; report-uri https://csp.kleiner-als.de;"
+Header always set Content-Security-Policy "default-src 'self' data: 'unsafe-inline' https://stats.kleiner-als.de; object-src 'none'; report-uri https://csp.kleiner-als.de;"
 # Hilfe: https://report-uri.io/home/generate
 
 Header unset X-Frame-Options

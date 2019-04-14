@@ -1,0 +1,39 @@
+body:before {
+
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+
+  z-index: 100000;
+  width: 60px;
+  height: 45px;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.15) 0 3px 3px;
+  color: rgb(107, 21, 161);
+  text-align: center;
+  font-weight: bold;
+  text-transform: lowercase;
+  border: 2px solid rgb(107, 21, 161);
+  border-bottom-width: 6px;
+  border-image: initial;
+  border-radius: 3px;
+  font-size: 25px;
+
+  @include media-breakpoint-only(xs) {
+    content: 'xs';
+  }
+  @include media-breakpoint-only(sm) {
+    content: 'sm';
+  }
+  @include media-breakpoint-only(md) {
+    content: 'md';
+  }
+  @include media-breakpoint-only(lg) {
+    content: 'lg';
+  }
+  @include media-breakpoint-only(xl) {
+    content: 'xl';
+  }
+
+}

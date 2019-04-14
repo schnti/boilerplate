@@ -4,8 +4,62 @@ Title: Impressum
 
 Text: 
 
+## Angaben gemäß § 5 TMG
+
+Muster GmbH
+Musterstraße 111
+Gebäude 44
+90210 Musterstadt
+
+Handelsregister: HRB 999999
+Registergericht: Amtsgericht Musterstadt
+
+Vertreten durch die Geschäftsführer:
+Herr Dr. Harry Mustermann
+Frau Luise Beispiel
+
+### Kontakt
+
+Telefon: +49 (0) 123 44 55 66
+Telefax: +49 (0) 123 44 55 99
+E-Mail: mustermann@musterfirma.de
+
+### Umsatzsteuer-ID
+
+Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:
+DE 999 999 999
+
+### Aufsichtsbehörde
+
+Musterkammer Musterstadt
+Musterweg 10
+90210 Musterstadt
+
+http://
+
+### Angaben zur Berufshaftpflichtversicherung
+
+Name und Sitz des Versicherers:
+Beispiel Versicherung AG
+Musterweg 10
+90210 Musterstadt
+
+Geltungsraum der Versicherung:
+Deutschland
+
+### Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+
+[Anschriften und Themengebiete der verantwortlichen Personen]
+
+### Streitschlichtung
+
+Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr.
+Unsere E-Mail-Adresse finden Sie oben im Impressum.
+
+Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+
 (legal: disclaimer)
 
-### Programmierung, Umsetzung und Hosting
+**Website Konzeption, Gestaltung und Umsetzung:**
 timo schneider / kleiner als / webdesign 
 (link: http://kleiner-als.de text: kleiner-als.de)
