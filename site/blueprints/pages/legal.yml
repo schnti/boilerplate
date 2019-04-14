@@ -6,6 +6,13 @@ fields:
     label: Verantwortliche Stelle
     type: textarea
     size: small
+    width: 1/2
+
+  datenschutzbeauftragter:
+    label: Datenschutzbeauftragter
+    type: textarea
+    size: small
+    width: 1/2
 
   text:
     label: Text

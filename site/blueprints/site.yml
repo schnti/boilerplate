@@ -37,22 +37,20 @@ tabs:
     label: SEO
     icon: search
     fields:
+
       seoTitle:
         label: SEO Title
         type: text
+
       seoDescription:
         label: SEO Description
         type: text
+        validate:
+          maxLength: 255
 
       author:
         label: Author
         type:  text
-
-      description:
-        label: Description
-        type:  textarea
-        validate:
-          maxLength: 255
 
       keywords:
         label: Keywords
