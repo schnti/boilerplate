@@ -1,18 +1,20 @@
-title: Columns 2 - Module
+title: Columns and Events - Module
 
 fields:
-
-  title:
-    label: Title
-    type:  text
-    width: 3/4
 
   titleDisplay:
     label: Anzeigen
     type: toggle
     text: Title anzeigen?
     default: true
-    width: 1/4
+    width: 1/2
+
+  navDisplay:
+    label: Anzeigen
+    type: toggle
+    text: Im OnePager-Menü anzeigen
+    default: true
+    width: 1/2
 
   text:
     label: Text Left

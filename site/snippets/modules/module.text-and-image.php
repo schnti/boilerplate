@@ -8,7 +8,7 @@
 
             <?= $module->text()->kirbytext(); ?>
         </div>
-        <div class="col-sm-5 <? e($module->position()->value() == 'left', 'order-sm-first'); ?> col-md-4">
+        <div class="col-sm-5 <?php e($module->position()->value() == 'left', 'order-sm-first'); ?> col-md-4">
 
 			<?php if ($image = $module->picture()->toFile()) : ?>
                 <div class="image">

@@ -1,11 +1,12 @@
 <?php
 
 Kirby::plugin('schnti/website', [
-	'fieldMethods'   => [
+	'fieldMethods' => [
 		'toCss' => function ($field) {
 			return strtolower(implode(' ', $field->split()));
 		},
-	], 'pageMethods' => [
+	],
+	'pageMethods'  => [
 		'isModule'          => function () {
 			return substr($this->intendedTemplate(), 0, 7) === 'module.';
 		},
@@ -17,6 +18,12 @@ Kirby::plugin('schnti/website', [
 				return ucwords(str_replace('-', ' ', substr($this->intendedTemplate(), 7)));
 			else
 				return ucwords($this->intendedTemplate());
+		}
+	],
+	'hooks'        => [
+		'kirbytags:before' => function ($text, $data, $options) {
+			//			return str::replace($text, "", "");
+			return Str::replace($text, ['(-)', '(br)'], ['&shy;', '<br class="test">']);
 		}
 	]
 ]);

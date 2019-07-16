@@ -4,15 +4,21 @@
         <h2><?= $module->title()->html(); ?></h2>
 	<?php endif; ?>
 
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-4">
-			<?= $module->text()->kirbytext(); ?>
+            <div class="box">
+				<?= $module->text()->kirbytext(); ?>
+            </div>
         </div>
         <div class="col-md-4">
-			<?= $module->text2()->kirbytext(); ?>
+            <div class="box">
+				<?= $module->text2()->kirbytext(); ?>
+            </div>
         </div>
         <div class="col-md-4">
-			<?= $module->text3()->kirbytext(); ?>
+            <div class="box">
+				<?= $module->text3()->kirbytext(); ?>
+            </div>
         </div>
     </div>
 

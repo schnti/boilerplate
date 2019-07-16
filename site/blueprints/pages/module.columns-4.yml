@@ -1,12 +1,28 @@
-title: Columns 1 - Module
+title: Columns 4 - Module
 
 columns:
   - width: 3/4
     fields:
 
       text:
-        label: Text
+        label: Text 1
         type:  textarea
+        width: 1/2
+
+      text2:
+        label: Text 2
+        type:  textarea
+        width: 1/2
+
+      text3:
+        label: Text 3
+        type:  textarea
+        width: 1/2
+
+      text4:
+        label: Text 4
+        type:  textarea
+        width: 1/2
 
   - width: 1/4
     sections:
@@ -33,3 +49,4 @@ columns:
 
       - type: files
         headline: Dateien
+

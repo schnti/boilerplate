@@ -1,5 +1,4 @@
-title: Site
-
+title: OnePager
 
 tabs:
 
@@ -11,31 +10,45 @@ tabs:
       - width: 3/4
         sections:
 
-          - headline: Veröffentlicht
+          - headline: Veröffentlichte Module
             type: pages
             status: listed
             info: " {{ page.moduleDisplayName}}"
 
-          - headline: Ungelistet
+          - headline: Ungelistete Module
             type: pages
             status: unlisted
             info: " {{ page.moduleDisplayName}}"
 
-          - headline: Entwürfe
+          - headline: Modulentwürfe
             type: pages
             status: draft
             info: " {{ page.moduleDisplayName}}"
             templates:
-              - default
-              - legal
-              - onepager
+              - module.blog
+              - module.column-and-events
+              - module.columns-1
+              - module.columns-2
+              - module.columns-3
+              - module.columns-4
+              - module.gallery
+              - module.header
+              - module.icons
+              - module.teaser
+              - module.termine
+              - module.text-and-image
+
+          - type: fields
+            fields:
+              background:
+                label: Background
+                type: files
+                max: 1
 
       - width: 1/4
         sections:
-          sidebar:
-            type: matomo-sidebar
-            link: false
-
+          gallery:
+            type: files
 
   seo:
     label: SEO
@@ -67,20 +80,3 @@ tabs:
       footerLinks:
         label: Links
         type:  textarea
-
-  matomo:
-    label: Besucherstatistik
-    icon: clock
-    columns:
-      - width: 3/4
-        sections:
-          main:
-            type: matomo-main
-            defaults:
-              limit: 8
-              period: month
-      - width: 1/4
-        sections:
-          sidebar:
-            type: matomo-sidebar
-            link: false

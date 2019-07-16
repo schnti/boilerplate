@@ -1,11 +1,12 @@
 <div class="container">
 
-	<?php if ($module->titleDisplay()->bool()): ?>
-        <h2><?= $module->title()->html(); ?></h2>
-	<?php endif; ?>
+    <div class="row justify-content-center">
+        <div class="col-md-9">
 
-    <div class="row">
-        <div class="col-md-10">
+			<?php if ($module->titleDisplay()->bool()): ?>
+                <h2><?= $module->title()->html(); ?></h2>
+			<?php endif; ?>
+
 			<?= $module->text()->kirbytext(); ?>
         </div>
     </div>

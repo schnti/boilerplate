@@ -16,6 +16,7 @@ module.exports = {
             //'photoswipe/dist/photoswipe-ui-default.js'
             //'fancybox/source/jquery.fancybox.pack.js',
         ], css : [
+            'bootstrap/dist/css/bootstrap.min.css' // TODO NOT NEEDED!!! USED TO FIX "Error: Invalid glob argument" Error.
             //'fancybox/source/jquery.fancybox.css'
         ], assets : {
             //lightboxImages : {
