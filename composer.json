@@ -30,7 +30,8 @@
     "schnti/photoswipe": "^0.1.0",
     "schnti/cachebuster": "^1.0",
     "schnti/legal": "^0.1",
-    "schnti/sitemap": "^1.0"
+    "schnti/sitemap": "^1.0",
+    "schnti/robots": "^0.1"
   },
   "config": {
     "optimize-autoloader": true
