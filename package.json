@@ -2,11 +2,37 @@
   "name": "boilerplate",
   "version": "1.0.0",
   "description": "",
+  "private": true,
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack"
+  },
   "devDependencies": {
-    "kirby-gulp": "*"
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "autoprefixer": "^9.7.1",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.13.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "jquery": "^3.4.0",
-    "bootstrap": "^4.3.1"
+    "@fancyapps/fancybox": "^3.5.7",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.0"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 11"
+  ],
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   }
 }

@@ -7,7 +7,7 @@
 	<?php $datetime = new DateTime('yesterday'); ?>
 
     <div class="row">
-        <div class="col-sm-12 col-md-offset-2 col-md-8">
+        <div class="col-sm-12 offset-md-2 col-md-8">
 
             <div class="row">
 				<?php foreach ($module->events()->toStructure()->filterBy('date', '>', $datetime->getTimestamp())->sortBy('date', 'asc') as $event): ?>

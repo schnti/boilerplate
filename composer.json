@@ -24,14 +24,14 @@
   "require": {
     "php": ">=7.1.0",
     "getkirby/cms": "^3.0",
-    "sylvainjule/matomo": "^1.0",
     "schnti/autoresize": "^0.1.0",
-    "schnti/cookie": "^0.1.0",
     "schnti/photoswipe": "^0.1.0",
     "schnti/cachebuster": "^1.0",
     "schnti/legal": "^0.1",
     "schnti/sitemap": "^1.0",
-    "schnti/robots": "^0.1"
+    "schnti/robots": "^0.1",
+    "flokosiol/focus": "^3.0",
+    "distantnative/retour-for-kirby": "^2.3"
   },
   "config": {
     "optimize-autoloader": true

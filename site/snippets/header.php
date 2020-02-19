@@ -9,8 +9,7 @@
     <meta name="description" content="<?= $site->description()->value(); ?>">
     <meta name="keywords" content="<?= $site->keywords()->value(); ?>">
 
-    <?//= css('assets/css/bower.css'); ?>
-	<?= css('assets/css/styles.min.css'); ?>
+	<?= css('assets/main.css'); ?>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">

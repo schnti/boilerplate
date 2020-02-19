@@ -7,10 +7,7 @@
     </div>
 </footer>
 
-<?= js('assets/js/bower.js', ['defer' => true]); ?>
-<?= js('assets/js/main.min.js', ['defer' => true]); ?>
-
-<? //= snippet('cookie'); ?>
+<?= js('assets/main.js', ['defer' => true]); ?>
 
 </body>
 </html>

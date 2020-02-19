@@ -25,16 +25,7 @@ tabs:
             type: pages
             status: draft
             info: " {{ page.moduleDisplayName}}"
-            templates:
-              - default
-              - legal
-              - onepager
 
-      - width: 1/4
-        sections:
-          sidebar:
-            type: matomo-sidebar
-            link: false
 
 
   seo:
@@ -68,19 +59,3 @@ tabs:
         label: Links
         type:  textarea
 
-  matomo:
-    label: Besucherstatistik
-    icon: clock
-    columns:
-      - width: 3/4
-        sections:
-          main:
-            type: matomo-main
-            defaults:
-              limit: 8
-              period: month
-      - width: 1/4
-        sections:
-          sidebar:
-            type: matomo-sidebar
-            link: false

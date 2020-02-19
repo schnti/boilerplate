@@ -1,0 +1,15 @@
+$colorBackground: #333333;
+$colorFont: #FFFFFF;
+$colorComplementary: #B2BC01;
+$colorFont2: #777777;
+
+//$border-radius: 0;
+//$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+//@import "../../node_modules/@fancyapps/fancybox/src/css/core.css";
+
+@import "bootstrap";

@@ -1,31 +1,60 @@
 <?php return [
-	'debug'                         => false,
-	'panel'                         => false,
-	'languages'                     => true,
-	'date'                          => [
+	'debug'     => false,
+	'panel'     => false,
+	'languages' => true,
+	'date'      => [
 		'handler' => 'strftime'
 	],
-	'sylvainjule.matomo.url'        => 'https://stats.kleiner-als.de', #required
-	'sylvainjule.matomo.id'         => false, #required
-	'sylvainjule.matomo.token'      => '', // #required for the panel integration
-	'sylvainjule.matomo.active'     => false,
-	'sylvainjule.matomo.debug'      => false,
-	'sylvainjule.matomo.trackUsers' => false,
-	'sylvainjule.matomo.blacklist'  => ['127.0.0.1', '::1'],
+	'slugs'     => 'de',
+
+	'home' => 'projekte',
 
 	'schnti.autoresize.max' => 2000,
 
-	//	'schnti.sitemap.excludeSites'        => ['error', 'sitemap', 'thankyou'],
-	//	'schnti.sitemap.excludeTemplates'    => [],
-	//	'schnti.sitemap.includeSites'        => ['impressum', 'datenschutzerklaerung'],
-	//	'schnti.sitemap.showUnlistedSites'   => false,
-	//	'schnti.sitemap.importantSites'      => [],
-	//  'schnti.sitemap.showOnePagerModules' => false,
+	'schnti.sitemap.xml.sites.blacklist'     => ['error', 'sitemap', 'thankyou'],
+	'schnti.sitemap.xml.sites.whitelist'     => ['home', 'impressum', 'datenschutzerklaerung'],
+	'schnti.sitemap.xml.sites.prio'          => [],
+	'schnti.sitemap.xml.templates.blacklist' => [],
+	'schnti.sitemap.xml.templates.whitelist' => [],
+	'schnti.sitemap.xml.showUnlistedSites'   => false,
+	'schnti.sitemap.xml.showOnePagerModules' => false,
+	'schnti.sitemap.xml.showTags'            => false,
+	//
+	//	'schnti.sitemap.html.sites.blacklist'     => ['error', 'sitemap', 'thankyou'],
+	//	'schnti.sitemap.html.sites.whitelist'     => ['home', 'impressum', 'datenschutzerklaerung'],
+	//	'schnti.sitemap.html.sites.prio'          => [],
+	//	'schnti.sitemap.html.templates.blacklist' => [],
+	//	'schnti.sitemap.html.templates.whitelist' => [],
+	//	'schnti.sitemap.html.showUnlistedSites'   => false,
+	//	'schnti.sitemap.html.showOnePagerModules' => false,
+	//	'schnti.sitemap.html.showTags'            => false,
+	//
+	//	'schnti.sitemap.json.sites.blacklist'     => ['error', 'sitemap', 'thankyou'],
+	//	'schnti.sitemap.json.sites.whitelist'     => ['home', 'impressum', 'datenschutzerklaerung'],
+	//	'schnti.sitemap.json.sites.prio'          => [],
+	//	'schnti.sitemap.json.templates.blacklist' => [],
+	//	'schnti.sitemap.json.templates.whitelist' => [],
+	//	'schnti.sitemap.json.showUnlistedSites'   => false,
+	//	'schnti.sitemap.json.showOnePagerModules' => false,
+	//	'schnti.sitemap.json.showTags'            => false
 
-	'schnti.legal.username' => '',
-	'schnti.legal.password' => '',
+	// En-/disable all logging (true/false)
+	'distantnative.retour.logs'              => true,
+	// Array of paths to ignore as 404s
+	'distantnative.retour.ignore'            => [],
+	// Number of months after which logs should be deleted automatically
+	'distantnative.retour.deleteAfter'       => 1,
+	// Absolut path for location of redirects config
+	// Default: site/config/redirects.yml
+	'distantnative.retour.config'            => '../redirects/redirects.yaml',
+	// Absolut path for location of database
+	// Default: site/logs/retour.sqlite
+	'distantnative.retour.database'          => '../redirects/retour.sqlite',
+
+	'schnti.legal.username'   => '',
+	'schnti.legal.password'   => '',
 	'schnti.legal.cache.data' => false,
-	'schnti.legal.data'     => [
+	'schnti.legal.data'       => [
 		"datenschutz/datenschutz-auf-einen-blick/allgemeine-hinweise",
 		"datenschutz/datenschutz-auf-einen-blick/datenerfassung-auf-unserer-website",
 		//							"datenschutz/datenschutz-auf-einen-blick/analyse-tools-und-tools-von-drittanbietern",
@@ -41,7 +70,7 @@
 		"datenschutz/allgemeine-hinweise-und-pflichtinformationen/auskunft-sperrung-loschung",
 		"datenschutz/allgemeine-hinweise-und-pflichtinformationen/recht-auf-einschrankung-der-verarbeitung",
 		"datenschutz/allgemeine-hinweise-und-pflichtinformationen/widerspruch-gegen-werbe-mails",
-		"datenschutz/datenerfassung-auf-unserer-website/cookies",
+		//		"datenschutz/datenerfassung-auf-unserer-website/cookies",
 		"datenschutz/datenerfassung-auf-unserer-website/server-log-dateien",
 		//							"datenschutz/datenerfassung-auf-unserer-website/kontaktformular",
 		"datenschutz/datenerfassung-auf-unserer-website/anfrage-per-e-mail-telefon-oder-telefax",
@@ -66,7 +95,7 @@
 		//							"datenschutz/plugins-und-tools/youtube-mit-erweitertem-datenschutz",
 		//							"datenschutz/plugins-und-tools/vimeo",
 		//							"datenschutz/plugins-und-tools/google-web-fonts",
-		"datenschutz/plugins-und-tools/google-web-fonts-lokal",
+		//		"datenschutz/plugins-und-tools/google-web-fonts-lokal",
 		//							"datenschutz/plugins-und-tools/adobe-typekit-web-fonts",
 		//							"datenschutz/plugins-und-tools/google-maps",
 		//							"datenschutz/plugins-und-tools/google-maps-mit-einwilligung",

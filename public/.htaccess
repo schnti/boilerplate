@@ -3,12 +3,13 @@
 #AuthUserFile /kunden/376913_72202/webseiten/XXXXX/public/.htpasswd
 #Require valid-user
 
-
-## Assets Cache
+# Assets Cache
+<IfModule mod_expires.c>
 <FilesMatch "\.(ico|flv|woff|woff2|ttf|jpg|jpeg|png|gif|svg|js|css)$">
     ExpiresActive on
     ExpiresDefault "access plus 1 month"
 </FilesMatch>
+</IfModule>
 
 # SECURITY
 Header unset Content-Security-Policy
@@ -62,7 +63,7 @@ RewriteEngine on
 RewriteBase /
 
 # http to https redirect
-#RewriteCond %{HTTPS} !=on
+#RewriteCond %{HTTPS} off
 #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # www redirect
