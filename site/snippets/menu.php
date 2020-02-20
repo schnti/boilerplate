@@ -14,7 +14,7 @@
 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mr-auto">
-					<?php foreach ($pages->visible() as $p): ?>
+					<?php foreach ($pages->listed() as $p): ?>
                         <li class="nav-item "><a class="nav-link" href="<?= $p->url(); ?>"><span><?= $p->title()->html(); ?></span>
 								<?php e($p->isOpen(), '<span class="sr-only">(current)</span>'); ?>  </a></li>
 					<?php endforeach; ?>

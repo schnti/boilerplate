@@ -7,7 +7,7 @@
 	],
 	'slugs'     => 'de',
 
-	'home' => 'projekte',
+	'home' => 'home',
 
 	'schnti.autoresize.max' => 2000,
 
