@@ -30,6 +30,8 @@ Icon
 /public/media/*
 !/public/media/index.html
 
+/redirects/retour.sqlite
+
 # -------------SECURITY-------------
 # NEVER publish these files via Git!
 # -------------SECURITY-------------
