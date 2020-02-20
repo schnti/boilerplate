@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "640f384fdc0cfb5cea8a51fb4a7829e6",
+    "content-hash": "a04fcc946caab8a9a5550fa636df2f56",
     "packages": [
         {
             "name": "claviska/simpleimage",
@@ -44,6 +44,50 @@
             ],
             "description": "A PHP class that makes working with images as simple as possible.",
             "time": "2017-09-12T09:03:56+00:00"
+        },
+        {
+            "name": "distantnative/retour-for-kirby",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/distantnative/retour-for-kirby.git",
+                "reference": "d5538831ce5b3fce37387f476a0085db11b2d236"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/distantnative/retour-for-kirby/zipball/d5538831ce5b3fce37387f476a0085db11b2d236",
+                "reference": "d5538831ce5b3fce37387f476a0085db11b2d236",
+                "shasum": ""
+            },
+            "require": {
+                "getkirby/composer-installer": "^1.1"
+            },
+            "type": "kirby-plugin",
+            "autoload": {
+                "psr-4": {
+                    "distantnative\\Retour\\": "src/models/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nico Hoffmann",
+                    "email": "on-github@nhoffmann.com"
+                }
+            ],
+            "description": "Redirects and error tracking for Kirby",
+            "keywords": [
+                "errors",
+                "kirby3",
+                "kirby3-cms",
+                "kirby3-plugin",
+                "redirects",
+                "routing"
+            ],
+            "time": "2020-01-04T06:15:17+00:00"
         },
         {
             "name": "filp/whoops",
@@ -107,17 +151,48 @@
             "time": "2018-10-23T09:00:00+00:00"
         },
         {
-            "name": "getkirby/cms",
-            "version": "3.1.2",
+            "name": "flokosiol/focus",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/getkirby/kirby.git",
-                "reference": "2fe252510456bdcdcebd00f135ddba192faa9a4d"
+                "url": "https://github.com/flokosiol/kirby-focus.git",
+                "reference": "6fb0cbf698c4a45890094cea8d75ce753fe26f3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getkirby/kirby/zipball/2fe252510456bdcdcebd00f135ddba192faa9a4d",
-                "reference": "2fe252510456bdcdcebd00f135ddba192faa9a4d",
+                "url": "https://api.github.com/repos/flokosiol/kirby-focus/zipball/6fb0cbf698c4a45890094cea8d75ce753fe26f3d",
+                "reference": "6fb0cbf698c4a45890094cea8d75ce753fe26f3d",
+                "shasum": ""
+            },
+            "require": {
+                "getkirby/composer-installer": "^1.1"
+            },
+            "type": "kirby-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Flo Kosiol",
+                    "email": "git@flokosiol.de"
+                }
+            ],
+            "description": "Better image cropping for Kirby CMS",
+            "time": "2020-01-12T21:19:00+00:00"
+        },
+        {
+            "name": "getkirby/cms",
+            "version": "3.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getkirby/kirby.git",
+                "reference": "0330c0ae4214cde349710b099a770fffd0971b4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getkirby/kirby/zipball/0330c0ae4214cde349710b099a770fffd0971b4e",
+                "reference": "0330c0ae4214cde349710b099a770fffd0971b4e",
                 "shasum": ""
             },
             "require": {
@@ -126,19 +201,17 @@
                 "ext-mbstring": "*",
                 "filp/whoops": "2.3.1",
                 "getkirby/composer-installer": "^1.0",
+                "laminas/laminas-escaper": "2.6.0",
                 "michelf/php-smartypants": "1.8.1",
                 "mustangostang/spyc": "0.6.2",
                 "php": ">=7.1.0",
                 "phpmailer/phpmailer": "6.0.7",
-                "true/punycode": "2.1.1",
-                "zendframework/zend-escaper": "2.6.0"
+                "true/punycode": "2.1.1"
             },
             "type": "kirby-cms",
             "autoload": {
                 "files": [
-                    "config/helpers.php",
-                    "config/aliases.php",
-                    "config/tests.php"
+                    "config/setup.php"
                 ],
                 "classmap": [
                     "dependencies/"
@@ -165,7 +238,7 @@
                 "core",
                 "kirby"
             ],
-            "time": "2019-04-09T12:23:02+00:00"
+            "time": "2020-02-18T08:42:36+00:00"
         },
         {
             "name": "getkirby/composer-installer",
@@ -204,6 +277,107 @@
             "description": "Kirby's custom Composer installer for the Kirby CMS and for Kirby plugins",
             "homepage": "https://getkirby.com",
             "time": "2019-02-11T20:27:36+00:00"
+        },
+        {
+            "name": "laminas/laminas-escaper",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-escaper.git",
+                "reference": "72d3a14647f6234cdd9386d6de821a98e539af91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/72d3a14647f6234cdd9386d6de821a98e539af91",
+                "reference": "72d3a14647f6234cdd9386d6de821a98e539af91",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "zendframework/zend-escaper": "self.version"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6.x-dev",
+                    "dev-develop": "2.7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Escaper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Securely and safely escape HTML, HTML attributes, JavaScript, CSS, and URLs",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "escaper",
+                "laminas"
+            ],
+            "time": "2019-12-31T16:43:29+00:00"
+        },
+        {
+            "name": "laminas/laminas-zendframework-bridge",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
+                "reference": "0fb9675b84a1666ab45182b6c5b29956921e818d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/0fb9675b84a1666ab45182b6c5b29956921e818d",
+                "reference": "0fb9675b84a1666ab45182b6c5b29956921e818d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev",
+                    "dev-develop": "1.1.x-dev"
+                },
+                "laminas": {
+                    "module": "Laminas\\ZendFrameworkBridge"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
+                "psr-4": {
+                    "Laminas\\ZendFrameworkBridge\\": "src//"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Alias legacy ZF class names to Laminas Project equivalents.",
+            "keywords": [
+                "ZendFramework",
+                "autoloading",
+                "laminas",
+                "zf"
+            ],
+            "time": "2020-01-07T22:58:31+00:00"
         },
         {
             "name": "league/color-extractor",
@@ -427,16 +601,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801",
                 "shasum": ""
             },
             "require": {
@@ -445,7 +619,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -470,7 +644,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2019-11-01T11:05:21+00:00"
         },
         {
             "name": "schnti/autoresize",
@@ -553,57 +727,17 @@
             "time": "2019-04-14T18:04:47+00:00"
         },
         {
-            "name": "schnti/cookie",
+            "name": "schnti/legal",
             "version": "0.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schnti/kirby3-cookie.git",
-                "reference": "c678833a535152fef767a17d2136a230ea8f654b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schnti/kirby3-cookie/zipball/c678833a535152fef767a17d2136a230ea8f654b",
-                "reference": "c678833a535152fef767a17d2136a230ea8f654b",
-                "shasum": ""
-            },
-            "require": {
-                "getkirby/composer-installer": "^1.1"
-            },
-            "type": "kirby-plugin",
-            "extra": {
-                "installer-name": "cookie"
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Timo Schneider",
-                    "email": "info@kleiner-als.de",
-                    "homepage": "https://kleiner-als.de"
-                }
-            ],
-            "description": "kirby cookie approval plugin",
-            "keywords": [
-                "kirby3",
-                "kirby3-cms",
-                "kirby3-plugin"
-            ],
-            "time": "2019-04-14T19:38:48+00:00"
-        },
-        {
-            "name": "schnti/legal",
-            "version": "0.1.0",
-            "source": {
-                "type": "git",
                 "url": "https://github.com/schnti/kirby3-legal.git",
-                "reference": "60f37186313da5524a9bf76a7550da410decb3ab"
+                "reference": "0a584e271cb122a6ca2de042ce7640e6cf5e77f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schnti/kirby3-legal/zipball/60f37186313da5524a9bf76a7550da410decb3ab",
-                "reference": "60f37186313da5524a9bf76a7550da410decb3ab",
+                "url": "https://api.github.com/repos/schnti/kirby3-legal/zipball/0a584e271cb122a6ca2de042ce7640e6cf5e77f4",
+                "reference": "0a584e271cb122a6ca2de042ce7640e6cf5e77f4",
                 "shasum": ""
             },
             "require": {
@@ -630,7 +764,7 @@
                 "kirby3-cms",
                 "kirby3-plugin"
             ],
-            "time": "2019-04-03T09:55:57+00:00"
+            "time": "2020-01-31T09:36:37+00:00"
         },
         {
             "name": "schnti/photoswipe",
@@ -673,17 +807,57 @@
             "time": "2019-03-24T21:17:23+00:00"
         },
         {
-            "name": "schnti/sitemap",
-            "version": "1.1.0",
+            "name": "schnti/robots",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schnti/kirby3-sitemap.git",
-                "reference": "2bd684064dd066562827aa59dd4c147fcfc499bf"
+                "url": "https://github.com/schnti/kirby3-robots.git",
+                "reference": "4bfc5a32e71e039a26ce4d97bbc66134e0ee6ad0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schnti/kirby3-sitemap/zipball/2bd684064dd066562827aa59dd4c147fcfc499bf",
-                "reference": "2bd684064dd066562827aa59dd4c147fcfc499bf",
+                "url": "https://api.github.com/repos/schnti/kirby3-robots/zipball/4bfc5a32e71e039a26ce4d97bbc66134e0ee6ad0",
+                "reference": "4bfc5a32e71e039a26ce4d97bbc66134e0ee6ad0",
+                "shasum": ""
+            },
+            "require": {
+                "getkirby/composer-installer": "^1.1"
+            },
+            "type": "kirby-plugin",
+            "extra": {
+                "installer-name": "robots"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Timo Schneider",
+                    "email": "info@kleiner-als.de",
+                    "homepage": "https://kleiner-als.de"
+                }
+            ],
+            "description": "simple kirby robots.txt plugin",
+            "keywords": [
+                "kirby3",
+                "kirby3-cms",
+                "kirby3-plugin"
+            ],
+            "time": "2019-11-29T11:35:55+00:00"
+        },
+        {
+            "name": "schnti/sitemap",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schnti/kirby3-sitemap.git",
+                "reference": "11dff2a4d8737354580a8b1cf1b2ed7b2be0cb10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schnti/kirby3-sitemap/zipball/11dff2a4d8737354580a8b1cf1b2ed7b2be0cb10",
+                "reference": "11dff2a4d8737354580a8b1cf1b2ed7b2be0cb10",
                 "shasum": ""
             },
             "require": {
@@ -710,54 +884,20 @@
                 "kirby3-cms",
                 "kirby3-plugin"
             ],
-            "time": "2019-04-14T20:30:55+00:00"
-        },
-        {
-            "name": "sylvainjule/matomo",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sylvainjule/kirby-matomo.git",
-                "reference": "8d113c6d34c583c24e327e577f6244b85e0ef1fb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sylvainjule/kirby-matomo/zipball/8d113c6d34c583c24e327e577f6244b85e0ef1fb",
-                "reference": "8d113c6d34c583c24e327e577f6244b85e0ef1fb",
-                "shasum": ""
-            },
-            "require": {
-                "getkirby/composer-installer": "^1.1"
-            },
-            "type": "kirby-plugin",
-            "extra": {
-                "installer-name": "matomo"
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sylvain Julé",
-                    "email": "contact@sylvain-jule.fr"
-                }
-            ],
-            "description": "Matomo helpers and panel sections for Kirby",
-            "time": "2019-03-20T10:22:01+00:00"
+            "time": "2019-04-14T20:38:39+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.11.0",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609"
+                "reference": "34094cfa9abe1f0f14f48f490772db7a775559f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fe5e94c604826c35a32fa832f35bd036b6799609",
-                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/34094cfa9abe1f0f14f48f490772db7a775559f2",
+                "reference": "34094cfa9abe1f0f14f48f490772db7a775559f2",
                 "shasum": ""
             },
             "require": {
@@ -769,7 +909,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -803,7 +943,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "true/punycode",
@@ -850,51 +990,6 @@
                 "punycode"
             ],
             "time": "2016-11-16T10:37:54+00:00"
-        },
-        {
-            "name": "zendframework/zend-escaper",
-            "version": "2.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-escaper.git",
-                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/31d8aafae982f9568287cb4dce987e6aff8fd074",
-                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
-                "zendframework/zend-coding-standard": "~1.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6.x-dev",
-                    "dev-develop": "2.7.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Escaper\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Securely and safely escape HTML, HTML attributes, JavaScript, CSS, and URLs",
-            "keywords": [
-                "ZendFramework",
-                "escaper",
-                "zf"
-            ],
-            "time": "2018-04-25T15:48:53+00:00"
         }
     ],
     "packages-dev": [],
