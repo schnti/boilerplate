@@ -8,7 +8,7 @@ tabs:
     icon: text
 
     columns:
-      - width: 3/4
+      - width: 2/3
         sections:
 
           - headline: Veröffentlicht
@@ -26,36 +26,31 @@ tabs:
             status: draft
             info: " {{ page.moduleDisplayName}}"
 
-
-
   seo:
     label: SEO
     icon: search
-    fields:
+    columns:
+      - width: 2/3
 
-      seoTitle:
-        label: SEO Title
-        type: text
+        fields:
 
-      seoDescription:
-        label: SEO Description
-        type: text
-        validate:
-          maxLength: 255
+          seoDescription:
+            extends: fields/seo-description
+            help: Startseiten SEO Beschreibung und Standard, wenn auf den Unterseiten keine SEO Beschreibung hinterlegt ist (maximal 255 Zeichen).
+            placeholder: ""
 
-      author:
-        label: Author
-        type:  text
+  disclaimer:
+    label: Disclaimer
+    icon: settings
+    columns:
+      - width: 2/3
 
-      keywords:
-        label: Keywords
-        type:  tags
+        fields:
 
-      copyright:
-        label: Copyright
-        type:  textarea
+          copyright:
+            extends: fields/text
+            label: Copyright
 
-      footerLinks:
-        label: Links
-        type:  textarea
-
+          footerLinks:
+            extends: fields/text
+            label: Links

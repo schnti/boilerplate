@@ -1,5 +1,12 @@
 title: Icons - Module
 
+status:
+  draft: true
+  listed: true
+
+options:
+  extends: module/changeTemplate
+
 columns:
   - width: 3/4
     fields:
@@ -86,7 +93,9 @@ columns:
 
   - width: 1/4
     sections:
-      - type: fields
+
+      meta:
+        type: fields
         fields:
 
           titleDisplay:
@@ -107,6 +116,4 @@ columns:
             lower: true
             index: siblings
 
-      - type: files
-        headline: Dateien
-
+      files: sections/files

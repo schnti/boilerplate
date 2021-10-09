@@ -1,82 +1,20 @@
 title: OnePager
 
-tabs:
+columns:
+  - width: 2/3
+    sections:
 
-  content:
-    label: Content
-    icon: text
+      modules:
+        headline: Module
+        type: modules
 
-    columns:
-      - width: 3/4
-        sections:
+  - width: 1/3
+    sections:
 
-          - headline: Veröffentlichte Module
-            type: pages
-            status: listed
-            info: " {{ page.moduleDisplayName}}"
+      meta:
+        type: fields
 
-          - headline: Ungelistete Module
-            type: pages
-            status: unlisted
-            info: " {{ page.moduleDisplayName}}"
+        fields:
+          seoDescription: fields/seo-description
 
-          - headline: Modulentwürfe
-            type: pages
-            status: draft
-            info: " {{ page.moduleDisplayName}}"
-            templates:
-              - module.blog
-              - module.column-and-events
-              - module.columns-1
-              - module.columns-2
-              - module.columns-3
-              - module.columns-4
-              - module.gallery
-              - module.header
-              - module.icons
-              - module.teaser
-              - module.termine
-              - module.text-and-image
-
-          - type: fields
-            fields:
-              background:
-                label: Background
-                type: files
-                max: 1
-
-      - width: 1/4
-        sections:
-          gallery:
-            type: files
-
-  seo:
-    label: SEO
-    icon: search
-    fields:
-
-      seoTitle:
-        label: SEO Title
-        type: text
-
-      seoDescription:
-        label: SEO Description
-        type: text
-        validate:
-          maxLength: 255
-
-      author:
-        label: Author
-        type:  text
-
-      keywords:
-        label: Keywords
-        type:  tags
-
-      copyright:
-        label: Copyright
-        type:  textarea
-
-      footerLinks:
-        label: Links
-        type:  textarea
+      files: sections/files

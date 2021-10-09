@@ -1,7 +1,11 @@
 title: Gallery - Module
 
+status:
+  draft: true
+  listed: true
+
 options:
-  preview: "{{ page.parent.url }}/#{{ page.slug }}"
+  extends: module/changeTemplate
 
 sections:
 

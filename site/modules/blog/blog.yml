@@ -1,6 +1,11 @@
 title: Blog Artikel - Module
 
-preview: grandparent
+status:
+  draft: true
+  listed: true
+
+options:
+  extends: module/changeTemplate
 
 fields:
 

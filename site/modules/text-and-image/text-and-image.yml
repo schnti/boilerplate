@@ -1,32 +1,39 @@
-title: Columns 4 - Module
+title: Text and Image - Module
+
+status:
+  draft: true
+  listed: true
+
+options:
+  extends: module/changeTemplate
 
 columns:
   - width: 3/4
     fields:
 
+      position:
+        label: Position Bild
+        type: select
+        default: right
+        options:
+          left: left
+          right: right
+        width: 1/3
+
+      picture:
+        label: Bild
+        type: files
+        max: 1
+
       text:
-        label: Text 1
+        label: Text
         type:  textarea
-        width: 1/2
-
-      text2:
-        label: Text 2
-        type:  textarea
-        width: 1/2
-
-      text3:
-        label: Text 3
-        type:  textarea
-        width: 1/2
-
-      text4:
-        label: Text 4
-        type:  textarea
-        width: 1/2
 
   - width: 1/4
     sections:
-      - type: fields
+
+      meta:
+        type: fields
         fields:
 
           titleDisplay:
@@ -47,6 +54,4 @@ columns:
             lower: true
             index: siblings
 
-      - type: files
-        headline: Dateien
-
+      files: sections/files

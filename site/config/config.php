@@ -7,7 +7,10 @@
 	],
 	'slugs'     => 'de',
 
-	'home' => 'home',
+	'home'                              => 'home',
+
+	//	'medienbaecker.modules.default' => 'gallery',
+	'medienbaecker.modules.autopublish' => true,
 
 	'schnti.autoresize.max' => 2000,
 

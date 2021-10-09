@@ -1,0 +1,6 @@
+label: SEO Description
+help: Maximal 255 Zeichen. Wenn nichts angegeben, wird die Standard SEO Beschreibung verwendet.
+type: textarea
+maxlength: 255
+buttons: false
+placeholder: "{{site.seoDescription}}"

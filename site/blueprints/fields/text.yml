@@ -1,0 +1,11 @@
+type:  textarea
+buttons:
+  - headlines
+  - italic
+  - bold
+  - '|'
+  - ul
+  - ol
+  - '|'
+  - link
+  - email

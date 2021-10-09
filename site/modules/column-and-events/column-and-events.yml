@@ -1,5 +1,12 @@
 title: Columns and Events - Module
 
+status:
+  draft: true
+  listed: true
+
+options:
+  extends: module/changeTemplate
+
 fields:
 
   titleDisplay:
