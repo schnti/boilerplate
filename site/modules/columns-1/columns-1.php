@@ -4,7 +4,7 @@
         <div class="col-md-9">
 
 			<?php if ($module->titleDisplay()->bool()): ?>
-                <h2><?= $module->title()->html(); ?></h2>
+                <h2><?= $module->title()->kirbytextinline(); ?></h2>
 			<?php endif; ?>
 
 			<?= $module->text()->kirbytext(); ?>

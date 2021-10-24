@@ -1,7 +1,7 @@
 <div class="container">
 
 	<?php if ($module->titleDisplay()->bool()): ?>
-        <h2><?= $module->title()->html(); ?></h2>
+        <h2><?= $module->title()->kirbytextinline(); ?></h2>
 	<?php endif; ?>
 
     <div class="row justify-content-center">
