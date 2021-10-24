@@ -1,4 +1,4 @@
-<div class="container-md">
+<div class="container">
 
     <?php $imageLeft = ($module->position()->value() == 'left'); ?>
 
