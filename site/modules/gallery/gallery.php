@@ -6,17 +6,18 @@
 
 	<?= $module->text()->kirbytext() ?>
 
-    <div class="row">
+    <div class="row g-4
+        <?php e($module->grid()->isNotEmpty(), 'row-cols-' . $module->grid(), 'row-cols-1'); ?>
+        <?php e($module->gridSm()->isNotEmpty(), 'row-cols-sm-' . $module->gridSm(), 'row-cols-sm-2'); ?>
+        <?php e($module->gridMd()->isNotEmpty(), 'row-cols-md-' . $module->gridMd(), 'row-cols-md-4'); ?>
+        <?php e($module->gridLg()->isNotEmpty(), 'row-cols-lg-' . $module->gridLg(), 'row-cols-lg-6'); ?>
+        <?php e($module->gridXl()->isNotEmpty(), 'row-cols-xl-' . $module->gridXl(), 'row-cols-xl-8'); ?>
+        <?php e($module->gridXxl()->isNotEmpty(), 'row-cols-xxl-' . $module->gridXxl(), 'row-cols-xxl-12'); ?>
+       ">
 		<?php foreach ($module->files() as $file): ?>
-            <div class="
-                    <?php e($module->grid()->isNotEmpty(), 'col-' . $module->grid(), 'col-12'); ?>
-                    <?php e($module->gridSm()->isNotEmpty(), 'col-sm-' . $module->gridSm(), 'col-sm-6'); ?>
-                    <?php e($module->gridMd()->isNotEmpty(), 'col-md-' . $module->gridMd(), 'col-md-4'); ?>
-                    <?php e($module->gridLg()->isNotEmpty(), 'col-lg-' . $module->gridLg(), 'col-lg-3'); ?>
-                    <?php e($module->gridXl()->isNotEmpty(), 'col-xl-' . $module->gridXl(), 'col-xl-2'); ?>
-                    ">
+            <div class="col"> ">
                 <div class="picture">
-					<?php $thumb = ($module->croping()->bool()) ? $file->crop(300, 300) : $file->resize(300); ?>
+					<?php $thumb = ($module->croping()->bool()) ? $file->crop(400, 400) : $file->resize(400); ?>
                     <img src="<?= $thumb->url(); ?>" class="img-fluid" alt="">
                 </div>
             </div>

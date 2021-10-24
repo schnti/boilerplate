@@ -27,7 +27,6 @@ sections:
         default: true
         width: 1/2
 
-
       croping:
         label: Croping
         type: toggle
@@ -37,8 +36,8 @@ sections:
 
       grid:
         label: Smartphone hochformat
-        type:  number
-        default: 12
+        type: number
+        default: 1
         required: true
         min: 1
         max: 12
@@ -46,8 +45,8 @@ sections:
 
       gridSm:
         label: Smartphone querformat
-        type:  number
-        default: 6
+        type: number
+        default: 2
         required: true
         min: 1
         max: 12
@@ -55,7 +54,7 @@ sections:
 
       gridMd:
         label: Tablet hochformat
-        type:  number
+        type: number
         default: 4
         required: true
         min: 1
@@ -64,8 +63,8 @@ sections:
 
       gridLg:
         label: Tablet querformat
-        type:  number
-        default: 3
+        type: number
+        default: 6
         required: true
         min: 1
         max: 12
@@ -73,8 +72,18 @@ sections:
 
       gridXl:
         label: Computer
-        type:  number
-        default: 2
+        type: number
+        default: 8
+        required: true
+        min: 1
+        max: 12
+        width: 1/4
+
+
+      gridXxl:
+        label: Computer
+        type: number
+        default: 12
         required: true
         min: 1
         max: 12
