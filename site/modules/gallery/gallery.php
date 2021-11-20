@@ -15,7 +15,7 @@
         <?php e($module->gridXxl()->isNotEmpty(), 'row-cols-xxl-' . $module->gridXxl(), 'row-cols-xxl-12'); ?>
        ">
 		<?php foreach ($module->files() as $file): ?>
-            <div class="col"> ">
+            <div class="col">
                 <div class="picture">
 					<?php $thumb = ($module->croping()->bool()) ? $file->crop(400, 400) : $file->resize(400); ?>
                     <img src="<?= $thumb->url(); ?>" class="img-fluid" alt="">
