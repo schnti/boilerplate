@@ -32,7 +32,7 @@
     "schnti/robots": "^0.1",
     "flokosiol/focus": "^3.0",
     "distantnative/retour-for-kirby": "^3.0.1",
-    "medienbaecker/kirby-modules": "^2.2.0"
+    "medienbaecker/kirby-modules": "^2.2.2"
   },
   "config": {
     "optimize-autoloader": true

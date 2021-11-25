@@ -11,20 +11,26 @@ tabs:
       - width: 2/3
         sections:
 
-          - headline: Veröffentlicht
-            type: pages
-            status: listed
-            info: " {{ page.moduleDisplayName}}"
+          # OnePager
+          - headline: Module
+            type: modules
+            parent: site.find('home').find("modules")
 
-          - headline: Ungelistet
+          - headline: Seiten
             type: pages
-            status: unlisted
-            info: " {{ page.moduleDisplayName}}"
 
-          - headline: Entwürfe
-            type: pages
-            status: draft
-            info: " {{ page.moduleDisplayName}}"
+          # Default Page
+          #          - headline: Veröffentlicht
+          #            type: pages
+          #            status: listed
+          #
+          #          - headline: Ungelistet
+          #            type: pages
+          #            status: unlisted
+          #
+          #          - headline: Entwürfe
+          #            type: pages
+          #            status: draft
 
   seo:
     label: SEO
