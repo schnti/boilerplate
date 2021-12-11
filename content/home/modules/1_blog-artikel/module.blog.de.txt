@@ -1,0 +1,21 @@
+Title: Blog Artikel
+
+----
+
+Titledisplay: true
+
+----
+
+Navdisplay: true
+
+----
+
+Date: SatSat.DecDec.2021202120212021
+
+----
+
+Text: 
+
+----
+
+Classes: 

@@ -1,2 +1,3 @@
 headline: Dateien
 type: files
+info: "{{ file.alt }}"

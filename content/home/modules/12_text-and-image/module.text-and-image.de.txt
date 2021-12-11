@@ -1,0 +1,25 @@
+Title: Text and Image
+
+----
+
+Picture: 
+
+----
+
+Position: left
+
+----
+
+Text: 
+
+----
+
+Titledisplay: true
+
+----
+
+Navdisplay: true
+
+----
+
+Classes: 

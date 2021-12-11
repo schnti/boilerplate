@@ -1,0 +1,21 @@
+type: fields
+fields:
+
+  titleDisplay:
+    label: Anzeigen
+    type: toggle
+    text: Titel anzeigen?
+    default: true
+
+  navDisplay:
+    label: Anzeigen
+    type: toggle
+    text: Im OnePager-Menü anzeigen
+    default: true
+
+  classes:
+    label: Design
+    type: checkboxes
+    options:
+      padding: Mehr Abstand
+      background: Hintergrundfarbe

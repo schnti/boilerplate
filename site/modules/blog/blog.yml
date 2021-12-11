@@ -7,40 +7,29 @@ status:
 options:
   extends: module/changeTemplate
 
-fields:
 
-  titleDisplay:
-    label: Anzeigen
-    type: toggle
-    text: Title anzeigen?
-    default: true
-    width: 1/2
+columns:
+  - width: 3/4
+    fields:
 
-  navDisplay:
-    label: Anzeigen
-    type: toggle
-    text: Im OnePager-Menü anzeigen
-    default: true
-    width: 1/2
+      date:
+        label: Datum
+        type: date
+        format: DD.MM.YYYY
+        default: today
+        width: 1/4
 
-  date:
-    label: Datum
-    type: date
-    format: DD.MM.YYYY
-    default: today
-    width: 1/4
+      picture:
+        label: Bild
+        type: select
+        options: images
 
-  picture:
-    label: Bild
-    type: select
-    options: images
+      text:
+        label: Text
+        type: textarea
 
-  text:
-    label: Text
-    type:  textarea
+  - width: 1/4
+    sections:
+      settings: sections/settings
 
-  classes:
-    label: CSS Classes
-    type: tags
-    lower: true
-    index: siblings
+      files: sections/files

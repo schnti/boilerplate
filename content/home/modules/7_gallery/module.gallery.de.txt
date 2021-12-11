@@ -1,0 +1,37 @@
+Title: Gallery
+
+----
+
+Titledisplay: true
+
+----
+
+Navdisplay: true
+
+----
+
+Croping: true
+
+----
+
+Grid: 1
+
+----
+
+Gridsm: 2
+
+----
+
+Gridmd: 4
+
+----
+
+Gridlg: 6
+
+----
+
+Gridxl: 8
+
+----
+
+Gridxxl: 12

@@ -38,27 +38,6 @@ columns:
 
   - width: 1/4
     sections:
-
-      meta:
-        type: fields
-        fields:
-
-          titleDisplay:
-            label: Anzeigen
-            type: toggle
-            text: Titel anzeigen?
-            default: true
-
-          navDisplay:
-            label: Anzeigen
-            type: toggle
-            text: Im OnePager-Menü anzeigen
-            default: true
-
-          classes:
-            label: CSS Classes
-            type: tags
-            lower: true
-            index: siblings
+      settings: sections/settings
 
       files: sections/files

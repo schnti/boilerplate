@@ -7,66 +7,52 @@ status:
 options:
   extends: module/changeTemplate
 
-fields:
-
-  titleDisplay:
-    label: Anzeigen
-    type: toggle
-    text: Title anzeigen?
-    default: true
-    width: 1/2
-
-  navDisplay:
-    label: Anzeigen
-    type: toggle
-    text: Im OnePager-Menü anzeigen
-    default: true
-    width: 1/2
-
-  text:
-    label: Text Left
-    type:  textarea
-    width: 1/2
-
-  text2:
-    label: Text Right
-    type:  textarea
-    width: 1/2
-
-  events:
-    label: Events
-    type: structure
-    sortBy: from
-    sortable: false
-    limit: 1000
-    width: 1/2
-    columns:
-      from:
-        width: 1/4
-      to:
-        width: 1/4
-      title:
-        width: 2/4
+columns:
+  - width: 3/4
     fields:
-      from:
-        label: Beginn
-        type: date
-        format: DD.MM.YYYY
-        required: true
+
+      text:
+        label: Text Left
+        type:  textarea
         width: 1/2
-      to:
-        label: Ende (optional)
-        type: date
-        format: DD.MM.YYYY
+
+      text2:
+        label: Text Right
+        type:  textarea
         width: 1/2
-      title:
-        label: Titel
-        type:  text
 
+      events:
+        label: Events
+        type: structure
+        sortBy: from
+        sortable: false
+        limit: 1000
+        width: 1/2
+        columns:
+          from:
+            width: 1/4
+          to:
+            width: 1/4
+          title:
+            width: 2/4
+        fields:
+          from:
+            label: Beginn
+            type: date
+            format: DD.MM.YYYY
+            required: true
+            width: 1/2
+          to:
+            label: Ende (optional)
+            type: date
+            format: DD.MM.YYYY
+            width: 1/2
+          title:
+            label: Titel
+            type:  text
 
+  - width: 1/4
+    sections:
+      settings: sections/settings
 
-  classes:
-    label: CSS Classes
-    type: tags
-    lower: true
-    index: siblings
+      files: sections/files

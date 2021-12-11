@@ -43,9 +43,16 @@
 
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav ms-auto">
+                        <!-- Page Nav -->
 						<?php foreach ($pages->listed() as $p): ?>
                             <li class="nav-item "><a class="nav-link" href="<?= $p->url(); ?>"><span><?= $p->title()->kirbytextinline(); ?></span>
 									<?php e($p->isOpen(), '<span class="sr-only">(current)</span>'); ?>  </a></li>
+						<?php endforeach; ?>
+                        <!-- Module Nav -->
+						<?php foreach ($pages->find('home')->modules() as $module): ?>
+							<?php if ($module->navDisplay()->bool()) : ?>
+                                <li class="nav-item "><a class="nav-link" href="<?= $module->url(); ?>"><span><?= $module->title()->kirbytextinline(); ?></span></a></li>
+							<?php endif; ?>
 						<?php endforeach; ?>
                     </ul>
                 </div>
