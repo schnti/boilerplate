@@ -6,7 +6,7 @@ module.exports = {
     entry: ['./src/main.js', './src/scss/styles.scss'],
     output: {
         filename: 'main.js',
-        path: path.resolve(__dirname, 'public/assets/'),
+        path: path.resolve(__dirname, 'website/assets/'),
     },
     module: {
         rules: [

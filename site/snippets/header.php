@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= $kirby->language() ? $kirby->language()->code() : 'de'; ?>">
+<html lang="<?= $kirby->languageCode() && 'de'; ?>">
 <head>
 
     <meta charset="utf-8">
@@ -21,7 +21,7 @@
     <meta name="msapplication-TileColor" content="#952641">
     <meta name="msapplication-TileImage" content="/assets/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
-    <meta name="theme-color" content="#ea1c42">
+<!--    <meta name="theme-color" content="#ea1c42">-->
 
 </head>
 <body>
@@ -36,7 +36,7 @@
                         <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt=""/>
 					<?php endif; ?>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

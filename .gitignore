@@ -13,22 +13,18 @@ Icon
 ## Assets
 /public/assets
 
+/website/site/accounts/.logins
+/website/.well-known/pki-validation
 
 ############
 ## KIRBY ###
 ############
 
-/kirby/
-/vendor/
-
-/site/plugins/
-!/site/plugins/website
-
 # Temporary files
 # ---------------
 
-/public/media/*
-!/public/media/index.html
+/website/media/*
+!/website/media/index.html
 
 /redirects/retour.sqlite
 
