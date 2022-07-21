@@ -35,7 +35,11 @@
     "medienbaecker/kirby-modules": "^2.2.2"
   },
   "config": {
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "getkirby/*": true,
+      "schnti/*": true
+    }
   },
   "extra": {
     "kirby-cms-path": false,
