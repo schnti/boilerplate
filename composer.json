@@ -22,17 +22,16 @@
     "source": "https://github.com/getkirby/starterkit"
   },
   "require": {
-    "php": ">=7.1.0",
+    "php": "^7.1|^8.0",
     "getkirby/cms": "^3.0",
-    "schnti/autoresize": "^0.1.0",
-    "schnti/photoswipe": "^0.1.0",
+    "schnti/autoresize": "^0.1",
+    "schnti/photoswipe": "^1.0",
     "schnti/cachebuster": "^1.0",
     "schnti/legal": "^0.1",
-    "schnti/sitemap": "^2.0.0",
+    "schnti/sitemap": "^2.0",
     "schnti/robots": "^0.1",
     "flokosiol/focus": "^3.0",
-    "distantnative/retour-for-kirby": "^3.0.1",
-    "medienbaecker/kirby-modules": "^2.2.2"
+    "medienbaecker/kirby-modules": "^2.2"
   },
   "config": {
     "optimize-autoloader": true,

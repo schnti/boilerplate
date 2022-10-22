@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="<?= $kirby->languageCode() && 'de'; ?>">
+
 <head>
 
     <meta charset="utf-8">
@@ -8,7 +9,7 @@
     <title><?php e(!$page->isHomePage(), $page->title()->value() . ' - '); ?><?= $site->title()->value(); ?></title>
     <meta name="description" content="<?= $site->seoDescription()->value(); ?>">
 
-	<?= css('assets/main.css'); ?>
+    <?= css('assets/main.css'); ?>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
@@ -21,44 +22,43 @@
     <meta name="msapplication-TileColor" content="#952641">
     <meta name="msapplication-TileImage" content="/assets/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
-<!--    <meta name="theme-color" content="#ea1c42">-->
+    <!--    <meta name="theme-color" content="#ea1c42">-->
 
 </head>
+
 <body>
 
-<header class="header">
-    <div class="nav-placeholder">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <a class="navbar-brand" href="<?= url(); ?>">
-					<?= $site->title(); ?>
-					<?php if ($logo = $site->image('logo.svg')): ?>
-                        <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt=""/>
-					<?php endif; ?>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <header class="header">
+        <div class="nav-placeholder">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <a class="navbar-brand" href="<?= url(); ?>">
+                        <?= $site->title(); ?>
+                        <?php if ($logo = $site->image('logo.svg')) : ?>
+                            <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt="" />
+                        <?php endif; ?>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Page Nav -->
-						<?php foreach ($pages->listed() as $p): ?>
-                            <li class="nav-item "><a class="nav-link" href="<?= $p->url(); ?>"><span><?= $p->title()->kirbytextinline(); ?></span>
-									<?php e($p->isOpen(), '<span class="sr-only">(current)</span>'); ?>  </a></li>
-						<?php endforeach; ?>
-                        <!-- Module Nav -->
-						<?php foreach ($pages->find('home')->modules() as $module): ?>
-							<?php if ($module->navDisplay()->bool()) : ?>
-                                <li class="nav-item "><a class="nav-link" href="<?= $module->url(); ?>"><span><?= $module->title()->kirbytextinline(); ?></span></a></li>
-							<?php endif; ?>
-						<?php endforeach; ?>
-                    </ul>
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <ul class="navbar-nav ms-auto">
+                            <!-- Page Nav -->
+                            <?php foreach ($pages->listed() as $p) : ?>
+                                <li class="nav-item "><a class="nav-link" href="<?= $p->url(); ?>" <?php e($p->isOpen(), 'aria-current="page"'); ?>><span><?= $p->title()->kirbytextinline(); ?></span></a></li>
+                            <?php endforeach; ?>
+                            <!-- Module Nav -->
+                            <?php foreach ($pages->find('home')->modules() as $module) : ?>
+                                <?php if ($module->navDisplay()->bool()) : ?>
+                                    <li class="nav-item "><a class="nav-link" href="<?= $module->url(); ?>"><span><?= $module->title()->kirbytextinline(); ?></span></a></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </div>
-</header>
+            </nav>
+        </div>
+    </header>
 
-<main class="main">
+    <main class="main">
