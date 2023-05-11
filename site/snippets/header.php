@@ -32,7 +32,7 @@
         <div class="nav-placeholder">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container">
-                    <a class="navbar-brand" href="<?= url(); ?>">
+                    <a class="navbar-brand" href="<?= $site->url(); ?>">
                         <?= $site->title(); ?>
                         <?php if ($logo = $site->image('logo.svg')) : ?>
                             <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt="" />

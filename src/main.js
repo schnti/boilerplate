@@ -1,10 +1,5 @@
-// require('../node_modules/jquery/src/jquery');
-
-var $ = require("jquery");
-window.jQuery = $; //  <-- This is what do the magic!!
-
-// require("@fancyapps/fancybox");
-
+// Bootstrap
+// import bootstrap from 'bootstrap'
 // import 'bootstrap/js/dist/alert';
 // import 'bootstrap/js/dist/button';
 // import 'bootstrap/js/dist/carousel';
@@ -17,24 +12,28 @@ import 'bootstrap/js/dist/collapse'; //navbar
 // import 'bootstrap/js/dist/toast';
 // import 'bootstrap/js/dist/tooltip';
 
-require('../node_modules/@fancyapps/fancybox/src/js/core');
-require('../node_modules/@fancyapps/fancybox/src/js/guestures');
-require('../node_modules/@fancyapps/fancybox/src/js/fullscreen');
+// // Photoswipe
+// import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
+// import PhotoSwipe from 'photoswipe/dist/photoswipe.esm.js';
+
+// const lightbox = new PhotoSwipeLightbox({
+//     gallery: '.photoswipe',
+//     children: 'a',
+//     showHideAnimationType: 'none',
+//     zoomAnimationDuration: false,
+//     bgOpacity: 1,
+//     loop: false,
+//     pswpModule: PhotoSwipe,
+// });
+// lightbox.init();
 
 
-// require('../node_modules/@fancyapps/fancybox/src/js/slideshow');
-// require('../node_modules/@fancyapps/fancybox/src/js/thumbs');
-// require('../node_modules/@fancyapps/fancybox/src/js/wheel');
-
-$('[data-fancybox="gallery"]').fancybox({
-    animationEffect : 'fade',
-    buttons : [
-        'zoom',
-        //'share',
-        'slideShow',
-        'fullScreen',
-        //'download',
-        // 'thumbs',
-        'close'
-    ]
-});
+// // Navbar resize on scrolling
+// window.onscroll = function () { scrollFunction() };
+// function scrollFunction() {
+//     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+//         document.getElementById("navbar").classList.add('scrolled');
+//     } else {
+//         document.getElementById("navbar").classList.remove('scrolled');
+//     }
+// }

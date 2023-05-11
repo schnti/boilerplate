@@ -14,6 +14,11 @@
 
 	'schnti.autoresize.max' => 2000,
 
+	'thumbs' => [
+		'format' => 'webp',
+		'quality' => 90,
+	],
+
 	'schnti.sitemap.xml.sites.blacklist'     => ['error', 'sitemap', 'thankyou'],
 	'schnti.sitemap.xml.sites.whitelist'     => ['home', 'impressum', 'datenschutzerklaerung'],
 	'schnti.sitemap.xml.sites.prio'          => [],

@@ -5,7 +5,7 @@
 
 # Assets Cache
 <IfModule mod_expires.c>
-<FilesMatch "\.(ico|flv|woff|woff2|ttf|jpg|jpeg|png|gif|svg|js|css)$">
+<FilesMatch "\.(ico|flv|woff|woff2|ttf|webp|jpg|jpeg|png|gif|svg|js|css)$">
     ExpiresActive on
     ExpiresDefault "access plus 1 month"
 </FilesMatch>
