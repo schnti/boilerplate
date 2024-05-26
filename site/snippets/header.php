@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title><?php e(!$page->isHomePage(), $page->title()->value() . ' - '); ?><?= $site->title()->value(); ?></title>
-    <meta name="description" content="<?= $site->seoDescription()->value(); ?>">
+    <meta name="description" content="<?= $page->seoDescription()->or($site->seoDescription()); ?>">
 
     <?= css('assets/main.css'); ?>
 
