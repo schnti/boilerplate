@@ -24,7 +24,7 @@
   "require": {
     "php": "^7.1|^8.0",
     "getkirby/cms": "^3.0",
-    "schnti/autoresize": "^0.1",
+    "medienbaecker/autoresize": "^0.1",
     "schnti/photoswipe": "^1.0",
     "schnti/cachebuster": "^1.0",
     "schnti/legal": "^0.1",

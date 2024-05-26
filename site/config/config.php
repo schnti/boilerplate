@@ -3,16 +3,20 @@
 	'panel'     => false,
 	'languages' => true,
 	'date'      => [
-		'handler' => 'strftime'
+		'handler' => 'intl'
 	],
 	'slugs'     => 'de',
+
+	'content' => [
+		'uuid' => false
+	],
 
 	'home'                              => 'home',
 
 	//	'medienbaecker.modules.default' => 'gallery',
 	'medienbaecker.modules.autopublish' => true,
 
-	'schnti.autoresize.max' => 2000,
+	'medienbaecker.autoresize.maxWidth' => 2000,
 
 	'thumbs' => [
 		'format' => 'webp',
