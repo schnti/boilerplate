@@ -4,6 +4,8 @@ services:
     image: webdevops/php-apache-dev:8.1-alpine
     restart: unless-stopped
     working_dir: /
+    # ports:
+    #   - "8081:80" # for debugging without nginx-proxy
     volumes:
       - ./:/app:rw,cached
     environment:
