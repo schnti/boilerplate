@@ -5,7 +5,7 @@ body:before {
   left: 10px;
 
   z-index: 100000;
-  width: 60px;
+  width: 65px;
   height: 45px;
   pointer-events: none;
   background-color: rgba(255, 255, 255, 0.5);
@@ -18,25 +18,27 @@ body:before {
   border-bottom-width: 6px;
   border-image: initial;
   border-radius: 3px;
-  font-size: 25px;
+  font-size: 16px;
+  line-height: 1em;
+  white-space: pre-wrap;
 
   @include media-breakpoint-only(xs) {
-    content: 'xs';
+    content: 'xs \A 0px';
   }
   @include media-breakpoint-only(sm) {
-    content: 'sm';
+    content: 'sm \A 576px';
   }
   @include media-breakpoint-only(md) {
-    content: 'md';
+    content: 'md \A 768px';
   }
   @include media-breakpoint-only(lg) {
-    content: 'lg';
+    content: 'lg \A 992px';
   }
   @include media-breakpoint-only(xl) {
-    content: 'xl';
+    content: 'xl \A 1200px';
   }
   @include media-breakpoint-only(xxl) {
-    content: 'xxl';
+    content: 'xxl \A 1400px';
   }
 
 }
