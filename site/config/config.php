@@ -16,8 +16,6 @@
 	//	'medienbaecker.modules.default' => 'gallery',
 	'medienbaecker.modules.autopublish' => true,
 
-	'medienbaecker.autoresize.maxWidth' => 2000,
-
 	'thumbs' => [
 		'format' => 'webp',
 		'quality' => 90,
