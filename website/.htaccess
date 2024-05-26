@@ -13,7 +13,7 @@
 
 # SECURITY
 Header unset Content-Security-Policy
-Header always set Content-Security-Policy "default-src 'self' data: 'unsafe-inline' https://stats.kleiner-als.de; object-src 'none'; report-uri https://csp.kleiner-als.de;"
+Header always set Content-Security-Policy "default-src 'self' data: 'unsafe-inline'; object-src 'none';"
 # Hilfe: https://report-uri.io/home/generate
 
 Header unset X-Frame-Options
