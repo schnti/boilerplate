@@ -37,12 +37,12 @@ try {
 
 ## Requirements
 
-- PHP 5.6+
+- PHP 8.0+
 - [GD extension](http://php.net/manual/en/book.image.php)
 
 ## Features
 
-- Supports reading, writing, and converting GIF, JPEG, PNG, WEBP, BMP formats.
+- Supports reading, writing, and converting GIF, JPEG, PNG, WEBP, BMP, AVIF formats.
 - Reads and writes files, data URIs, and image strings.
 - Manipulation: crop, resize, overlay/watermark, adding TTF text
 - Drawing: arc, border, dot, ellipse, line, polygon, rectangle, rounded rectangle
@@ -50,7 +50,7 @@ try {
 - Utilities: color adjustment, darken/lighten color, extract colors
 - Properties: exif data, height/width, mime type, orientation
 - Color arguments can be passed in as any CSS color (e.g. `LightBlue`), a hex color, or an RGB(A) array.
-- Support for alpha-transparency (GIF, PNG, WEBP)
+- Support for alpha-transparency (GIF, PNG, WEBP, AVIF)
 - Chainable methods
 - Uses exceptions
 - Load with Composer or manually (just one file)
@@ -141,51 +141,125 @@ Returns a SimpleImage object.
 
 ### Savers
 
-#### `toDataUri($mimeType, $quality)`
+#### `toDataUri($mimeType, $options)`
 
 Generates a data URI.
 
 - `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
-- `$quality` (int) - Image quality as a percentage (default 100). This argument has no effect on PNG images, since the format is lossless.
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
 
 Returns a string containing a data URI.
 
-#### `toDownload($filename, $mimeType, $quality)`
+#### `toDownload($filename, $mimeType, $options)`
 
 Forces the image to be downloaded to the clients machine. Must be called before any output is sent to the screen.
 
 - `$filename`* (string) - The filename (without path) to send to the client (e.g. 'image.jpeg').
 - `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
-- `$quality` (int) - Image quality as a percentage (default 100). This argument has no effect on PNG images, since the format is lossless.
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
 
 Returns a SimpleImage object.
 
-#### `toFile($file, $mimeType, $quality)`
+#### `toFile($file, $mimeType, $options)`
 
 Writes the image to a file.
 
 - `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
-- `$quality` (int) - Image quality as a percentage (default 100). This argument has no effect on PNG images, since the format is lossless.
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
 
 Returns a SimpleImage object.
 
-#### `toScreen($mimeType, $quality)`
+#### `toScreen($mimeType, $options)`
 
 Outputs the image to the screen. Must be called before any output is sent to the screen.
 
 - `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
-- `$quality` (int) - Image quality as a percentage (default 100). This argument has no effect on PNG images, since the format is lossless.
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
 
 Returns a SimpleImage object.
 
-#### `toString($mimeType, $quality)`
+#### `toString($mimeType, $options)`
 
 Generates an image string.
 
 - `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
-- `$quality` (int) - Image quality as a percentage (default 100). This argument has no effect on PNG images, since the format is lossless.
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
 
 Returns a SimpleImage object.
+
+#### `generate($mimeType, $options)`
+
+Generates an image.
+
+- `$mimeType` (string) - The image format to output as a mime type (defaults to the original mime type).
+- `$options` (array|int) - Array of options or Image quality as a percentage (default 100).
+
+Returns an array: [mimeType, data]
+
+#### Options array
+
+Instead of providing the quality as an integer as the last function parameter you can also set various options depending on the targeted Mime type using an associative array.
+
+```php
+$image->toFile($file, 'image/avif', [
+    // JPG, WEBP, AVIF (default 100)
+    'quality' => 100,
+
+    // AVIF (default -1 which is 6)
+    // range of slow and small file 0 to 10 fast but big file
+    'speed' => -1,
+]);
+```
+
+```php
+$image->toFile($file, 'image/bmp', [
+    // BMP: boolean (default true)
+    'compression' => true,
+
+    // BMP, JPG (default null, keep the same)
+    'interlace' => null,
+]);
+```
+
+```php
+$image->toFile($file, 'image/gif', [
+    // GIF, PNG (default true)
+    'alpha' => true,
+]);
+```
+
+```php
+$image->toFile($file, 'image/jpeg', [
+    // BMP, JPG (default null, keep the same)
+    'interlace' => null,
+
+    // JPG, WEBP, AVIF (default 100)
+    'quality' => 100,
+]);
+```
+
+```php
+$image->toFile($file, 'image/png', [
+    // GIF, PNG (default true)
+    'alpha' => true,
+
+    // PNG: 0-10, defaults to zlib (default 6)
+    'compression' => -1,
+
+    // PNG (default -1)
+    'filters' => -1,
+
+    // has no effect on PNG images, since the format is lossless
+    // 'quality' => 100,
+]);
+```
+
+```php
+$image->toFile($file, 'image/webp', [
+    // JPG, WEBP, AVIF (default 100)
+    'quality' => 100,
+]);
+```
 
 ### Utilities
 
@@ -230,6 +304,18 @@ Returns an array of integers: [0 => 96, 1 => 96]
 Gets the image's current width.
 
 Returns the width as an integer.
+
+#### `hasImage()`
+
+Checks if the SimpleImage object has loaded an image.
+
+Returns a boolean.
+
+#### `reset()`
+
+Destroys the image resource.
+
+Returns a SimpleImage object.
 
 ### Manipulation
 
@@ -702,12 +788,40 @@ As a best practice, always use the defined constants instead of their integers v
 - `ERR_UNSUPPORTED_FORMAT` - The image format specified is not valid.
 - `ERR_WEBP_NOT_ENABLED` - WEBP support is not enabled in your version of PHP.
 - `ERR_WRITE` - Unable to write to the file system.
+- `ERR_INVALID_FLAG` - The specified flag key does not exist.
 
 ### Useful Things To Know
 
 - Color arguments can be a CSS color name (e.g. `LightBlue`), a hex color string (e.g. `#0099dd`), or an RGB(A) array (e.g. `['red' => 255, 'green' => 0, 'blue' => 0, 'alpha' => 1]`).
 
 - When `$thickness` > 1, GD draws lines of the desired thickness from the center origin. For example, a rectangle drawn at [10, 10, 20, 20] with a thickness of 3 will actually be draw at [9, 9, 21, 21]. This is true for all shapes and is not a bug in the SimpleImage library.
+
+### Instance flags
+
+Tweak the behavior of a SimpleImage instance by setting instance flag values with the `setFlag($key, $value)` method.
+
+```php
+$image = new \claviska\SimpleImage('image.jpeg')->setFlag("foo", "bar");
+```
+
+You can also pass an associative array to the SimpleImage constructor to set instance flags.
+
+```php
+$image = new \claviska\SimpleImage('image.jpeg', ['foo' => 'bar']);
+// .. or without an $image
+$image = new \claviska\SimpleImage(flags: ['foo' => 'bar']);
+```
+
+*Note: `setFlag()` throws an `ERR_INVALID_FLAG` exception if the key does not exist (no default value).*
+
+#### `sslVerify`
+
+Setting `sslVerify` to `false` (defaults to `true`) will make all images loaded over HTTPS forgo certificate peer validation. This is especially usefull for self-signed certificates.
+
+```php
+$image = new \claviska\SimpleImage('https://localhost/image.jpeg', ['sslVerify' => false]);
+// Would normally throw an OpenSSL exception, but is ignored with the sslVerify flag set to false.
+```
 
 ## Differences from SimpleImage 2.x
 

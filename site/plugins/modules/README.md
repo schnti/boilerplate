@@ -1,18 +1,52 @@
-![Kirby Modules](https://user-images.githubusercontent.com/7975568/93752618-37d29000-fbff-11ea-8276-abd679ef92ae.png)
+# Kirby Modules
 
 This plugin makes it super easy to create modular websites with Kirby.
 
 ## Features
 
-- Modules are bundled in `site/modules` and registered as regular blueprints and templates.
-- Every module is available to create in the `modules` section without editing any other file.
-- Modules can not be accessed directly and will automatically redirect to the parent page with an anchor.
-- The container page is automatically created and hidden in the panel.
-- You can preview draft modules on their parent pages via the panel preview button.
+📦 **Module Creation**
+- 🗂️ Create modules in `site/blueprints/modules/[module].yml` and `site/snippets/modules/[module].php`
+- 📁 Alternatively: `site/modules/[module]/` folder with `[module].yml` and `[module].php` inside
+- 🔧 Use the `make:module` CLI command to generate new modules
 
-![Preview](https://user-images.githubusercontent.com/7975568/94016693-bb7eaf00-fdae-11ea-8114-f0862391ff91.gif)
+🧩 **Core Functionality**
+- 🔄 Automatically creates a hidden modules storage page for pages with a modules section
+- 🎨 Keeps `changeTemplate` options up to date
+- 🚚 Allows moving modules to other modules storage pages
+- 🧭 Sets the `navigation` option so you can use the arrows to move between modules
+- 📄 Easily render modules with `<?= $page->modules() ?>`
+- 🧰 Useful methods like `hasModules()`, `isModule()` and `moduleId()`
+- 🏷️ Optionally auto-generate unique slugs for modules
+- 👁️ View draft modules on parent pages via the panel preview button
+- 🔗 Extended `url()` method with anchor links on the parent page
+- 🚦 Accessing Module URLs directly redirects to the parent page with an anchor
 
-## What's a Module?
+⚙️ **Customization Options**
+- 🎛️ Set a default module type
+- 🚫 Exclude specific module types
+- 🚀 Option to auto-publish modules
+- 🔀 Control redirect behavior after module creation
+
+<img src="https://github.com/medienbaecker/kirby-modules/assets/7975568/1bece4a6-9ba3-4e8a-be67-7053876f71ba" alt="Preview" width="500px">
+
+## Installation
+
+Download this repository to `/site/plugins/kirby-modules`.
+
+Alternatively, you can install it with composer: `composer require medienbaecker/kirby-modules`
+
+## Quick Start
+
+1. Install the plugin
+2. Set up your first module in `site/blueprints/modules/[module].yml` and `site/snippets/modules/[module].php`
+3. Add a `modules` section to a page blueprint and create some modules
+4. Render the modules in your template with `<?= $page->modules() ?>`
+
+I created an [example repository](https://github.com/medienbaecker/modules-example) with Kirby's plainkit, this plugin and three very simple modules.
+
+## Usage
+
+### What's a Module?
 
 A module is a regular page, differentiated from other pages by being inside a modules container.
 This approach makes it possible to use pages as modules without sacrificing regular subpages.
@@ -26,17 +60,21 @@ This approach makes it possible to use pages as modules without sacrificing regu
     📄 Module B
 ```
 
-Module blueprints and templates live in a separate `site/modules` folder. This way you can easily reuse modules across projects and share them with other people.
+### Creating Modules
 
-## Instructions
+Similar to [blocks](https://getkirby.com/docs/reference/panel/fields/blocks), you can create module blueprints in `site/blueprints/modules/` and module templates in `site/snippets/modules/`. E.g. `site/blueprints/modules/text.yml` and `site/snippets/modules/text.php`.
+
+It's also possible to use a separate `site/modules/` folder. In this case, you create your module blueprint in `site/modules/text/text.yml` and the module template in `site/modules/text/text.php`.
+
+### Adding Modules to Pages
 
 Add a `modules` section to any page blueprint and a modules container will be automatically created.
- 
-You can create modules by putting them in a `site/modules` folder. For example you can add a `site/modules/text` folder with the template `text.php` and the blueprint `text.yml`.
 
-In the parent page template you can then use `<?= $page->modules() ?>` to render the modules.
+### Rendering Modules
 
-### Parent Page
+In the template you can use `<?= $page->modules() ?>` to render the modules.
+
+### Example
 
 #### `site/blueprints/pages/default.yml`
 
@@ -52,9 +90,7 @@ sections:
 <?= $page->modules() ?>
 ```
 
-### Example Module
-
-#### `site/modules/text/text.yml`
+#### `site/blueprints/modules/text.yml`
 
 ```yml
 title: Text Module
@@ -62,7 +98,7 @@ fields:
   textarea: true
 ```
 
-#### `site/modules/text/text.php`
+#### `site/snippets/modules/text.php`
 
 ```php
 <div class="<?= $module->moduleId() ?>" id="<?= $module->uid() ?>">
@@ -72,51 +108,56 @@ fields:
 ```
 
 You can access the module page object with `$module` and the parent page object with `$page`.
-The `$module->moduleId()` method returns the module ID, e.g. `module_text` or `module_gallery`.
+The `$module->moduleId()` method returns the module ID as a BEM class, e.g. `module--text` or `module--gallery`.
 
-### Skipping the delete confirmation dialog
+## Configuration
 
-Adding a page model for the parent page(s) and overwriting the `hasChildren` method skips the confirmation dialog you see when deleting a page with children. You can adjust the code depending on what you want to happen when there are modules or just a modules container:
-
-```php
-<?php
-
-use Kirby\Cms\Page;
-
-class DefaultPage extends Page {
-  public function hasChildren(): bool {
-    $children = $this->children()->filterBy('intendedTemplate', '!=', 'modules');
-    $children = $children->merge($this->grandChildren());
-    $children = $children->merge($this->children()->drafts());
-    return $children->count() > 0;
-  }
-}
-```
-
-Thanks to [@lukaskleinschmidt](https://github.com/lukaskleinschmidt) for helping me with this.
-
-## Options
+The following options are available to add to your `site/config/config.php`:
 
 ### Default Module Blueprint
 
-By default, the `text` module will be the first/default option in the "Add page" modal.
-You can overwrite it in your `site/config/config.php`:
+```php
+return [
+  'medienbaecker.modules.default' => 'gallery' // default: 'text'
+];
+```
+
+### Exclude Module Blueprints
 
 ```php
 return [
-  'medienbaecker.modules.default' => 'gallery'
+  'medienbaecker.modules.exclude' => [
+    'hero',
+    'anotherForbiddenModule'
+  ]
+];
+```
+
+### Automatically generate slug
+
+```php
+return [
+  'medienbaecker.modules.autoslug' => true
 ];
 ```
 
 ### Autopublish Modules
-
-You can turn on automatic publishing for modules in your `site/config/config.php`:
 
 ```php
 return [
   'medienbaecker.modules.autopublish' => true
 ];
 ```
+
+### Enable redirect
+
+```php
+return [
+  'medienbaecker.modules.redirect' => true
+];
+```
+
+## Customization
 
 ### Custom Module Model
 
@@ -139,11 +180,16 @@ class CustomModulePage extends ModulePage {
 }
 ```
 
-## Installation
+### Manually define available modules
 
-Download this repository to `/site/plugins/kirby-modules`.
+By default, this plugin automatically populates the `create` option of the modules section with all modules. If you want to manually define the available modules, you can do so in your blueprint:
 
-Alternatively, you can install it with composer: `composer require medienbaecker/kirby-modules`
+```yml
+modules:
+  create:
+    - module.text
+    - module.images
+```
 
 ## License
 

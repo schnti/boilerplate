@@ -38,11 +38,11 @@
                             <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt="" />
                         <?php endif; ?>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-controls="collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse" id="navbar">
+                    <div class="collapse navbar-collapse" id="collapse">
                         <ul class="navbar-nav ms-auto">
                             <!-- Page Nav -->
                             <?php foreach ($pages->listed() as $p) : ?>

@@ -12,6 +12,17 @@ import 'bootstrap/js/dist/collapse'; //navbar
 // import 'bootstrap/js/dist/toast';
 // import 'bootstrap/js/dist/tooltip';
 
+// onepager hide navbarn-nav after link klick
+const navLinks = document.querySelectorAll('.nav-item:not(.dropdown)');
+const menuToggle = document.getElementById('navbarn-nav');
+navLinks.forEach(function (l) {
+    l.addEventListener('click', function () {
+        if (menuToggle.classList.contains('show')) { // avoid flickering on desktop
+            menuToggle.classList.remove('show');
+        }
+    });
+});
+
 // // Photoswipe
 // import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
 // import PhotoSwipe from 'photoswipe/dist/photoswipe.esm.js';

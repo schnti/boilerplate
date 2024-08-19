@@ -1,236 +1,242 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => 'schnti/boilerplate',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '73bf28c902bf5a1d440861ecf4492b094f48e6e6',
+        'type' => 'project',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => 'ccd0cf51d3c90d374118f4c0853d2d591eac761f',
-    'name' => 'schnti/boilerplate',
-  ),
-  'versions' => 
-  array (
-    'claviska/simpleimage' => 
-    array (
-      'pretty_version' => '3.6.5',
-      'version' => '3.6.5.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '00f90662686696b9b7157dbb176183aabe89700f',
+    'versions' => array(
+        'christian-riesen/base32' => array(
+            'pretty_version' => '1.6.0',
+            'version' => '1.6.0.0',
+            'reference' => '2e82dab3baa008e24a505649b0d583c31d31e894',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../christian-riesen/base32',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'claviska/simpleimage' => array(
+            'pretty_version' => '4.2.0',
+            'version' => '4.2.0.0',
+            'reference' => 'dfbe53c01dae8467468ef2b817c09b786a7839d2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../claviska/simpleimage',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'composer/semver' => array(
+            'pretty_version' => '3.4.0',
+            'version' => '3.4.0.0',
+            'reference' => '35e8d0af4486141bc745f23a29cc2091eb624a32',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/./semver',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'filp/whoops' => array(
+            'pretty_version' => '2.15.4',
+            'version' => '2.15.4.0',
+            'reference' => 'a139776fa3f5985a50b509f2a02ff0f709d2a546',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../filp/whoops',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'getkirby/cms' => array(
+            'pretty_version' => '4.3.0',
+            'version' => '4.3.0.0',
+            'reference' => 'f9f00b16a22fe9dbbbddc2bfd4719ca3437cbee9',
+            'type' => 'kirby-cms',
+            'install_path' => __DIR__ . '/../getkirby/cms',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'getkirby/composer-installer' => array(
+            'pretty_version' => '1.2.1',
+            'version' => '1.2.1.0',
+            'reference' => 'c98ece30bfba45be7ce457e1102d1b169d922f3d',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../getkirby/composer-installer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'laminas/laminas-escaper' => array(
+            'pretty_version' => '2.13.0',
+            'version' => '2.13.0.0',
+            'reference' => 'af459883f4018d0f8a0c69c7a209daef3bf973ba',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laminas/laminas-escaper',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'league/color-extractor' => array(
+            'pretty_version' => '0.4.0',
+            'version' => '0.4.0.0',
+            'reference' => '21fcac6249c5ef7d00eb83e128743ee6678fe505',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../league/color-extractor',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'matthecat/colorextractor' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'medienbaecker/kirby-modules' => array(
+            'pretty_version' => '2.8.4',
+            'version' => '2.8.4.0',
+            'reference' => '9bb33dcb982e19c1a5722d6c8f88a6a05b1afcb6',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/modules',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'michelf/php-smartypants' => array(
+            'pretty_version' => '1.8.1',
+            'version' => '1.8.1.0',
+            'reference' => '47d17c90a4dfd0ccf1f87e25c65e6c8012415aad',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../michelf/php-smartypants',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.9.1',
+            'version' => '6.9.1.0',
+            'reference' => '039de174cd9c17a8389754d3b877a2ed22743e18',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/log' => array(
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
+            'reference' => 'fe5ea303b0887d5caefd3d431c3e61ad47037001',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/boilerplate' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '73bf28c902bf5a1d440861ecf4492b094f48e6e6',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/cachebuster' => array(
+            'pretty_version' => '1.0.3',
+            'version' => '1.0.3.0',
+            'reference' => 'd005bc4f7cc7ec049715003909adfc644e8b6b70',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/cachebuster',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/legal' => array(
+            'pretty_version' => '0.1.1',
+            'version' => '0.1.1.0',
+            'reference' => '0a584e271cb122a6ca2de042ce7640e6cf5e77f4',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/legal',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/photoswipe' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'reference' => '64f95e4e92f2703e9a43ab1f1f7c2818c41947ca',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/photoswipe',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/robots' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => 'd4fa2eab93aaebc63010a90bc401eed91a9ab792',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/robots',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'schnti/sitemap' => array(
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => 'd455a0620728cb6cdbb40d9ee39ed54abeb20e98',
+            'type' => 'kirby-plugin',
+            'install_path' => __DIR__ . '/../../site/plugins/sitemap',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/deprecation-contracts' => array(
+            'pretty_version' => 'v3.5.0',
+            'version' => '3.5.0.0',
+            'reference' => '0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-ctype' => array(
+            'pretty_version' => 'v1.30.0',
+            'version' => '1.30.0.0',
+            'reference' => '0424dff1c58f028c451efff2045f5d92410bd540',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-intl-idn' => array(
+            'pretty_version' => 'v1.29.0',
+            'version' => '1.29.0.0',
+            'reference' => 'a287ed7475f85bf6f61890146edbc932c0fff919',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-intl-idn',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-intl-normalizer' => array(
+            'pretty_version' => 'v1.30.0',
+            'version' => '1.30.0.0',
+            'reference' => 'a95281b0be0d9ab48050ebd988b967875cdb9fdb',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-intl-normalizer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-mbstring' => array(
+            'pretty_version' => 'v1.29.0',
+            'version' => '1.29.0.0',
+            'reference' => '9773676c8a1bb1f8d4340a62efe641cf76eda7ec',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php72' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'symfony/yaml' => array(
+            'pretty_version' => 'v6.4.8',
+            'version' => '6.4.8.0',
+            'reference' => '52903de178d542850f6f341ba92995d3d63e60c9',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/yaml',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-    'distantnative/retour-for-kirby' => 
-    array (
-      'pretty_version' => '3.0.1',
-      'version' => '3.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'a0e053d45ba545d98136287bc51541c8da8cb4ef',
-    ),
-    'filp/whoops' => 
-    array (
-      'pretty_version' => '2.14.4',
-      'version' => '2.14.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'f056f1fe935d9ed86e698905a957334029899895',
-    ),
-    'flokosiol/focus' => 
-    array (
-      'pretty_version' => '3.0.7',
-      'version' => '3.0.7.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'a906e5f7ef4da2dc23dcb4d681f11b3c7e068ee7',
-    ),
-    'getkirby/cms' => 
-    array (
-      'pretty_version' => '3.6.1.1',
-      'version' => '3.6.1.1',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '351b6348348cf78aed9a65920358caf218473102',
-    ),
-    'getkirby/composer-installer' => 
-    array (
-      'pretty_version' => '1.2.1',
-      'version' => '1.2.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'c98ece30bfba45be7ce457e1102d1b169d922f3d',
-    ),
-    'laminas/laminas-escaper' => 
-    array (
-      'pretty_version' => '2.9.0',
-      'version' => '2.9.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '891ad70986729e20ed2e86355fcf93c9dc238a5f',
-    ),
-    'league/color-extractor' => 
-    array (
-      'pretty_version' => '0.3.2',
-      'version' => '0.3.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '837086ec60f50c84c611c613963e4ad2e2aec806',
-    ),
-    'matthecat/colorextractor' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-    'medienbaecker/kirby-modules' => 
-    array (
-      'pretty_version' => '2.2.2',
-      'version' => '2.2.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'f4ea63c6f8e5907f8ebf4574510e86b00118c567',
-    ),
-    'michelf/php-smartypants' => 
-    array (
-      'pretty_version' => '1.8.1',
-      'version' => '1.8.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '47d17c90a4dfd0ccf1f87e25c65e6c8012415aad',
-    ),
-    'mustangostang/spyc' => 
-    array (
-      'pretty_version' => '0.6.3',
-      'version' => '0.6.3.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '4627c838b16550b666d15aeae1e5289dd5b77da0',
-    ),
-    'phpmailer/phpmailer' => 
-    array (
-      'pretty_version' => 'v6.5.3',
-      'version' => '6.5.3.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'baeb7cde6b60b1286912690ab0693c7789a31e71',
-    ),
-    'psr/log' => 
-    array (
-      'pretty_version' => '1.1.4',
-      'version' => '1.1.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
-    ),
-    'schnti/autoresize' => 
-    array (
-      'pretty_version' => '0.1.2',
-      'version' => '0.1.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '80aa851548d6c3f69dbfc2fd618b2ff40081618b',
-    ),
-    'schnti/boilerplate' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'ccd0cf51d3c90d374118f4c0853d2d591eac761f',
-    ),
-    'schnti/cachebuster' => 
-    array (
-      'pretty_version' => '1.0.2',
-      'version' => '1.0.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '2bf22c21d9297190cccf818a26ea5cc05a09c089',
-    ),
-    'schnti/legal' => 
-    array (
-      'pretty_version' => '0.1.1',
-      'version' => '0.1.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '0a584e271cb122a6ca2de042ce7640e6cf5e77f4',
-    ),
-    'schnti/photoswipe' => 
-    array (
-      'pretty_version' => '0.1.0',
-      'version' => '0.1.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '5a192bdf24ff58481a8a9b716fa1a08c0882e62b',
-    ),
-    'schnti/robots' => 
-    array (
-      'pretty_version' => '0.1.0',
-      'version' => '0.1.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '4bfc5a32e71e039a26ce4d97bbc66134e0ee6ad0',
-    ),
-    'schnti/sitemap' => 
-    array (
-      'pretty_version' => '2.0.0',
-      'version' => '2.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '10835ba3c697df4e0398f3c0bc9d5c6eec5be324',
-    ),
-    'symfony/polyfill-intl-idn' => 
-    array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '65bd267525e82759e7d8c4e8ceea44f398838e65',
-    ),
-    'symfony/polyfill-intl-normalizer' => 
-    array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '8590a5f561694770bdcd3f9b5c69dde6945028e8',
-    ),
-    'symfony/polyfill-mbstring' => 
-    array (
-      'pretty_version' => 'v1.23.1',
-      'version' => '1.23.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
-    ),
-    'symfony/polyfill-php72' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-  ),
 );

@@ -28,8 +28,7 @@
     "schnti/cachebuster": "^1.0",
     "schnti/legal": "^0.1",
     "schnti/sitemap": "^2.0",
-    "schnti/robots": "^0.1",
-    "flokosiol/focus": "^3.0",
+    "schnti/robots": "^1.0",
     "medienbaecker/kirby-modules": "^2.2"
   },
   "config": {
