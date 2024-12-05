@@ -22,7 +22,7 @@
     "source": "https://github.com/getkirby/starterkit"
   },
   "require": {
-    "php": "^8.0",
+    "php": "8.2",
     "getkirby/cms": "^4.0",
     "schnti/photoswipe": "^1.0",
     "schnti/cachebuster": "^1.0",
