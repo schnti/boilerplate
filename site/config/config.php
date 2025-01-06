@@ -48,19 +48,6 @@
 	//	'schnti.sitemap.json.showOnePagerModules' => false,
 	//	'schnti.sitemap.json.showTags'            => false
 
-	// En-/disable all logging (true/false)
-	'distantnative.retour.logs'              => true,
-	// Array of paths to ignore as 404s
-	'distantnative.retour.ignore'            => [],
-	// Number of months after which logs should be deleted automatically
-	'distantnative.retour.deleteAfter'       => 1,
-	// Absolut path for location of redirects config
-	// Default: site/config/redirects.yml
-	'distantnative.retour.config'            => '../redirects/redirects.yaml',
-	// Absolut path for location of database
-	// Default: site/logs/retour.sqlite
-	'distantnative.retour.database'          => '../redirects/retour.sqlite',
-
 	'schnti.legal.username'   => '',
 	'schnti.legal.password'   => '',
 	'schnti.legal.cache.data' => false,

@@ -14,7 +14,7 @@
 
 			<?php if ($image = $module->picture()->toFile()) : ?>
                 <div class="image">
-                    <img src="<?= $image->crop(800, 600)->url(); ?>" class="img-fluid" alt=""/>
+                    <img src="<?= $image->crop(800, 600)->url(); ?>" class="img-fluid" alt="<?= $image->alt(); ?>"/>
                 </div>
 			<?php endif; ?>
         </div>

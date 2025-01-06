@@ -1,32 +1,21 @@
 title: Default File
 
-columns:
-  - width: 1/3
-    sections:
+create:
+  width: 2000
 
-      content:
-        type: fields
-        fields:
-          focus:
-            label: Crop Fokus
-            type: focus
-            width: 1/2
+fields:
 
-  - width: 2/3
-    sections:
+  alt:
+    label: Alternativer Text
+    type: text
+    width: 1/3
 
-      meta:
-        type: fields
-        fields:
+  copyright:
+    label: Copyright
+    type: text
+    width: 1/3
 
-          alt:
-            label: Alternativer Text
-            type: text
-
-          copyright:
-            label: Copyright
-            type: text
-
-          link:
-            label: Link
-            type: url
+  link:
+    label: Link
+    type: url
+    width: 1/3

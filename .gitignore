@@ -26,8 +26,6 @@ Icon
 /website/media/*
 !/website/media/index.html
 
-/redirects/retour.sqlite
-
 # -------------SECURITY-------------
 # NEVER publish these files via Git!
 # -------------SECURITY-------------

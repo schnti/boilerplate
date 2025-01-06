@@ -35,7 +35,7 @@
                     <a class="navbar-brand" href="<?= $site->url(); ?>">
                         <?= $site->title(); ?>
                         <?php if ($logo = $site->image('logo.svg')) : ?>
-                            <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt="" />
+                            <img class="img-responsive" src="<?= $logo->url(); ?>" width="100" alt="<?= $logo->alt(); ?>" />
                         <?php endif; ?>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-controls="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@
                         <ul class="navbar-nav ms-auto">
                             <!-- Page Nav -->
                             <?php foreach ($pages->listed() as $p) : ?>
-                                <li class="nav-item "><a class="nav-link" href="<?= $p->url(); ?>" <?php e($p->isOpen(), 'aria-current="page"'); ?>><span><?= $p->title()->kirbytextinline(); ?></span></a></li>
+                                <li class="nav-item "><a class="nav-link <?php e($p->isOpen(), 'active'); ?>" href="<?= $p->url(); ?>" <?php e($p->isOpen(), 'aria-current="page"'); ?>><span><?= $p->title()->kirbytextinline(); ?></span></a></li>
                             <?php endforeach; ?>
                             <!-- Module Nav -->
                             <?php foreach ($pages->find('home')->modules() as $module) : ?>

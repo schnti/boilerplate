@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-pull-6 col-md-6">
 			<?php if ($image = $module->picture()->toFile()) : ?>
-                <img src="<?= $image->crop(600, 400)->url(); ?>" class="img-responsive" alt=""/>
+                <img src="<?= $image->crop(600, 400)->url(); ?>" class="img-responsive" alt="<?= $image->alt(); ?>"/>
 			<?php endif; ?>
         </div>
     </div>
