@@ -1,6 +1,6 @@
 services:
   php:
-    image: webdevops/php-apache-dev:8.1-alpine
+    image: webdevops/php-apache-dev:8.2-alpine
     restart: unless-stopped
     working_dir: /
     # ports:
