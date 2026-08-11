@@ -23,6 +23,18 @@ class Html extends Xml
 	public static array|null $entities = null;
 
 	/**
+	 * List of hosts that are allowed as source for embedded
+	 * Gists. Embedding Gists from any other host is blocked to
+	 * prevent loading untrusted scripts. Additional hosts (e.g.
+	 * for GitHub Enterprise) can be allowed via config:
+	 *
+	 * ```php
+	 * Html::$gistDomains[] = 'gist.example.com';
+	 * ```
+	 */
+	public static array $gistDomains = ['gist.github.com'];
+
+	/**
 	 * List of HTML tags that can be used inline
 	 */
 	public static array $inlineList = [
@@ -55,17 +67,13 @@ class Html extends Xml
 	 * ```php
 	 * Html::$void = ' />'
 	 * ```
-	 *
-	 * @var string
 	 */
-	public static $void = '>';
+	public static string $void = '>';
 
 	/**
 	 * List of HTML tags that are considered to be self-closing
-	 *
-	 * @var array
 	 */
-	public static $voidList = [
+	public static array $voidList = [
 		'area',
 		'base',
 		'br',
@@ -110,8 +118,11 @@ class Html extends Xml
 	 * @param array $attr Additional attributes for the tag
 	 * @return string The generated HTML
 	 */
-	public static function a(string $href, $text = null, array $attr = []): string
-	{
+	public static function a(
+		string $href,
+		$text = null,
+		array $attr = []
+	): string {
 		if (Str::startsWith($href, 'mailto:')) {
 			return static::email(substr($href, 7), $text, $attr);
 		}
@@ -157,10 +168,21 @@ class Html extends Xml
 			return null;
 		}
 
+		// cache the keys/values arrays;
+		// invalidates if $entities changes
+		static $cached = null;
+		static $html   = [];
+		static $xml    = [];
+
 		// HTML supports named entities
 		$entities = parent::entities();
-		$html = array_keys($entities);
-		$xml  = array_values($entities);
+
+		if ($cached !== $entities) {
+			$html   = array_keys($entities);
+			$xml    = array_values($entities);
+			$cached = $entities;
+		}
+
 		$attr = str_replace($xml, $html, $attr);
 
 		if ($attr) {
@@ -197,21 +219,28 @@ class Html extends Xml
 
 		if (empty($text) === true) {
 			// show only the email address without additional parameters
-			$address = Str::contains($email, '?') ? Str::before($email, '?') : $email;
+			$address = match (Str::contains($email, '?')) {
+				true  => Str::before($email, '?'),
+				false => $email
+			};
 
 			$text = [Str::encode($address)];
 		}
 
-		$email = Str::encode($email);
-		$attr  = array_merge([
+		$attr = [
 			'href' => [
-				'value'  => 'mailto:' . $email,
+				'value'  => 'mailto:' . Str::encode($email),
 				'escape' => false
-			]
-		], $attr);
+			],
+			...$attr
+		];
 
-		// add rel=noopener to target blank links to improve security
-		$attr['rel'] = static::rel($attr['rel'] ?? null, $attr['target'] ?? null);
+		// add rel=noreferrer to target=_blank links to improve security
+		// (avoids referrer leak and `window.opener` access)
+		$attr['rel'] = static::rel(
+			$attr['rel'] ?? null,
+			$attr['target'] ?? null
+		);
 
 		return static::tag('a', $text, $attr);
 	}
@@ -234,7 +263,13 @@ class Html extends Xml
 
 		if ($keepTags === true) {
 			$list = static::entities();
-			unset($list['"'], $list['<'], $list['>'], $list['&']);
+
+			unset(
+				$list['"'],
+				$list['<'],
+				$list['>'],
+				$list['&']
+			);
 
 			$search = array_keys($list);
 			$values = array_values($list);
@@ -292,13 +327,19 @@ class Html extends Xml
 		string|null $file = null,
 		array $attr = []
 	): string {
+		// only embed Gists from allowed hosts to prevent
+		// loading untrusted scripts from arbitrary URLs
+		if (in_array((new Uri($url))->host(), static::$gistDomains, true) === false) {
+			return '';
+		}
+
 		$src = $url . '.js';
 
 		if ($file !== null) {
 			$src .= '?file=' . $file;
 		}
 
-		return static::tag('script', '', array_merge($attr, ['src' => $src]));
+		return static::tag('script', '', [...$attr, 'src' => $src]);
 	}
 
 	/**
@@ -309,7 +350,7 @@ class Html extends Xml
 	 */
 	public static function iframe(string $src, array $attr = []): string
 	{
-		return static::tag('iframe', '', array_merge(['src' => $src], $attr));
+		return static::tag('iframe', '', ['src' => $src, ...$attr]);
 	}
 
 	/**
@@ -321,12 +362,11 @@ class Html extends Xml
 	 */
 	public static function img(string $src, array $attr = []): string
 	{
-		$attr = array_merge([
+		return static::tag('img', '', [
 			'src' => $src,
-			'alt' => ''
-		], $attr);
-
-		return static::tag('img', '', $attr);
+			'alt' => '',
+			...$attr
+		]);
 	}
 
 	/**
@@ -334,7 +374,7 @@ class Html extends Xml
 	 */
 	public static function isVoid(string $tag): bool
 	{
-		return in_array(strtolower($tag), static::$voidList);
+		return in_array(strtolower($tag), static::$voidList, true);
 	}
 
 	/**
@@ -350,7 +390,11 @@ class Html extends Xml
 		string|array|null $text = null,
 		array $attr = []
 	): string {
-		$attr = array_merge(['href' => $href], $attr);
+		if (Url::hasDangerousScheme($href) === true) {
+			$href = '';
+		}
+
+		$attr = ['href' => $href, ...$attr];
 
 		if (empty($text) === true) {
 			$text = $attr['href'];
@@ -360,14 +404,20 @@ class Html extends Xml
 			$text = Url::short($text);
 		}
 
-		// add rel=noopener to target blank links to improve security
-		$attr['rel'] = static::rel($attr['rel'] ?? null, $attr['target'] ?? null);
+		// add rel=noreferrer to target=_blank links to improve security
+		// (avoids referrer leak and `window.opener` access)
+		$attr['rel'] = static::rel(
+			$attr['rel'] ?? null,
+			$attr['target'] ?? null
+		);
 
 		return static::tag('a', $text, $attr);
 	}
 
 	/**
-	 * Add noreferrer to rels when target is `_blank`
+	 * Ensures a safe default `rel` for links with target `_blank`.
+	 * Adds `noreferrer` (which also implies `noopener`) when no
+	 * explicit `rel` is set. Pass an explicit `rel` to opt out.
 	 *
 	 * @param string|null $rel Current `rel` value
 	 * @param string|null $target Current `target` value
@@ -379,12 +429,8 @@ class Html extends Xml
 	): string|null {
 		$rel = trim($rel ?? '');
 
-		if ($target === '_blank') {
-			if (empty($rel) === false) {
-				return $rel;
-			}
-
-			return trim($rel . ' noreferrer', ' ');
+		if ($target === '_blank' && $rel === '') {
+			return 'noreferrer';
 		}
 
 		return $rel ?: null;
@@ -405,7 +451,7 @@ class Html extends Xml
 		string $name,
 		array|string|null $content = '',
 		array $attr = [],
-		string $indent = null,
+		string|null $indent = null,
 		int $level = 0
 	): string {
 		// treat an explicit `null` value as an empty tag
@@ -522,7 +568,7 @@ class Html extends Xml
 			isset($attr['allow']) === false &&
 			($attr['allowfullscreen'] ?? true) === true
 		) {
-			$attr['allow'] = 'fullscreen';
+			$attr['allow']           = 'fullscreen';
 			$attr['allowfullscreen'] = true;
 		}
 
@@ -592,7 +638,7 @@ class Html extends Xml
 		$host   = 'https://' . $uri->host() . '/embed';
 		$src    = null;
 
-		$isYoutubeId = function (string|null $id = null): bool {
+		$isYoutubeId = static function (string|null $id = null): bool {
 			if (empty($id) === true) {
 				return false;
 			}

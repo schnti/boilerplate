@@ -6,19 +6,18 @@ use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use DOMText;
+use Kirby\Http\Url;
 use Kirby\Toolkit\Html;
 
 /**
- * Represents an inline element
- * in an HTML document
- *
- * @since 3.5.0
+ * Represents an inline element in an HTML document
  *
  * @package   Kirby Parsley
- * @author    Bastian Allgeier <bastian@getkirby.com>,
+ * @author    Bastian Allgeier <bastian@getkirby.com>
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
+ * @since     3.5.0
  */
 class Inline
 {
@@ -64,10 +63,16 @@ class Inline
 		$defaults = $mark['defaults'] ?? [];
 
 		foreach ($mark['attrs'] ?? [] as $attr) {
-			$attrs[$attr] = match ($node->hasAttribute($attr)) {
+			$value = match ($node->hasAttribute($attr)) {
 				true    => $node->getAttribute($attr),
 				default => $defaults[$attr] ?? null
 			};
+
+			if ($attr === 'href' && Url::hasDangerousScheme($value) === true) {
+				continue;
+			}
+
+			$attrs[$attr] = $value;
 		}
 
 		return $attrs;

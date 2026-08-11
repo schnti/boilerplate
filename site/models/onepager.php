@@ -2,7 +2,7 @@
 
 use Kirby\Cms\Page;
 
-class DefaultPage extends Page {
+class OnepagerPage extends Page {
 	public function hasChildren(): bool {
 		$children = $this->children()->filterBy('intendedTemplate', '!=', 'modules');
 		$children = $children->merge($this->grandChildren());

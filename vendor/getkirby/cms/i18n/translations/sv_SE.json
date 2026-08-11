@@ -1,4 +1,5 @@
 {
+	"account": "Konto",
 	"account.changeName": "Ändra ditt namn",
 	"account.delete": "Radera ditt konto",
 	"account.delete.confirm": "Vill du verkligen radera ditt konto? Du kommer att loggas ut omedelbart. Ditt konto kan inte återställas.",
@@ -15,12 +16,14 @@
 	"changes": "Ändringar",
 	"confirm": "Spara",
 	"collapse": "Kollapsa",
-	"collapse.all": "Kollapsa alla",
+	"collapse.all": "Stäng alla",
 	"color": "Färg",
 	"coordinates": "Koordinater",
 	"copy": "Kopiera",
 	"copy.all": "Kopiera alla",
 	"copy.success": "{count} kopierad!",
+	"copy.success.multiple": "{count} kopierad!",
+	"copy.url": "Kopiera URL",
 	"create": "Skapa",
 	"custom": "Anpassad",
 
@@ -40,6 +43,9 @@
 
 	"delete": "Radera",
 	"delete.all": "Radera allt",
+
+	"deselect": "Avmarkera",
+	"deselect.all": "Avmarkera alla",
 
 	"dialog.fields.empty": "Den här dialogrutan har inga fält",
 	"dialog.files.empty": "Inga filer att välja",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Ogiltig cachetyp \"{type}\"",
 
+	"error.content.lock.delete": "Versionen är låst och kan inte raderas",
+	"error.content.lock.move": "Källversionen är låst och kan inte flyttas",
+	"error.content.lock.publish": "Denna version är redan publicerad",
+	"error.content.lock.replace": "Versionen är låst och kan inte bytas ut",
+	"error.content.lock.update": "Versionen är låst och kan inte uppdateras",
+
+	"error.entries.max.plural": "Du får inte lägga till fler än {max} poster",
+	"error.entries.max.singular": "Du får inte lägga till mer än en post",
+	"error.entries.min.plural": "Du måste lägga till minst {min} poster",
+	"error.entries.min.singular": "Du måste lägga till minst en post",
+	"error.entries.supports": "Fälttypen \"{type}\" stöds inte för fältet \"entries\"",
+	"error.entries.validation": "Det finns ett fel i fältet \"{field}\" i rad {index}",
+
 	"error.email.preset.notFound": "E-postförinställningen \"{name}\" kan inte hittas",
 
 	"error.field.converter.invalid": "Ogiltig omvandlare \"{converter}\"",
+	"error.field.link.options": "Ogiltiga alternativ: {options}",
 	"error.field.type.missing": "Fältet \"{ name }\": Fälttypen \"{ type }\" finns inte",
 
 	"error.file.changeName.empty": "Namnet får inte vara tomt",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "Mallen för filen \"{id}\" kan inte ändras till \"{template}\" (giltiga mallar: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "Du saknar behörighet för att ändra mallen för filen \"{id}\"",
 
+	"error.file.delete.multiple": "Alla filer kunde inte raderas. Prova varje återstående fil individuellt för att se det specifika felet som förhindrar radering.",
 	"error.file.duplicate": "En fil med namnet \"{filename}\" existerar redan",
 	"error.file.extension.forbidden": "Filändelsen \"{extension}\" är inte tillåten",
 	"error.file.extension.invalid": "Ogiltig filändelse: {extension}",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Filnamnet får inte vara tomt",
 	"error.file.notFound": "Filen  \"{filename}\" kan ej hittas",
 	"error.file.orientation": "Bildens orientering måste vara \"{orientation}\"",
+	"error.file.sort.permission": "Du har inte behörighet att ändra sorteringen av \"{filename}\"",
 	"error.file.type.forbidden": "Du har inte behörighet att ladda upp filer av typen {type}",
 	"error.file.type.invalid": "Ogiltig filtyp: {type}",
 	"error.file.undefined": "Filen kan inte hittas",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Formuläret kunde inte sparas",
 
 	"error.language.code": "Ange en giltig kod för språket",
+	"error.language.create.permission": "Du saknar behörighet att skapa ett nytt språk",
+	"error.language.delete.permission": "Du saknar behörighet att radera språket",
 	"error.language.duplicate": "Språket finns redan",
 	"error.language.name": "Ange ett giltigt namn för språket",
 	"error.language.notFound": "Språket hittades inte",
+	"error.language.update.permission": "Du saknar behörighet att redigera språket",
 
 	"error.layout.validation.block": "Det finns ett fel i fältet \"{field}\" i blocket {blockIndex} med blocktypen \"{fieldset}\" i layouten {layoutIndex}",
 	"error.layout.validation.settings": "Det finns ett fel i inställningarna för layout {index}",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Sidan \"{slug}\" kan inte raderas",
 	"error.page.delete.confirm": "Fyll i sidans titel för att bekräfta",
 	"error.page.delete.hasChildren": "Sidan har undersidor och kan inte raderas",
+	"error.page.delete.multiple": "Alla sidor kunde inte raderas. Prova varje återstående sida individuellt för att se det specifika felet som förhindrar radering.",
 	"error.page.delete.permission": "Du har inte behörighet att radera \"{slug}\"",
 	"error.page.draft.duplicate": "Ett utkast med URL-appendixen \"{slug}\" existerar redan",
 	"error.page.duplicate": "En sida med URL-appendixen \"{slug}\" existerar redan",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "Sidan kan inte flyttas in i sig själv",
 	"error.page.move.directory": "Sidans mapp kan inte flyttas",
 	"error.page.move.duplicate": "En undersida med URL-appendixen \"{slug}\" existerar redan",
+	"error.page.move.noSections": "Sidan \"{parent}\" kan inte vara en förälder till någon sida eftersom den saknar sidsektioner i dess blueprint",
 	"error.page.move.notFound": "Den flyttade sidan kunde inte hittas",
 	"error.page.move.permission": "Du saknar behörighet för att flytta \"{slug}\"",
 	"error.page.move.template": "Mallen \"{template}\" accepteras inte som en undersida till \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Sätt en giltig status för sidan",
 	"error.page.undefined": "Sidan kan inte hittas",
 	"error.page.update.permission": "Du har inte behörighet att uppdatera \"{slug}\"",
+
+	"error.role.notFound": "Rollen \"{name}\" hittades inte",
 
 	"error.section.files.max.plural": "Du får inte lägga till mer än {max} filer till sektionen \"{section}\"",
 	"error.section.files.max.singular": "Du får inte lägga till mer än en fil i sektionen \"{section}\"",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Titeln får inte vara tom",
 	"error.site.changeTitle.permission": "Du har inte behörighet att ändra titeln på webbplatsen",
+	"error.site.notAccessible": "Sajten är inte tillgänglig",
 	"error.site.update.permission": "Du har inte behörighet att uppdatera webbplatsen",
 
 	"error.structure.validation": "Det finns ett fel i fältet \"{field}\" i rad {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Ange ett giltigt UUID",
 	"error.validation.url": "Ange en giltig URL",
 
+	"error.version.discard.permission": "Du har inte behörighet att slänga denna version",
+	"error.version.publish.permission": "Du har inte behörighet att publicera denna version",
+	"error.version.save.permission": "Du har inte behörighet att ändra denna version",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Expandera",
-	"expand.all": "Expandera alla",
+	"expand.all": "Öppna alla",
 
 	"field.invalid": "Fältet är ogiltigt",
 	"field.required": "Fältet krävs",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Rubrik",
 	"field.blocks.heading.text": "Text",
 	"field.blocks.heading.placeholder": "Rubrik …",
+	"field.blocks.figure.back.plain": "Vanlig",
+	"field.blocks.figure.back.pattern.light": "Mönster (ljust)",
+	"field.blocks.figure.back.pattern.dark": "Mönster (mörkt)",
 	"field.blocks.image.alt": "Alternativ text",
 	"field.blocks.image.caption": "Rubrik",
 	"field.blocks.image.crop": "Beskär",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Video-URL",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Vill du verkligen radera alla poster?",
+	"field.entries.empty": "Inga poster än",
+
 	"field.files.empty": "Inga filer valda än",
+	"field.files.empty.single": "Ingen fil har valts än",
 
 	"field.layout.change": "Ändra layout",
 	"field.layout.delete": "Radera layout",
@@ -342,12 +384,17 @@
 	"field.object.empty": "Ingen information ännu",
 
 	"field.pages.empty": "Inga sidor valda än",
+	"field.pages.empty.single": "Ingen sida har valts än",
 
 	"field.structure.delete.confirm": "Vill du verkligen radera denna rad?",
 	"field.structure.delete.confirm.all": "Vill du verkligen radera alla poster?",
+	"field.structure.delete.confirm.selected": "Vill du verkligen radera de valda posterna?",
 	"field.structure.empty": "Inga poster än",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Inga användare valda än",
+	"field.users.empty.single": "Ingen användare har valts än",
 
 	"fields.empty": "Inga fält ännu",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Ändra position",
 
 	"files": "Filer",
+	"files.delete.confirm.selected": "Vill du verkligen ta bort de markerade filerna? Denna åtgärd kan inte ångras.",
 	"files.empty": "Inga filer än",
 
 	"filter": "Filter",
+
+	"form.discard": "Kassera ändringar",
+	"form.discard.confirm": "Vill du verkligen <strong>kassera dina ändringar</strong>?",
+	"form.locked": "Detta innehåll är inaktiverat för dig eftersom det för närvarande redigeras av en annan användare",
+	"form.unsaved": "De aktuella ändringarna har inte sparats än",
+	"form.preview": "Förhandsgranska ändringar",
+	"form.preview.draft": "Förhandsgranska utkast",
 
 	"hide": "Göm",
 	"hour": "Timme",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "Inga översättningar ännu",
 
 	"language.variable.delete.confirm": "Vill du verkligen ta bort variabeln för {key}?",
+	"language.variable.entries": "Värden",
+	"language.variable.entries.help": "Varje textsträng kommer att användas för sitt matchande antal, t.ex. tre strängar kommer att matcha för att få antalen <code>0</code>, <code>1</code>, <code>2 och fler</code>. Använd platshållaren <code>{count}</code> för att infoga det faktiska antalet.",
 	"language.variable.key": "Nyckel",
+	"language.variable.multiple": "Räknebar?",
+	"language.variable.multiple.text": "Använd olika översättningssträngar",
+	"language.variable.multiple.help": "Du kan använda olika värden beroende på ett antal som du skickar tillsammans med språkvariabeln, vilket gör att du kan skapa dynamiska översättningar, t.ex. singular och plural.",
 	"language.variable.notFound": "Variabeln kunde inte hittas",
 	"language.variable.value": "Värde",
 
@@ -421,16 +481,23 @@
 
 	"license": "Licens",
 	"license.activate": "Aktivera nu",
-	"license.activate.label": "Vänligen aktivera din licens",
+	"license.activate.label": "Installation",
 	"license.activate.domain": "Din licens kommer att vara aktiverad för <strong>{host}</strong>.",
-	"license.activate.local": "Du är på väg att aktivera din Kirby-licens för din lokala domän <strong>{host}</strong>. Om den här webbplatsen kommer att publiceras på en offentlig domän, aktivera den där istället. Om {host} är domänen du vill använda din licens för, fortsätt.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Vänligen bekräfta",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Aktiverad",
 	"license.buy": "Köp en licens",
 	"license.code": "Kod",
 	"license.code.help": "Du fick din licenskod efter köpet via e-post. Kopiera och klistra in det här.",
-	"license.code.label": "Ange din licenskod",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Om du tar bort licensen raderas licensfilen permanent från webbplatsen. Du kan sedan aktivera webbplatsen med en annan licensnyckel eller omregistrera samma licensnyckel om domänen förblir densamma.</p><p>För att ändra domänen som är kopplad till licensen, vänligen kontakta Kirby-teamet. <a href='https://getkirby.com/license'>Läs mer &rarr;</a></p>",
 	"license.status.active.info": "Inkluderar nya större versioner fram till {date}",
 	"license.status.active.label": "Giltig licens",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "Detta är en demoinstallation",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Förnya licensen för att uppdatera till nyare större versioner",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Är du redo att lansera din webbplats?",
 	"license.status.missing.info": "Ingen giltig licens",
 	"license.status.missing.label": "Vänligen aktivera din licens",
+	"license.status.unknown.info": "Licensstatusen är okänd",
+	"license.status.unknown.label": "Okänd",
 	"license.manage": "Hantera dina licenser",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Köpt",
 	"license.success": "Tack för att du stödjer Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Oregistrerad",
 
 	"link": "L\u00e4nk",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Osparade ändringar",
 	"lock.unsaved.empty": "Det finns inga fler osparade ändringar",
+	"lock.unsaved.files": "Osparade filer",
+	"lock.unsaved.pages": "Osparade sidor",
+	"lock.unsaved.users": "Osparade konton",
 	"lock.isLocked": "Osparade ändringar av {email}",
 	"lock.unlock": "Lås upp",
 	"lock.unlock.submit": "Lås upp och skriv över osparade ändringar av <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Sidan är endast åtkomlig via URL",
 
 	"pages": "Sidor",
+	"pages.delete.confirm.selected": "Vill du verkligen ta bort de valda sidorna? Denna åtgärd kan inte ångras.",
 	"pages.empty": "Inga sidor än",
 	"pages.status.draft": "Utkast",
 	"pages.status.listed": "Publicerade",
@@ -574,7 +651,13 @@
 	"plugin": "Tillägg",
 	"plugins": "Tillägg",
 	"prev": "Föregående",
+
 	"preview": "Förhandsgranska",
+	"preview.browser.scroll": "Synkronisera skrollning",
+
+	"publish": "Publicera",
+	"published": "Publicerade",
+
 	"remove": "Ta bort",
 	"rename": "Byt namn",
 	"renew": "Förnya",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Ingen",
 
 	"save": "Spara",
+	"saved": "Sparad",
 	"search": "Sök",
+	"searching": "Söker",
 	"search.min": "Ange {min} tecken för att söka",
 	"search.all": "Visa alla {count} resultat",
 	"search.results.none": "Inga träffar",
@@ -604,6 +689,7 @@
 
 	"security": "Säkerhet",
 	"select": "Välj",
+	"select.all": "Markera alla",
 	"server": "Server",
 	"settings": "Inställningar",
 	"show": "Visa",
@@ -617,9 +703,11 @@
 	"stats.empty": "Inga rapporter",
 	"status": "Status",
 
-	"system.info.copy": "Copy info",
-	"system.info.copied": "System info copied",
+	"system.info.copy": "Kopiera info",
+	"system.info.copied": "Systeminformation kopierad",
 	"system.issues.content": "Mappen content verkar vara exponerad",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Din installerade Kirby-version har nått slutet av sin livscykel och kommer inte att få fler säkerhetsuppdateringar",
 	"system.issues.eol.plugin": "Den installerade versionen av tillägget { plugin } har nått slutet på sin livscykel och kommer inte att få fler säkerhetsuppdateringar.",
 	"system.issues.eol.php": "Din installerade PHP-version { release } har nått slutet av sin livslängd och kommer inte att få fler säkerhetsuppdateringar",
@@ -627,7 +715,9 @@
 	"system.issues.git": "Mappen .git verkar vara exponerad",
 	"system.issues.https": "Vi rekommenderar HTTPS för alla dina webbplatser",
 	"system.issues.kirby": "Mappen kirby verkar vara exponerad",
+	"system.issues.local": "Sajten drivs lokalt med förenklade säkerhetskontroller",
 	"system.issues.site": "Mappen site verkar vara exponerad",
+	"system.issues.vue.compiler": "Mallkompilatorn för Vue är aktiverad",
 	"system.issues.vulnerability.kirby": "Din installation kan vara påverkad av följande sårbarhet ({ severity } allvarlighetsgrad): { description }",
 	"system.issues.vulnerability.plugin": "Din installation kan vara påverkad av följande sårbarhet i tillägget { plugin } ({ severity } allvarlighetsgrad): { description }",
 	"system.updateStatus": "Uppdateringsstatus",
@@ -643,6 +733,12 @@
 	"tel": "Telefon",
 	"tel.placeholder": "+46701234567",
 	"template": "Mall",
+
+	"theme": "Tema",
+	"theme.light": "Ljus på",
+	"theme.dark": "Ljus av",
+	"theme.automatic": "Matcha systemstandard",
+
 	"title": "Titel",
 	"today": "Idag",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Ändra språk",
 	"user.changeName": "Byt namn på denna användare",
 	"user.changePassword": "Ändra lösenord",
+	"user.changePassword.current": "Ditt nuvarande lösenord",
 	"user.changePassword.new": "Nytt lösenord",
 	"user.changePassword.new.confirm": "Bekräfta det nya lösenordet...",
+	"user.changePassword.own": "Ditt eget lösenord",
 	"user.changeRole": "Ändra roll",
 	"user.changeRole.select": "Välj en ny roll",
 	"user.create": "Lägg till en ny användare",
 	"user.delete": "Radera denna användare",
 	"user.delete.confirm": "Vill du verkligen radera <br><strong>{email}</strong>?",
+	"user.setPassword": "Ange lösenord",
 
 	"users": "Användare",
 
 	"version": "Version",
+	"version.changes": "Ändrad version",
+	"version.compare": "Jämför versioner",
 	"version.current": "Aktuell version",
 	"version.latest": "Senaste version",
 	"versionInformation": "Versionsinformation",
 
+	"view": "Visa",
 	"view.account": "Ditt konto",
 	"view.installation": "Installation",
 	"view.languages": "Språk",

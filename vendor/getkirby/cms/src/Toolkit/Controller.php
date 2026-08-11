@@ -3,6 +3,7 @@
 namespace Kirby\Toolkit;
 
 use Closure;
+use Exception;
 use Kirby\Filesystem\F;
 use ReflectionFunction;
 
@@ -19,16 +20,24 @@ use ReflectionFunction;
  */
 class Controller
 {
-	public function __construct(protected Closure $function)
-	{
+	/**
+	 * Cached parameter list of the wrapped closure;
+	 * @var \ReflectionParameter[]|null
+	 */
+	protected array|null $params = null;
+
+	public function __construct(
+		protected Closure $function
+	) {
 	}
 
 	public function arguments(array $data = []): array
 	{
-		$info = new ReflectionFunction($this->function);
+		$this->params ??= (new ReflectionFunction($this->function))->getParameters();
+
 		$args = [];
 
-		foreach ($info->getParameters() as $param) {
+		foreach ($this->params as $param) {
 			$name = $param->getName();
 
 			if ($param->isVariadic() === true) {
@@ -60,10 +69,22 @@ class Controller
 		return $this->function->call($bind, ...$args);
 	}
 
-	public static function load(string $file): static|null
+	public static function load(string $file, string|null $in = null): static|null
 	{
 		if (is_file($file) === false) {
 			return null;
+		}
+
+		// restrict file paths to the provided root
+		// to prevent path traversal
+		if ($in !== null) {
+			try {
+				$file = F::realpath($file, $in);
+			} catch (Exception) {
+				// don't expose whether the file exists
+				// (which would have returned `null` above)
+				return null;
+			}
 		}
 
 		$function = F::load($file);

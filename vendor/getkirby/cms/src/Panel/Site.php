@@ -5,6 +5,7 @@ namespace Kirby\Panel;
 use Kirby\Cms\File as CmsFile;
 use Kirby\Cms\ModelWithContent;
 use Kirby\Filesystem\Asset;
+use Kirby\Panel\Ui\Buttons\ViewButtons;
 
 /**
  * Provides information about the site model for the Panel
@@ -24,22 +25,35 @@ class Site extends Model
 	protected ModelWithContent $model;
 
 	/**
+	 * Returns header buttons which should be displayed
+	 * on the site view
+	 */
+	public function buttons(): array
+	{
+		return ViewButtons::view($this)->defaults(
+			'open',
+			'preview',
+			'languages'
+		)->render();
+	}
+
+	/**
 	 * Returns the setup for a dropdown option
 	 * which is used in the changes dropdown
 	 * for example.
+	 *
+	 * @deprecated 5.1.4
 	 */
 	public function dropdownOption(): array
 	{
 		return [
 			'icon' => 'home',
-			'text' => $this->model->title()->value(),
+			'text' => $this->model->toSafeString('{{ site.title }}'),
 		] + parent::dropdownOption();
 	}
 
 	/**
 	 * Returns the image file object based on provided query
-	 *
-	 * @internal
 	 */
 	protected function imageSource(
 		string|null $query = null
@@ -57,29 +71,40 @@ class Site extends Model
 	}
 
 	/**
-	 * Returns the data array for the
-	 * view's component props
-	 *
-	 * @internal
+	 * Returns the data array for the view's component props
 	 */
 	public function props(): array
 	{
-		return array_merge(parent::props(), [
-			'blueprint' => 'site',
-			'model' => [
-				'content'    => $this->content(),
-				'link'       => $this->url(true),
-				'previewUrl' => $this->model->previewUrl(),
-				'title'      => $this->model->title()->toString(),
-			]
-		]);
+		$props = parent::props();
+
+		// Additional model information
+		// @deprecated Use the top-level props instead
+		$model = [
+			'link'       => $props['link'],
+			'previewUrl' => $this->model->previewUrl(),
+			'title'      => $this->model->title()->toString(),
+			'uuid'       => $props['uuid'],
+		];
+
+		return [
+			...$props,
+			'blueprint'   => 'site',
+			'id'          => '/',
+			'model'       => $model,
+			'title'       => $model['title'],
+			'permissions' => [
+				...$props['permissions'],
+				// the home page check is kept for backward compatibility
+				// @todo Remove the home page check in 6.0.0
+				'preview' =>
+					$this->model->permissions()->can('preview') === true &&
+					$this->model->homePage()?->permissions()->can('preview') === true,
+			],
+		];
 	}
 
 	/**
-	 * Returns the data array for
-	 * this model's Panel view
-	 *
-	 * @internal
+	 * Returns the data array for this model's Panel view
 	 */
 	public function view(): array
 	{

@@ -1,6 +1,8 @@
 <?php
 
-use Kirby\Cms\Template;
+use Kirby\Cms\App as Kirby;
+use Kirby\Cms\Pages;
+use Kirby\Toolkit\Str;
 
 include __DIR__ . '/lib/models.php';
 include __DIR__ . '/lib/functions.php';
@@ -10,24 +12,38 @@ $moduleRegistry = createModuleRegistry();
 
 Kirby::plugin('medienbaecker/modules', [
   'templates' => $moduleRegistry['templates'],
+  'snippets' => $moduleRegistry['snippets'],
   'pageModels' => $moduleRegistry['pageModels'],
   'blueprints' => $moduleRegistry['blueprints'],
   'sections' => [
     'modules' => include __DIR__ . '/lib/sections/modules.php'
   ],
-  'fields' => [
-    'modules_redirect' => include __DIR__ . '/lib/fields/redirect.php'
+  'hooks' => [
+    'panel.route:before' => function ($route, $path, $method) {
+      if ($path && preg_match('#^pages/(.+)\+modules$#', $path, $matches)) {
+        $parentId = str_replace('+', '/', $matches[1]);
+        if ($parent = kirby()->page($parentId)) {
+          \Kirby\Panel\Panel::go($parent->panel()->url());
+        }
+      }
+      return $route;
+    },
+    'page.move:before' => function ($page, $parent) {
+      if (!$page->isModule()) return;
+
+      $grandparent = $parent->parent();
+      $section = $grandparent?->blueprint()->section('modules');
+      $allowed = $section?->templates() ?? [];
+
+      if ($allowed && !in_array($page->intendedTemplate()->name(), $allowed)) {
+        throw new \Kirby\Exception\PermissionException(t('modules.move.notallowed'));
+      }
+    }
   ],
   'pageMethods' => [
     'renderModules' => function (array $params = []) {
       foreach ($this->modules() as $module) {
-        $moduleTemplate = new Template($module->intendedTemplate());
-        echo $moduleTemplate->render([
-          'page' => $this,
-          'module' => $module,
-          'site' => $this->site(),
-          ...$params
-        ]);
+        echo $module->renderModule($params);
       }
     },
     'hasModules' => function () {
@@ -38,10 +54,10 @@ Kirby::plugin('medienbaecker/modules', [
     },
     'modules' => function () {
       $modules = new ModulesCollection;
-      if ($rawModules = $this->find('modules')) {
-        foreach ($rawModules->childrenAndDrafts() as $module) {
-          if (!$module->isListed() && !$module->isDraft()) continue;
-          if ($module->isDraft && !$module->isVerified(get('token'))) continue;
+      if ($modulesContainer = $this->find('modules')) {
+        foreach ($modulesContainer->childrenAndDrafts() as $module) {
+          if ($module->isUnlisted()) continue;
+          if ($module->isDraft() && $module->renderVersionFromRequest() === null) continue;
           $modules->append($module);
         }
       }
@@ -50,10 +66,10 @@ Kirby::plugin('medienbaecker/modules', [
     'isModule' => function () {
       return Str::startsWith($this->intendedTemplate(), 'module.');
     },
-    'uniqueModuleSlug' => function() {
+    'uniqueModuleSlug' => function () {
       $slug = $this->title()->slug();
       $siblings = $this->parent()?->parent()?->childrenAndDrafts() ?? new Pages();
-      
+
       // if the slug is already unique, return it
       if ($siblings->filterBy('slug', $slug)->count() === 0) {
         return $slug;
@@ -84,8 +100,8 @@ Kirby::plugin('medienbaecker/modules', [
         $kirby = $cli->kirby();
         $name  = $cli->argOrPrompt('name', 'Enter a name for the module:');
 
-        $blueprintFile  = $kirby->root('site') . '/modules/' . $name . '/'. $name . '.yml';
-        $snippetFile = $kirby->root('site') . '/modules/' . $name . '/'. $name . '.php';
+        $blueprintFile  = $kirby->root('blueprints') . '/modules/' . $name . '.yml';
+        $snippetFile = $kirby->root('snippets') . '/modules/' . $name . '.php';
 
         $cli->make($blueprintFile, 'title: {{ title }}', [
           'title' => ucfirst($name)

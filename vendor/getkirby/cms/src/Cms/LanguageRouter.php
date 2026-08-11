@@ -7,6 +7,7 @@ use Kirby\Exception\NotFoundException;
 use Kirby\Http\Router;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;
+use Kirby\Uuid\Uuid;
 
 /**
  * The language router is used internally
@@ -59,7 +60,7 @@ class LanguageRouter
 			$languages = Str::split(strtolower($route['language']), '|');
 
 			// validate the language
-			return in_array($language->code(), $languages) === true;
+			return in_array($language->code(), $languages, true) === true;
 		}));
 
 		// add the page-scope if necessary
@@ -79,10 +80,33 @@ class LanguageRouter
 					$routes[$index]['pattern'] = $patterns;
 					$routes[$index]['page']    = $page;
 				} else {
-					throw new NotFoundException('The page "' . $pageId . '" does not exist');
+					throw new NotFoundException(
+						message: 'The page "' . $pageId . '" does not exist'
+					);
 				}
 			}
 		}
+
+		// Language-specific UUID URLs
+		$routes[] = [
+			'pattern' => '@/(page|file)/(:all)',
+			'method'  => 'ALL',
+			'env'     => 'site',
+			'action'  => function (string $languageCode, string $type, string $id) use ($kirby, $language) {
+				// try to resolve to model, but only from UUID cache;
+				// this ensures that only existing UUIDs can be queried
+				// and attackers can't force Kirby to go through the whole
+				// site index with a non-existing UUID
+				if ($model = Uuid::for($type . '://' . $id)?->model(true)) {
+					return $kirby
+						->response()
+						->redirect($model->url($language->code()));
+				}
+
+				// render the error page
+				return false;
+			}
+		];
 
 		return $routes;
 	}

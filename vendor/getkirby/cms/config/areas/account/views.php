@@ -9,7 +9,7 @@ return [
 		'pattern' => 'account',
 		'action'  => fn () => [
 			'component' => 'k-account-view',
-			'props'     => App::instance()->user()->panel()->props(),
+			'props'     => Find::user()->panel()->props(),
 		],
 	],
 	'account.file' => [
@@ -26,6 +26,9 @@ return [
 				[
 					'label' => I18n::translate('view.resetPassword')
 				]
+			],
+			'props' => [
+				'requirePassword' => App::instance()->session()->get('kirby.resetPassword') !== true
 			]
 		]
 	]

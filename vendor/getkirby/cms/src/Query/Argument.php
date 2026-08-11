@@ -3,6 +3,7 @@
 namespace Kirby\Query;
 
 use Closure;
+use Kirby\Toolkit\BlockCollectionAccess;
 use Kirby\Toolkit\Str;
 
 /**
@@ -14,6 +15,8 @@ use Kirby\Toolkit\Str;
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
+ *
+ * @todo Deprecate in v6
  */
 class Argument
 {
@@ -70,7 +73,7 @@ class Argument
 
 		// numeric
 		if (is_numeric($argument) === true) {
-			if (strpos($argument, '.') === false) {
+			if (str_contains($argument, '.') === false) {
 				return new static((int)$argument);
 			}
 
@@ -98,6 +101,7 @@ class Argument
 	 * Return the argument value and
 	 * resolves nested objects to scaler types
 	 */
+	#[BlockCollectionAccess]
 	public function resolve(array|object $data = []): mixed
 	{
 		// don't resolve the Closure immediately, instead

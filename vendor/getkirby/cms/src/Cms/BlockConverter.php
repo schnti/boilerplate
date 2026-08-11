@@ -25,8 +25,10 @@ class BlockConverter
 			return $params;
 		}
 
+		$ignore = array_flip(['field', 'options', 'parent', 'siblings', 'params', '_key', '_uid']);
+		$params['content'] = array_diff_key($params, $ignore);
 		$params['type']    = $params['_key'];
-		$params['content'] = $params;
+
 		unset($params['_uid']);
 
 		return $params;
@@ -51,7 +53,7 @@ class BlockConverter
 
 	public static function editorBlocks(array $blocks = []): array
 	{
-		if (empty($blocks) === true) {
+		if ($blocks === []) {
 			return $blocks;
 		}
 
@@ -63,7 +65,7 @@ class BlockConverter
 		$listStart = null;
 
 		foreach ($blocks as $index => $block) {
-			if (in_array($block['type'], ['ul', 'ol']) === true) {
+			if (in_array($block['type'], ['ul', 'ol'], true) === true) {
 				$prev = $blocks[$index - 1] ?? null;
 				$next = $blocks[$index + 1] ?? null;
 
@@ -132,12 +134,10 @@ class BlockConverter
 	public static function editorCustom(array $params): array
 	{
 		return [
-			'content' => array_merge(
-				$params['attrs'] ?? [],
-				[
-					'body' => $params['content'] ?? null
-				]
-			),
+			'content' => [
+				...$params['attrs'] ?? [],
+				'body' => $params['content'] ?? null
+			],
 			'type' => $params['type'] ?? 'unknown'
 		];
 	}

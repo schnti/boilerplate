@@ -27,7 +27,9 @@ class SiteBlueprint extends Blueprint
 			$this->props['options'] ?? true,
 			// defaults
 			[
+				'access'      => null,
 				'changeTitle' => null,
+				'preview'     => null,
 				'update'      => null,
 			],
 			// aliases
@@ -51,6 +53,6 @@ class SiteBlueprint extends Blueprint
 			return $this->model->toString($preview);
 		}
 
-		return $preview;
+		return $this->model->permissions()->can('preview', true);
 	}
 }

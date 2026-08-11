@@ -1,4 +1,5 @@
 {
+	"account": "Account",
 	"account.changeName": "Ændre dit navn",
 	"account.delete": "Slet din konto",
 	"account.delete.confirm": "Ønsker du virkelig at slette din konto? Du vil blive logget ud med det samme. Din konto kan ikke gendannes.",
@@ -15,12 +16,14 @@
 	"changes": "Changes",
 	"confirm": "Gem",
 	"collapse": "Fold sammen",
-	"collapse.all": "Fold alle sammen",
+	"collapse.all": "Collapse all",
 	"color": "Color",
 	"coordinates": "Coordinates",
 	"copy": "Kopier",
 	"copy.all": "Kopier alle",
 	"copy.success": "{count} copied!",
+	"copy.success.multiple": "{count} copied!",
+	"copy.url": "Copy URL",
 	"create": "Opret",
 	"custom": "Custom",
 
@@ -40,6 +43,9 @@
 
 	"delete": "Slet",
 	"delete.all": "Slet alle",
+
+	"deselect": "Deselect",
+	"deselect.all": "Deselect all",
 
 	"dialog.fields.empty": "This dialog has no fields",
 	"dialog.files.empty": "Ingen filer kan vælges",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Invalid cache type \"{type}\"",
 
+	"error.content.lock.delete": "The version is locked and cannot be deleted",
+	"error.content.lock.move": "The source version is locked and cannot be moved",
+	"error.content.lock.publish": "This version is already published",
+	"error.content.lock.replace": "The version is locked and cannot be replaced",
+	"error.content.lock.update": "The version is locked and cannot be updated",
+
+	"error.entries.max.plural": "You must not add more than {max} entries",
+	"error.entries.max.singular": "You must not add more than one entry",
+	"error.entries.min.plural": "You must add at least {min} entries",
+	"error.entries.min.singular": "You must add at least one entry",
+	"error.entries.supports": "\"{type}\" field type is not supported for the entries field",
+	"error.entries.validation": "There's an error on the \"{field}\" field in row {index}",
+
 	"error.email.preset.notFound": "Email preset \"{name}\" findes ikke",
 
 	"error.field.converter.invalid": "Ugyldig converter \"{converter}\"",
+	"error.field.link.options": "Invalid options: {options}",
 	"error.field.type.missing": "Field \"{ name }\": The field type \"{ type }\" does not exist",
 
 	"error.file.changeName.empty": "Navn kan ikke efterlades tomt",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "The template for the file \"{id}\" cannot be changed to \"{template}\" (valid: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "You are not allowed to change the template for the file \"{id}\"",
 
+	"error.file.delete.multiple": "Not all files could be deleted. Try each remaining file individually to see the specific error that prevents deletion.",
 	"error.file.duplicate": "En fil med navnet \"{filename}\" eksisterer allerede",
 	"error.file.extension.forbidden": "Uacceptabel fil-endelse",
 	"error.file.extension.invalid": "Ugyldig endelse: {extension}",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Filnavn må ikke være tomt",
 	"error.file.notFound": "Filen kunne ikke findes",
 	"error.file.orientation": "Formatet på billedet skal være \"{orientation}\"",
+	"error.file.sort.permission": "You are not allowed to change the sorting of \"{filename}\"",
 	"error.file.type.forbidden": "Du har ikke tilladelse til at uploade {type} filer",
 	"error.file.type.invalid": "Ugyldig filtype: {type}",
 	"error.file.undefined": "Filen kunne ikke findes",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Formularen kunne ikke gemmes",
 
 	"error.language.code": "Indtast venligst en gyldig kode for sproget",
+	"error.language.create.permission": "You are not allowed to create a language",
+	"error.language.delete.permission": "You are not allowed to delete the language",
 	"error.language.duplicate": "Sproget eksisterer allerede",
 	"error.language.name": "Indtast venligst et gyldigt navn for sproget",
 	"error.language.notFound": "Sproget fandtes ikke",
+	"error.language.update.permission": "You are not allowed to update the language",
 
 	"error.layout.validation.block": "There's an error on the \"{field}\" field in block {blockIndex} using the \"{fieldset}\" block type in layout {layoutIndex}",
 	"error.layout.validation.settings": "Der er fejl i layout {index} indstillinger",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Siden \"{slug}\" kan ikke slettes",
 	"error.page.delete.confirm": "Indtast venligst sidens titel for at bekræfte",
 	"error.page.delete.hasChildren": "Siden har unsersider og kan derfor ikke slettes",
+	"error.page.delete.multiple": "Not all pages could be deleted. Try each remaining page individually to see the specific error that prevents deletion.",
 	"error.page.delete.permission": "Du har ikke tilladelse til at slette \"{slug}\"",
 	"error.page.draft.duplicate": "En sidekladde med URL-endelsen \"{slug}\" eksisterer allerede",
 	"error.page.duplicate": "En side med URL-endelsen \"{slug}\" eksisterer allerede",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "The page cannot be moved into itself",
 	"error.page.move.directory": "The page directory cannot be moved",
 	"error.page.move.duplicate": "A sub page with the URL appendix \"{slug}\" already exists",
+	"error.page.move.noSections": "The page \"{parent}\" cannot be a parent of any page because it lacks any pages sections in its blueprint",
 	"error.page.move.notFound": "The moved page could not be found",
 	"error.page.move.permission": "You are not allowed to move \"{slug}\"",
 	"error.page.move.template": "The \"{template}\" template is not accepted as a subpage of \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Sæt venligst en gyldig status for siden",
 	"error.page.undefined": "Siden kunne ikke findes",
 	"error.page.update.permission": "Du har ikke tilladelse til at opdatere \"{slug}\"",
+
+	"error.role.notFound": "The role \"{name}\" cannot be found",
 
 	"error.section.files.max.plural": "Du kan ikk tilføje mere end {max} filer til \"{section}\" sektionen",
 	"error.section.files.max.singular": "Du kan ikke tilføje mere end een fil til \"{section}\" sektionen",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Titlen kan ikke være tom",
 	"error.site.changeTitle.permission": "Du har ikke tilladelse til at ændre titlen på sitet",
+	"error.site.notAccessible": "The site is not accessible",
 	"error.site.update.permission": "Du har ikke tilladelse til at opdatere sitet",
 
 	"error.structure.validation": "There's an error on the \"{field}\" field in row {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Please enter a valid UUID",
 	"error.validation.url": "Indtast venligst en gyldig URL",
 
+	"error.version.discard.permission": "You are not allowed to discard this version",
+	"error.version.publish.permission": "You are not allowed to publish this version",
+	"error.version.save.permission": "You are not allowed to change this version",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Fold ud",
-	"expand.all": "Fold alle ud",
+	"expand.all": "Expand all",
 
 	"field.invalid": "The field is invalid",
 	"field.required": "Feltet er påkrævet",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Overskrift",
 	"field.blocks.heading.text": "Tekst",
 	"field.blocks.heading.placeholder": "Overskrift …",
+	"field.blocks.figure.back.plain": "Plain",
+	"field.blocks.figure.back.pattern.light": "Pattern (light)",
+	"field.blocks.figure.back.pattern.dark": "Pattern (dark)",
 	"field.blocks.image.alt": "Alternativ tekst",
 	"field.blocks.image.caption": "Billedtekst",
 	"field.blocks.image.crop": "Beskær",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Video-URL",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Do you really want to delete all entries?",
+	"field.entries.empty": "Ingen indtastninger endnu.",
+
 	"field.files.empty": "Ingen filer valgt endnu",
+	"field.files.empty.single": "No file selected yet",
 
 	"field.layout.change": "Change layout",
 	"field.layout.delete": "Slet layout",
@@ -342,12 +384,17 @@
 	"field.object.empty": "No information yet",
 
 	"field.pages.empty": "Ingen sider valgt endnu",
+	"field.pages.empty.single": "No page selected yet",
 
 	"field.structure.delete.confirm": "\u00d8nsker du virkelig at slette denne indtastning?",
 	"field.structure.delete.confirm.all": "Do you really want to delete all entries?",
+	"field.structure.delete.confirm.selected": "Do you really want to delete the selected entries?",
 	"field.structure.empty": "Ingen indtastninger endnu.",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Ingen brugere er valgt",
+	"field.users.empty.single": "No user selected yet",
 
 	"fields.empty": "No fields yet",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Skift position",
 
 	"files": "Filer",
+	"files.delete.confirm.selected": "Do you really want to delete the selected files? This action cannot be undone.",
 	"files.empty": "Ingen filer endnu",
 
 	"filter": "Filter",
+
+	"form.discard": "Discard changes",
+	"form.discard.confirm": "Do you really want to <strong>discard all your changes</strong>?",
+	"form.locked": "This content is disabled for you as it is currently edited by another user",
+	"form.unsaved": "The current changes have not yet been saved",
+	"form.preview": "Preview changes",
+	"form.preview.draft": "Preview draft",
 
 	"hide": "Skjul",
 	"hour": "Time",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "No translations yet",
 
 	"language.variable.delete.confirm": "Do you really want to delete the variable for {key}?",
+	"language.variable.entries": "Values",
+	"language.variable.entries.help": "Each string will be used for its matching count, e.g. three strings will match in order to counts <code>0</code>, <code>1</code>, <code>2 and more</code>. Use the <code>{count}</code> placeholder to insert the actual count.",
 	"language.variable.key": "Key",
+	"language.variable.multiple": "Countable?",
+	"language.variable.multiple.text": "Use different translation strings",
+	"language.variable.multiple.help": "You can use different values depending on a count you pass along with the language variable, allowing you to create dynamic translations, e.g. singular and plural.",
 	"language.variable.notFound": "The variable could not be found",
 	"language.variable.value": "Value",
 
@@ -421,16 +481,23 @@
 
 	"license": "Kirby licens",
 	"license.activate": "Activate it now",
-	"license.activate.label": "Please activate your license",
+	"license.activate.label": "Installation",
 	"license.activate.domain": "Your license will be activated for <strong>{host}</strong>.",
-	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain, please activate it there instead. If {host} is the domain you want to use your license for, please continue.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Bekræft venligst",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Activated",
 	"license.buy": "Køb en licens",
 	"license.code": "Kode",
 	"license.code.help": "You received your license code after the purchase via email. Please copy and paste it here.",
-	"license.code.label": "Indtast venligst din licenskode",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Removing the license will irreversibly delete the license file from this site. You can then activate this site with a different license key or re-register the same license key if the domain remains the same.</p><p>To change the domain associated with the license, please contact the Kirby team. <a href='https://getkirby.com/license'>Read more &rarr;</a></p>",
 	"license.status.active.info": "Includes new major versions until {date}",
 	"license.status.active.label": "Valid license",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "This is a demo installation",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Renew license to update to new major versions",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Ready to launch your site?",
 	"license.status.missing.info": "No valid license",
 	"license.status.missing.label": "Please activate your license",
+	"license.status.unknown.info": "The license status is unknown",
+	"license.status.unknown.label": "Unknown",
 	"license.manage": "Manage your licenses",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Purchased",
 	"license.success": "Tak for din støtte af Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Unregistered",
 
 	"link": "Link",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Ugemte ændringer",
 	"lock.unsaved.empty": "Der er ikke flere ændringer der ikke er gamt",
+	"lock.unsaved.files": "Unsaved files",
+	"lock.unsaved.pages": "Unsaved pages",
+	"lock.unsaved.users": "Unsaved accounts",
 	"lock.isLocked": "Unsaved changes by {email}",
 	"lock.unlock": "Lås op",
 	"lock.unlock.submit": "Unlock and overwrite unsaved changes by <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Siden er kun tilgængelig via URL",
 
 	"pages": "Sider",
+	"pages.delete.confirm.selected": "Do you really want to delete the selected pages? This action cannot be undone.",
 	"pages.empty": "Ingen sider endnu",
 	"pages.status.draft": "Kladder",
 	"pages.status.listed": "Udgivede",
@@ -574,7 +651,13 @@
 	"plugin": "Plugin",
 	"plugins": "Plugins",
 	"prev": "Forrige",
+
 	"preview": "Forhåndsvisning",
+	"preview.browser.scroll": "Sync scroll",
+
+	"publish": "Publish",
+	"published": "Udgivede",
+
 	"remove": "Fjern",
 	"rename": "Omdøb",
 	"renew": "Renew",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Ingen",
 
 	"save": "Gem",
+	"saved": "Saved",
 	"search": "Søg",
+	"searching": "Searching",
 	"search.min": "Indtast {min} tegn for at søge",
 	"search.all": "Show all {count} results",
 	"search.results.none": "Ingen resultater",
@@ -604,6 +689,7 @@
 
 	"security": "Security",
 	"select": "Vælg",
+	"select.all": "Select all",
 	"server": "Server",
 	"settings": "Indstillinger",
 	"show": "Vis",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Copy info",
 	"system.info.copied": "System info copied",
 	"system.issues.content": "The content folder seems to be exposed",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Your installed Kirby version has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.plugin": "Your installed version of the { plugin } plugin is has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.php": "Your installed PHP release { release } has reached end-of-life and will not receive further security updates",
@@ -627,7 +715,9 @@
 	"system.issues.git": "The .git folder seems to be exposed",
 	"system.issues.https": "We recommend HTTPS for all your sites",
 	"system.issues.kirby": "The kirby folder seems to be exposed",
+	"system.issues.local": "The site is running locally with relaxed security checks",
 	"system.issues.site": "The site folder seems to be exposed",
+	"system.issues.vue.compiler": "The Vue template compiler is enabled",
 	"system.issues.vulnerability.kirby": "Your installation might be affected by the following vulnerability ({ severity } severity): { description }",
 	"system.issues.vulnerability.plugin": "Your installation might be affected by the following vulnerability in the { plugin } plugin ({ severity } severity): { description }",
 	"system.updateStatus": "Update status",
@@ -643,6 +733,12 @@
 	"tel": "Phone",
 	"tel.placeholder": "+49123456789",
 	"template": "Skabelon",
+
+	"theme": "Theme",
+	"theme.light": "Lights on",
+	"theme.dark": "Lights off",
+	"theme.automatic": "Match system default",
+
 	"title": "Titel",
 	"today": "Idag",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Skift sprog",
 	"user.changeName": "Omdøb denne bruger",
 	"user.changePassword": "Skift adgangskode",
+	"user.changePassword.current": "Your current password",
 	"user.changePassword.new": "Ny adgangskode",
 	"user.changePassword.new.confirm": "Bekræft den nye adgangskode...",
+	"user.changePassword.own": "Your own password",
 	"user.changeRole": "Skift rolle",
 	"user.changeRole.select": "Vælg en ny rolle",
 	"user.create": "Tilføj en ny bruger",
 	"user.delete": "Slet denne bruger",
 	"user.delete.confirm": "\u00d8nsker du virkelig at slette denne bruger?",
+	"user.setPassword": "Set password",
 
 	"users": "Brugere",
 
 	"version": "Kirby version",
+	"version.changes": "Changed version",
+	"version.compare": "Compare versions",
 	"version.current": "Current version",
 	"version.latest": "Latest version",
 	"versionInformation": "Version information",
 
+	"view": "View",
 	"view.account": "Din konto",
 	"view.installation": "Installation",
 	"view.languages": "Sprog",

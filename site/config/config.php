@@ -7,9 +7,20 @@
 	],
 	'slugs'     => 'de',
 
+	// Salt und Cookie-Key: pro Projekt einmalig eigene Werte erzeugen und
+	// die beiden Zeilen einkommentieren — NIEMALS aus der Vorlage
+	// übernehmen, sonst laufen alle Kundenseiten auf demselben Schlüssel.
+	//
+	//   php -r 'echo bin2hex(random_bytes(32)), PHP_EOL;'
+	//
+	// Solange sie fehlen, weist Kirby im Panel unter System darauf hin.
+	// Diese Warnung ist die Erinnerung und wird bewusst nicht stillgelegt.
 	'content' => [
-		'uuid' => false
+		'uuid' => false,
+		//		'salt' => '',
 	],
+
+	//	'cookie' => ['key' => ''],
 
 	'home'                              => 'home',
 
@@ -51,6 +62,11 @@
 	'schnti.legal.username'   => '',
 	'schnti.legal.password'   => '',
 	'schnti.legal.cache.data' => false,
+
+	// Fallback für Seiten ohne eigene Auswahl. Ab schnti/legal 1.5 wird die
+	// Klauselauswahl im Panel gepflegt (Legal-Seite -> Abschnitt "Klauseln");
+	// sobald dort etwas gewählt ist, hat das Vorrang vor dieser Liste.
+	// Die auskommentierten Zeilen bleiben als Nachschlagewerk stehen.
 	'schnti.legal.data'       => [
 		"datenschutz/datenschutz-auf-einen-blick/allgemeine-hinweise",
 		"datenschutz/datenschutz-auf-einen-blick/datenerfassung-auf-unserer-website",
@@ -87,6 +103,7 @@
 		//							"datenschutz/soziale-medien/xing-plugin",
 		//							"datenschutz/soziale-medien/pinterest-plugin",
 		//							"datenschutz/analyse-tools-und-werbung/matomo",
+		"datenschutz/analyse-tools-und-werbung/umami",
 		//							"datenschutz/newsletter/newsletterdaten",
 		//							"datenschutz/plugins-und-tools/youtube",
 		//							"datenschutz/plugins-und-tools/youtube-mit-erweitertem-datenschutz",
@@ -106,8 +123,18 @@
 		//							"datenschutz/zahlungsanbieter/sofortuberweisung",
 		//							"datenschutz/zahlungsanbieter/paydirect",
 		//							"datenschutz/eigene-dienste/bewerbungen",
-		"disclaimer/haftung-fur-inhalte",
-		"disclaimer/haftung-fur-links",
-		"disclaimer/urheberrecht"
+
+		// Hosting — genau EINE Zeile aktiv.
+		// auftragsverarbeitung erst einsetzen, wenn die AVV-Vorlage vorliegt.
+		"datenschutz/hosting/hosting-durch-kleiner-als",
+		//							"datenschutz/hosting/auftragsverarbeitung",
+	],
+
+	// Leer lassen und pro Projekt füllen. Ohne Werte gibt das Snippet nichts
+	// aus und der Panel-Menüpunkt "Analytics" bleibt ausgegraut.
+	'schnti.umami'            => [
+		'sharedLink' => '',
+		'script'     => '',
+		'id'         => '',
 	],
 ];

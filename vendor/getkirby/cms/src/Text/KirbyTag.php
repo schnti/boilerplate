@@ -6,6 +6,7 @@ use AllowDynamicProperties;
 use Closure;
 use Kirby\Cms\App;
 use Kirby\Cms\File;
+use Kirby\Cms\Helpers;
 use Kirby\Cms\ModelWithContent;
 use Kirby\Exception\BadMethodCallException;
 use Kirby\Exception\InvalidArgumentException;
@@ -20,9 +21,6 @@ use Kirby\Uuid\Uuid;
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
- *
- * @todo remove the following psalm suppress when PHP >= 8.2 required
- * @psalm-suppress UndefinedAttributeClass
  */
 #[AllowDynamicProperties]
 class KirbyTag
@@ -32,6 +30,10 @@ class KirbyTag
 
 	public array $attrs = [];
 	public array $data = [];
+
+	/**
+	 * @deprecated 5.5.0 Use `$tag->kirby()->option()` instead.
+	 */
 	public array $options = [];
 	public string $type;
 	public string|null $value = null;
@@ -46,7 +48,9 @@ class KirbyTag
 		// type aliases
 		if (isset(static::$types[$type]) === false) {
 			if (isset(static::$aliases[$type]) === false) {
-				throw new InvalidArgumentException('Undefined tag type: ' . $type);
+				throw new InvalidArgumentException(
+					message: 'Undefined tag type: ' . $type
+				);
 			}
 
 			$type = static::$aliases[$type];
@@ -63,7 +67,7 @@ class KirbyTag
 			$attrName = strtolower($attrName);
 
 			// applies only defined attributes to safely update
-			if (in_array($attrName, $availableAttrs) === true) {
+			if (in_array($attrName, $availableAttrs, true) === true) {
 				$this->{$attrName} = $attrValue;
 			}
 		}
@@ -157,9 +161,14 @@ class KirbyTag
 		return $this->data['kirby'] ?? App::instance();
 	}
 
+	/**
+	 * @deprecated 5.5.0 Use `$tag->kirby()->option()` instead.
+	 */
 	public function option(string $key, $default = null)
 	{
-		return $this->options[$key] ?? $default;
+		Helpers::deprecated('`$tag->option()` has been deprecated. Use `$tag->kirby()->option()` instead.', 'kirbytag-option');
+
+		return $this->kirby()->option($key, $default);
 	}
 
 	public static function parse(
@@ -172,7 +181,7 @@ class KirbyTag
 
 		// use substr instead of rtrim to keep non-tagged brackets
 		// (link: file.pdf text: Download (PDF))
-		if (substr($tag, -1) === ')') {
+		if (str_ends_with($tag, ')') === true) {
 			$tag = substr($tag, 0, -1);
 		}
 
@@ -230,7 +239,9 @@ class KirbyTag
 			return (string)$callback($this);
 		}
 
-		throw new BadMethodCallException('Invalid tag render function in tag: ' . $this->type);
+		throw new BadMethodCallException(
+			message: 'Invalid tag render function in tag: ' . $this->type
+		);
 	}
 
 	public function type(): string

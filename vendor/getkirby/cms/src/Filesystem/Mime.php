@@ -4,7 +4,6 @@ namespace Kirby\Filesystem;
 
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;
-use SimpleXMLElement;
 
 /**
  * The `Mime` class provides method
@@ -22,10 +21,8 @@ class Mime
 {
 	/**
 	 * Extension to MIME type map
-	 *
-	 * @var array
 	 */
-	public static $types = [
+	public static array $types = [
 		'ai'    => 'application/postscript',
 		'aif'   => 'audio/x-aiff',
 		'aifc'  => 'audio/x-aiff',
@@ -42,13 +39,20 @@ class Mime
 		'eml'   => 'message/rfc822',
 		'eps'   => 'application/postscript',
 		'exe'   => ['application/octet-stream', 'application/x-msdownload'],
+		'flac'  => 'audio/flac',
+		'flv'   => 'video/x-flv',
 		'gif'   => 'image/gif',
 		'gtar'  => 'application/x-gtar',
 		'gz'    => 'application/x-gzip',
+		'gzip'  => 'application/x-gzip',
+		'heic'  => 'image/heic',
+		'heif'  => 'image/heif',
 		'htm'   => 'text/html',
 		'html'  => 'text/html',
 		'ico'   => 'image/x-icon',
 		'ics'   => 'text/calendar',
+		'indd'  => 'application/x-indesign',
+		'java'  => 'text/x-java-source',
 		'js'    => ['application/javascript', 'application/x-javascript'],
 		'json'  => ['application/json', 'text/json'],
 		'j2k'   => ['image/jp2'],
@@ -56,13 +60,17 @@ class Mime
 		'jpg'   => ['image/jpeg', 'image/pjpeg'],
 		'jpeg'  => ['image/jpeg', 'image/pjpeg'],
 		'jpe'   => ['image/jpeg', 'image/pjpeg'],
+		'jxl'   => 'image/jxl',
 		'log'   => ['text/plain', 'text/x-log'],
 		'm4a'   => 'audio/mp4',
 		'm4v'   => 'video/mp4',
+		'md'    => 'text/markdown',
+		'mdown' => 'text/markdown',
 		'mid'   => 'audio/midi',
 		'midi'  => 'audio/midi',
 		'mif'   => 'application/vnd.mif',
 		'mjs'   => 'text/javascript',
+		'mkv'   => 'video/x-matroska',
 		'mov'   => 'video/quicktime',
 		'movie' => 'video/x-sgi-movie',
 		'mp2'   => 'audio/mpeg',
@@ -75,6 +83,10 @@ class Mime
 		'odc'   => 'application/vnd.oasis.opendocument.chart',
 		'odp'   => 'application/vnd.oasis.opendocument.presentation',
 		'odt'   => 'application/vnd.oasis.opendocument.text',
+		'ogg'   => 'audio/ogg',
+		'ogv'   => 'video/ogg',
+		'opus'  => 'audio/opus',
+		'otf'   => 'font/otf',
 		'pdf'   => ['application/pdf', 'application/x-download'],
 		'php'   => ['text/php', 'text/x-php', 'application/x-httpd-php', 'application/php', 'application/x-php', 'application/x-httpd-php-source'],
 		'php3'  => ['text/php', 'text/x-php', 'application/x-httpd-php', 'application/php', 'application/x-php', 'application/x-httpd-php-source'],
@@ -87,10 +99,13 @@ class Mime
 		'potx'  => 'application/vnd.openxmlformats-officedocument.presentationml.template',
 		'ps'    => 'application/postscript',
 		'psd'   => 'application/x-photoshop',
+		'py'    => 'text/x-python',
 		'qt'    => 'video/quicktime',
+		'rb'    => 'text/x-ruby',
 		'rss'   => 'application/rss+xml',
 		'rtf'   => 'text/rtf',
 		'rtx'   => 'text/richtext',
+		'scss'  => 'text/x-scss',
 		'shtml' => 'text/html',
 		'svg'   => 'image/svg+xml',
 		'swf'   => 'application/x-shockwave-flash',
@@ -100,10 +115,13 @@ class Mime
 		'tgz'   => ['application/x-tar', 'application/x-gzip-compressed'],
 		'tif'   => 'image/tiff',
 		'tiff'  => 'image/tiff',
-		'wav'   => 'audio/x-wav',
+		'ttf'   => 'font/ttf',
+		'wav'   => ['audio/wav', 'audio/x-wav', 'audio/vnd.wave', 'audio/wave'],
 		'wbxml' => 'application/wbxml',
-		'webm'  => 'video/webm',
+		'webm'  => ['video/webm', 'audio/webm'],
 		'webp'  => 'image/webp',
+		'woff'  => 'font/woff',
+		'woff2' => 'font/woff2',
 		'word'  => ['application/msword', 'application/octet-stream'],
 		'xhtml' => 'application/xhtml+xml',
 		'xht'   => 'application/xhtml+xml',
@@ -119,6 +137,11 @@ class Mime
 	];
 
 	/**
+	 * Lazy-built reverse map of $types (MIME type → extensions[])
+	 */
+	protected static array|null $mimes = null;
+
+	/**
 	 * Fixes an invalid MIME type guess for the given file
 	 */
 	public static function fix(
@@ -126,16 +149,20 @@ class Mime
 		string|null $mime = null,
 		string|null $extension = null
 	): string|null {
+		if ($mime === null || $extension === null) {
+			return $mime;
+		}
+
 		// fixing map
 		$map = [
 			'text/html' => [
-				'svg' => [Mime::class, 'fromSvg'],
+				'svg' => Mime::fromSvg(...),
 			],
 			'text/plain' => [
 				'css'  => 'text/css',
 				'json' => 'application/json',
 				'mjs' => 'text/javascript',
-				'svg'  => [Mime::class, 'fromSvg'],
+				'svg'  => Mime::fromSvg(...),
 			],
 			'text/x-asm' => [
 				'css' => 'text/css'
@@ -151,7 +178,7 @@ class Mime
 			]
 		];
 
-		if ($mode = ($map[$mime][$extension] ?? null)) {
+		if ($mode = $map[$mime][$extension] ?? null) {
 			if (is_callable($mode) === true) {
 				return $mode($file, $mime, $extension);
 			}
@@ -170,7 +197,12 @@ class Mime
 	public static function fromExtension(string $extension): string|null
 	{
 		$mime = static::$types[$extension] ?? null;
-		return is_array($mime) === true ? array_shift($mime) : $mime;
+
+		if (is_array($mime) === true) {
+			$mime = array_shift($mime);
+		}
+
+		return  $mime;
 	}
 
 	/**
@@ -178,10 +210,12 @@ class Mime
 	 */
 	public static function fromFileInfo(string $file): string|false
 	{
-		if (function_exists('finfo_file') === true && file_exists($file) === true) {
+		if (
+			function_exists('finfo_file') === true &&
+			file_exists($file) === true
+		) {
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$mime  = finfo_file($finfo, $file);
-			finfo_close($finfo);
 			return $mime;
 		}
 
@@ -208,14 +242,26 @@ class Mime
 	 */
 	public static function fromSvg(string $file): string|false
 	{
-		if (file_exists($file) === true) {
-			libxml_use_internal_errors(true);
+		if (file_exists($file) === false) {
+			return false;
+		}
 
-			$svg = new SimpleXMLElement(file_get_contents($file));
+		// only read the first KB: per XML spec the root element follows
+		// the prolog, so <svg should appear well within the first KB even
+		// with an XML declaration, DOCTYPE and comments
+		$head = file_get_contents($file, length: 1024);
 
-			if ($svg !== false && $svg->getName() === 'svg') {
-				return 'image/svg+xml';
-			}
+		if ($head === false) {
+			return false; // @codeCoverageIgnore
+		}
+
+		// match <svg only as the root element: allow an optional BOM and any
+		// combination of whitespace, XML declaration, comments and DOCTYPE
+		// before it, but nothing else
+		$pattern = '/\A(?:\xEF\xBB\xBF)?(?:\s+|<\?[^?]*\?>|<!--.*?-->|<!DOCTYPE(?:[^>[]*|\[[^\]]*\])*>)*<svg[\s>\/]/s';
+
+		if (preg_match($pattern, $head) === 1) {
+			return 'image/svg+xml';
 		}
 
 		return false;
@@ -251,54 +297,43 @@ class Mime
 	/**
 	 * Returns the extension for a given MIME type
 	 */
-	public static function toExtension(string $mime = null): string|false
+	public static function toExtension(string|null $mime = null): string|false
 	{
-		foreach (static::$types as $key => $value) {
-			if (is_array($value) === true && in_array($mime, $value) === true) {
-				return $key;
-			}
-
-			if ($value === $mime) {
-				return $key;
-			}
+		if ($mime === null) {
+			return false;
 		}
 
-		return false;
+		static::$mimes ??= A::flip(static::$types);
+
+		return static::$mimes[$mime][0] ?? false;
 	}
 
 	/**
 	 * Returns all available extensions for a given MIME type
 	 */
-	public static function toExtensions(string $mime = null, bool $matchWildcards = false): array
-	{
-		$extensions = [];
-		$testMime = fn (string $v) => static::matches($v, $mime);
+	public static function toExtensions(
+		string|null $mime = null,
+		bool $matchWildcards = false
+	): array {
+		if ($mime === null) {
+			return [];
+		}
 
-		foreach (static::$types as $key => $value) {
-			if (is_array($value) === true) {
-				if ($matchWildcards === true) {
-					if (A::some($value, $testMime)) {
-						$extensions[] = $key;
-					}
-				} else {
-					if (in_array($mime, $value) === true) {
-						$extensions[] = $key;
-					}
-				}
-			} else {
-				if ($matchWildcards === true) {
-					if ($testMime($value) === true) {
-						$extensions[] = $key;
-					}
-				} else {
-					if ($value === $mime) {
-						$extensions[] = $key;
-					}
-				}
+		static::$mimes ??= A::flip(static::$types);
+
+		if ($matchWildcards === false) {
+			return static::$mimes[$mime] ?? [];
+		}
+
+		$extensions = [];
+
+		foreach (static::$mimes as $registered => $exts) {
+			if (static::matches($registered, $mime) === true) {
+				array_push($extensions, ...$exts);
 			}
 		}
 
-		return $extensions;
+		return array_values(array_unique($extensions));
 	}
 
 	/**

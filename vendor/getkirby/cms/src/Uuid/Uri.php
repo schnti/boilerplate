@@ -38,14 +38,14 @@ class Uri extends BaseUri
 			is_string($props) === true &&
 			Str::startsWith($props, 'site://') === true
 		) {
-			return parent::__construct([
+			parent::__construct([
 				'scheme' => 'site',
 				'host'   => '',
 				'path' 	 => Str::after($props, 'site://')
 			]);
+		} else {
+			parent::__construct($props, $inject);
 		}
-
-		return parent::__construct($props, $inject);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Uri extends BaseUri
 	 * Returns the ID part of the UUID string
 	 * (and sets it when new one passed)
 	 */
-	public function host(string $host = null): string|null
+	public function host(string|null $host = null): string|null
 	{
 		if ($host !== null) {
 			return $this->host = $host;

@@ -1,4 +1,5 @@
 {
+	"account": "Account",
 	"account.changeName": "Pakeisti savo vardą",
 	"account.delete": "Panaikinti savo paskyrą",
 	"account.delete.confirm": "Ar tikrai norite panaikinti savo paskyrą? Jūs iš karto atsijungsite. Paskyros bus neįmanoma atstatyti.",
@@ -15,12 +16,14 @@
 	"changes": "Changes",
 	"confirm": "Ok",
 	"collapse": "Sutraukti",
-	"collapse.all": "Sutraukti viską",
+	"collapse.all": "Collapse all",
 	"color": "Color",
 	"coordinates": "Coordinates",
 	"copy": "Kopijuoti",
 	"copy.all": "Kopijuoti visus",
 	"copy.success": "{count} nukopijuota!",
+	"copy.success.multiple": "{count} nukopijuota!",
+	"copy.url": "Copy URL",
 	"create": "Sukurti",
 	"custom": "Custom",
 
@@ -40,6 +43,9 @@
 
 	"delete": "Pašalinti",
 	"delete.all": "Pašalinti viską",
+
+	"deselect": "Deselect",
+	"deselect.all": "Deselect all",
 
 	"dialog.fields.empty": "This dialog has no fields",
 	"dialog.files.empty": "Nėra failų pasirinkimui",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Invalid cache type \"{type}\"",
 
+	"error.content.lock.delete": "The version is locked and cannot be deleted",
+	"error.content.lock.move": "The source version is locked and cannot be moved",
+	"error.content.lock.publish": "This version is already published",
+	"error.content.lock.replace": "The version is locked and cannot be replaced",
+	"error.content.lock.update": "The version is locked and cannot be updated",
+
+	"error.entries.max.plural": "You must not add more than {max} entries",
+	"error.entries.max.singular": "You must not add more than one entry",
+	"error.entries.min.plural": "You must add at least {min} entries",
+	"error.entries.min.singular": "You must add at least one entry",
+	"error.entries.supports": "\"{type}\" field type is not supported for the entries field",
+	"error.entries.validation": "There's an error on the \"{field}\" field in row {index}",
+
 	"error.email.preset.notFound": "El. pašto paruoštukas \"{name}\" nerastas",
 
 	"error.field.converter.invalid": "Neteisingas konverteris \"{converter}\"",
+	"error.field.link.options": "Invalid options: {options}",
 	"error.field.type.missing": "Laukelis \"{ name }\": Šio tipo (\"{ type }\") laukelis neegzistuoja",
 
 	"error.file.changeName.empty": "Pavadinimas negali būti tuščias",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "The template for the file \"{id}\" cannot be changed to \"{template}\" (valid: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "You are not allowed to change the template for the file \"{id}\"",
 
+	"error.file.delete.multiple": "Not all files could be deleted. Try each remaining file individually to see the specific error that prevents deletion.",
 	"error.file.duplicate": "Failas su pavadinimu \"{filename}\" jau yra",
 	"error.file.extension.forbidden": "Failo tipas (plėtinys) \"{extension}\" neleidžiamas",
 	"error.file.extension.invalid": "Neteisingas plėtinys: {extension}",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Failo pavadinimas negali būti tuščias",
 	"error.file.notFound": "Failas \"{filename}\" nerastas",
 	"error.file.orientation": "Failo orientacija turi būti \"{orientation}\"",
+	"error.file.sort.permission": "You are not allowed to change the sorting of \"{filename}\"",
 	"error.file.type.forbidden": "Jūs neturite teisės įkelti {type} tipo failų",
 	"error.file.type.invalid": "Neteisingas failo tipas: {type}",
 	"error.file.undefined": "Failas nerastas",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Formos nepavyko išsaugoti",
 
 	"error.language.code": "Prašome įrašyti teisingą kalbos kodą",
+	"error.language.create.permission": "You are not allowed to create a language",
+	"error.language.delete.permission": "You are not allowed to delete the language",
 	"error.language.duplicate": "Tokia kalba jau yra",
 	"error.language.name": "Prašome įrašyti teisingą kalbos pavadinimą",
 	"error.language.notFound": "Nepavyko rasti šios kalbos",
+	"error.language.update.permission": "You are not allowed to update the language",
 
 	"error.layout.validation.block": "There's an error on the \"{field}\" field in block {blockIndex} using the \"{fieldset}\" block type in layout {layoutIndex}",
 	"error.layout.validation.settings": "Yra klaida išdėstymo {index} nustatymuose",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Puslapio \"{slug}\" negalima pašalinti",
 	"error.page.delete.confirm": "Įrašykite puslapio pavadinimą, tam kad patvirtintumėte",
 	"error.page.delete.hasChildren": "Puslapis turi vidinių puslapių, dėl to negalima jo pašalinti",
+	"error.page.delete.multiple": "Not all pages could be deleted. Try each remaining page individually to see the specific error that prevents deletion.",
 	"error.page.delete.permission": "Neturite leidimo šalinti \"{slug}\"",
 	"error.page.draft.duplicate": "Puslapio juodraštis su URL pabaiga \"{slug}\" jau yra",
 	"error.page.duplicate": "Puslapis su URL pabaiga \"{slug}\" jau yra",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "Puslapio negalima perkelti į save patį",
 	"error.page.move.directory": "The page directory cannot be moved",
 	"error.page.move.duplicate": "A sub page with the URL appendix \"{slug}\" already exists",
+	"error.page.move.noSections": "The page \"{parent}\" cannot be a parent of any page because it lacks any pages sections in its blueprint",
 	"error.page.move.notFound": "The moved page could not be found",
 	"error.page.move.permission": "You are not allowed to move \"{slug}\"",
 	"error.page.move.template": "The \"{template}\" template is not accepted as a subpage of \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Nustatykite teisingą puslapio statusą",
 	"error.page.undefined": "Puslapis nerastas",
 	"error.page.update.permission": "Neturite leidimo atnaujinti \"{slug}\"",
+
+	"error.role.notFound": "The role \"{name}\" cannot be found",
 
 	"error.section.files.max.plural": "Į sekciją \"{section}\" negalima pridėti daugiau nei {max} failų",
 	"error.section.files.max.singular": "Į sekciją \"{section}\" negalima pridėti daugiau nei vieną failą",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Pavadinimas negali būti tuščias",
 	"error.site.changeTitle.permission": "Neturite leidimo keisti svetainės pavadinimo",
+	"error.site.notAccessible": "The site is not accessible",
 	"error.site.update.permission": "Neturite leidimo atnaujinti svetainės",
 
 	"error.structure.validation": "There's an error on the \"{field}\" field in row {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Please enter a valid UUID",
 	"error.validation.url": "Prašome įrašyti teisingą URL",
 
+	"error.version.discard.permission": "You are not allowed to discard this version",
+	"error.version.publish.permission": "You are not allowed to publish this version",
+	"error.version.save.permission": "You are not allowed to change this version",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Išskleisti",
-	"expand.all": "Išskleisti viską",
+	"expand.all": "Expand all",
 
 	"field.invalid": "The field is invalid",
 	"field.required": "Laukas privalomas",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Antraštė",
 	"field.blocks.heading.text": "Tekstas",
 	"field.blocks.heading.placeholder": "Antraštė ...",
+	"field.blocks.figure.back.plain": "Plain",
+	"field.blocks.figure.back.pattern.light": "Pattern (light)",
+	"field.blocks.figure.back.pattern.dark": "Pattern (dark)",
 	"field.blocks.image.alt": "Alternatyvus tekstas",
 	"field.blocks.image.caption": "Aprašymas",
 	"field.blocks.image.crop": "Kirpti",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Video-URL",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Ar tikrai norite išrtinti visus įrašus?",
+	"field.entries.empty": "Dar nėra įrašų",
+
 	"field.files.empty": "Pasirinkti",
+	"field.files.empty.single": "No file selected yet",
 
 	"field.layout.change": "Change layout",
 	"field.layout.delete": "Pašalinti eilutę",
@@ -342,12 +384,17 @@
 	"field.object.empty": "Dar nėra informacijos",
 
 	"field.pages.empty": "Dar nėra puslapių",
+	"field.pages.empty.single": "No page selected yet",
 
 	"field.structure.delete.confirm": "Ar tikrai norite pašalinti šią eilutę?",
 	"field.structure.delete.confirm.all": "Ar tikrai norite išrtinti visus įrašus?",
+	"field.structure.delete.confirm.selected": "Do you really want to delete the selected entries?",
 	"field.structure.empty": "Dar nėra įrašų",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Dar nėra vartotojų",
+	"field.users.empty.single": "No user selected yet",
 
 	"fields.empty": "No fields yet",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Pakeisti poziciją",
 
 	"files": "Failai",
+	"files.delete.confirm.selected": "Do you really want to delete the selected files? This action cannot be undone.",
 	"files.empty": "Įkelti",
 
 	"filter": "Filter",
+
+	"form.discard": "Discard changes",
+	"form.discard.confirm": "Do you really want to <strong>discard all your changes</strong>?",
+	"form.locked": "This content is disabled for you as it is currently edited by another user",
+	"form.unsaved": "The current changes have not yet been saved",
+	"form.preview": "Preview changes",
+	"form.preview.draft": "Preview draft",
 
 	"hide": "Paslėpti",
 	"hour": "Valanda",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "No translations yet",
 
 	"language.variable.delete.confirm": "Do you really want to delete the variable for {key}?",
+	"language.variable.entries": "Values",
+	"language.variable.entries.help": "Each string will be used for its matching count, e.g. three strings will match in order to counts <code>0</code>, <code>1</code>, <code>2 and more</code>. Use the <code>{count}</code> placeholder to insert the actual count.",
 	"language.variable.key": "Key",
+	"language.variable.multiple": "Countable?",
+	"language.variable.multiple.text": "Use different translation strings",
+	"language.variable.multiple.help": "You can use different values depending on a count you pass along with the language variable, allowing you to create dynamic translations, e.g. singular and plural.",
 	"language.variable.notFound": "The variable could not be found",
 	"language.variable.value": "Value",
 
@@ -421,16 +481,23 @@
 
 	"license": "Licenzija",
 	"license.activate": "Aktyvuoti dabar",
-	"license.activate.label": "Prašome aktyvuoti jūsų licenciją",
+	"license.activate.label": "Įdiegimas",
 	"license.activate.domain": "Jūsų licencija bus akvytuota šiam domenui: {host}",
-	"license.activate.local": "Jūs ruošiatės aktyvuoti jūsų Kirby licenciją vietiniam domenui <strong>{host}</strong>. Jei ši svetainė veiks su viešu domenu, aktyvuokite jį. Arba jei {host} yra tikrai tas domenas, kurį norite naudoti, galite tęsti.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Prašome patvirtinti",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Aktyvuota",
 	"license.buy": "Pirkti licenziją",
 	"license.code": "Kodas",
 	"license.code.help": "Jūs gavote licencijos kodą po pirkimo el. paštu. Nukopijuokite jį ir įterpkite čia.",
-	"license.code.label": "Prašome įrašyti jūsų licenzijos kodą",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Removing the license will irreversibly delete the license file from this site. You can then activate this site with a different license key or re-register the same license key if the domain remains the same.</p><p>To change the domain associated with the license, please contact the Kirby team. <a href='https://getkirby.com/license'>Read more &rarr;</a></p>",
 	"license.status.active.info": "Įeina naujos pagrindinės versijos iki {date}",
 	"license.status.active.label": "Galiojanti licencija",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "Tai demo versija",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Atnaujinkite licenciją, kad būtų galimybė atnaujinti iki naujų pagrindinių versijų",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Pasiruošę paleisti naują svetainę?",
 	"license.status.missing.info": "Nėra galiojančios licencijos",
 	"license.status.missing.label": "Prašome aktyvuoti jūsų licenciją",
+	"license.status.unknown.info": "The license status is unknown",
+	"license.status.unknown.label": "Unknown",
 	"license.manage": "Valdyti savo licencijas",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Nupirkta",
 	"license.success": "Ačiū, kad palaikote Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Neregistruota",
 
 	"link": "Nuoroda",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Neišsaugoti pakeitimai",
 	"lock.unsaved.empty": "Nebeliko neišsaugotų pakeitimų",
+	"lock.unsaved.files": "Unsaved files",
+	"lock.unsaved.pages": "Unsaved pages",
+	"lock.unsaved.users": "Unsaved accounts",
 	"lock.isLocked": "Unsaved changes by {email}",
 	"lock.unlock": "Atrakinti",
 	"lock.unlock.submit": "Unlock and overwrite unsaved changes by <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Rodomas viešai visiems, bet tik per URL",
 
 	"pages": "Puslapiai",
+	"pages.delete.confirm.selected": "Do you really want to delete the selected pages? This action cannot be undone.",
 	"pages.empty": "Dar nėra puslapių",
 	"pages.status.draft": "Juodraščiai",
 	"pages.status.listed": "Paskelbti",
@@ -574,7 +651,13 @@
 	"plugin": "Įskiepas",
 	"plugins": "Įskiepai",
 	"prev": "Ankstesnis",
+
 	"preview": "Peržiūra",
+	"preview.browser.scroll": "Sync scroll",
+
+	"publish": "Publish",
+	"published": "Paskelbti",
+
 	"remove": "Pašalinti",
 	"rename": "Pervadinti",
 	"renew": "Atnaujinti",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Niekas",
 
 	"save": "Išsaugoti",
+	"saved": "Saved",
 	"search": "Ieškoti",
+	"searching": "Searching",
 	"search.min": "Minimalus simbolių kiekis paieškai: {min}",
 	"search.all": "Parodyti visus {count} rezultatus",
 	"search.results.none": "Nėra rezultatų",
@@ -604,6 +689,7 @@
 
 	"security": "Saugumas",
 	"select": "Pasirinkti",
+	"select.all": "Select all",
 	"server": "Serveris",
 	"settings": "Nustatymai",
 	"show": "Rodyti",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Copy info",
 	"system.info.copied": "System info copied",
 	"system.issues.content": "The content folder seems to be exposed",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Your installed Kirby version has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.plugin": "Your installed version of the { plugin } plugin is has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.php": "Jūsų PHP versija { release } pasiekė gyvenimo galą ir daugiau negaus saugumo atnaujinimų",
@@ -627,7 +715,9 @@
 	"system.issues.git": "The .git folder seems to be exposed",
 	"system.issues.https": "Rekomenduojame HTTPS visoms svetainėms",
 	"system.issues.kirby": "The kirby folder seems to be exposed",
+	"system.issues.local": "The site is running locally with relaxed security checks",
 	"system.issues.site": "The site folder seems to be exposed",
+	"system.issues.vue.compiler": "The Vue template compiler is enabled",
 	"system.issues.vulnerability.kirby": "Your installation might be affected by the following vulnerability ({ severity } severity): { description }",
 	"system.issues.vulnerability.plugin": "Your installation might be affected by the following vulnerability in the { plugin } plugin ({ severity } severity): { description }",
 	"system.updateStatus": "Atnaujinimų statusas",
@@ -643,6 +733,12 @@
 	"tel": "Phone",
 	"tel.placeholder": "+49123456789",
 	"template": "Puslapio šablonas",
+
+	"theme": "Theme",
+	"theme.light": "Lights on",
+	"theme.dark": "Lights off",
+	"theme.automatic": "Match system default",
+
 	"title": "Pavadinimas",
 	"today": "Šiandien",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Keisti kalbą",
 	"user.changeName": "Pervadinti vartotoją",
 	"user.changePassword": "Keisti slaptažodį",
+	"user.changePassword.current": "Your current password",
 	"user.changePassword.new": "Naujas slaptažodis",
 	"user.changePassword.new.confirm": "Patvirtinti naują slaptažodį…",
+	"user.changePassword.own": "Your own password",
 	"user.changeRole": "Keisti rolę",
 	"user.changeRole.select": "Pasirinkti naują rolę",
 	"user.create": "Pridėti naują vartotoją",
 	"user.delete": "Pašalinti šį vartotoją",
 	"user.delete.confirm": "Ar tikrai norite pašalinti vartotoją <br><strong>{email}</strong>?",
+	"user.setPassword": "Set password",
 
 	"users": "Vartotojai",
 
 	"version": "Versija",
+	"version.changes": "Changed version",
+	"version.compare": "Compare versions",
 	"version.current": "Dabartinė versija",
 	"version.latest": "Naujausia versija",
 	"versionInformation": "Versijos informacija",
 
+	"view": "View",
 	"view.account": "Jūsų paskyra",
 	"view.installation": "Installation",
 	"view.languages": "Kalbos",

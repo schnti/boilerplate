@@ -21,6 +21,13 @@ enum LicenseStatus: string
 	case Active = 'active';
 
 	/**
+	 * Compliance with the conditional license
+	 * requirements has been confirmed
+	 * @since 5.5.0
+	 */
+	case Acknowledged = 'acknowledged';
+
+	/**
 	 * Only used for the demo instance
 	 */
 	case Demo = 'demo';
@@ -44,6 +51,11 @@ enum LicenseStatus: string
 	case Missing = 'missing';
 
 	/**
+	 * The license status is unknown
+	 */
+	case Unknown = 'unknown';
+
+	/**
 	 * Checks if the license can be saved when it
 	 * was entered in the activation dialog;
 	 * renewable licenses are accepted as well
@@ -52,10 +64,11 @@ enum LicenseStatus: string
 	public function activatable(): bool
 	{
 		return match ($this) {
-			static::Active,
-			static::Inactive,
-			static::Legacy    => true,
-			default           => false
+			static::Active       => true,
+			static::Acknowledged => true,
+			static::Inactive     => true,
+			static::Legacy       => true,
+			default              => false
 		};
 	}
 
@@ -65,8 +78,8 @@ enum LicenseStatus: string
 	public function dialog(): string|null
 	{
 		return match ($this) {
-			static::Missing => 'registration',
 			static::Demo    => null,
+			static::Missing => 'registration',
 			default         => 'license'
 		};
 	}
@@ -79,11 +92,13 @@ enum LicenseStatus: string
 	public function icon(): string
 	{
 		return match ($this) {
-			static::Missing  => 'key',
-			static::Legacy   => 'alert',
-			static::Inactive => 'clock',
-			static::Active   => 'check',
-			static::Demo     => 'preview',
+			static::Active       => 'check',
+			static::Acknowledged => 'shield',
+			static::Demo         => 'preview',
+			static::Inactive     => 'clock',
+			static::Legacy       => 'alert',
+			static::Missing      => 'key',
+			static::Unknown      => 'question',
 		};
 	}
 
@@ -112,9 +127,10 @@ enum LicenseStatus: string
 	public function renewable(): bool
 	{
 		return match ($this) {
-			static::Demo,
-			static::Active => false,
-			default        => true
+			static::Active       => false,
+			static::Acknowledged => false,
+			static::Demo         => false,
+			default              => true
 		};
 	}
 
@@ -126,11 +142,13 @@ enum LicenseStatus: string
 	public function theme(): string
 	{
 		return match ($this) {
-			static::Missing  => 'love',
-			static::Legacy   => 'negative',
-			static::Inactive => 'notice',
-			static::Active   => 'positive',
-			static::Demo     => 'notice',
+			static::Active       => 'positive',
+			static::Acknowledged => 'passive',
+			static::Demo         => 'notice',
+			static::Inactive     => 'notice',
+			static::Legacy       => 'negative',
+			static::Missing      => 'love',
+			static::Unknown      => 'passive',
 		};
 	}
 

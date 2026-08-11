@@ -30,70 +30,75 @@ class Dom
 {
 	/**
 	 * Cache for the HTML body
-	 *
-	 * @var \DOMElement|null
 	 */
-	protected $body;
-
-	/**
-	 * The original input code as
-	 * passed to the constructor
-	 *
-	 * @var string
-	 */
-	protected $code;
+	protected DOMElement|null $body;
 
 	/**
 	 * Document object
-	 *
-	 * @var \DOMDocument
 	 */
-	protected $doc;
-
-	/**
-	 * Document type (`'HTML'` or `'XML'`)
-	 *
-	 * @var string
-	 */
-	protected $type;
+	protected DOMDocument $doc;
 
 	/**
 	 * Class constructor
 	 *
-	 * @param string $code XML or HTML code
+	 * @param string $code XML or HTML original input code
 	 * @param string $type Document type (`'HTML'` or `'XML'`)
 	 */
-	public function __construct(string $code, string $type = 'HTML')
-	{
-		$this->code = $code;
+	public function __construct(
+		protected string $code,
+		protected string $type = 'HTML'
+	) {
 		$this->doc  = new DOMDocument();
-
-		$loaderSetting = null;
-
-		// switch to "user error handling"
-		$intErrorsSetting = libxml_use_internal_errors(true);
-
 		$this->type = strtoupper($type);
+
+		// Switch libxml into internal error handling mode so warnings
+		// don’t leak into output or interrupt parsing
+		$errors = libxml_use_internal_errors(true);
+
 		if ($this->type === 'HTML') {
-			// ensure proper parsing for HTML snippets
+			// If this is an HTML fragment (no <html> or <body> root),
+			// wrap it in <body> so DOMDocument has a valid container.
 			if (preg_match('/<(html|body)[> ]/i', $code) !== 1) {
 				$code = '<body>' . $code . '</body>';
 			}
 
-			// the loadHTML() method expects ISO-8859-1 by default;
-			// force parsing as UTF-8 by injecting an XML declaration
-			$xmlDeclaration = 'encoding="UTF-8" id="' . Str::random(10) . '"';
-			$load = $this->doc->loadHTML('<?xml ' . $xmlDeclaration . '>' . $code);
+			// DOMDocument::loadHTML() historically assumes ISO-8859-1 input.
+			// To force UTF-8 parsing, Kirby injects an XML declaration.
+			// The random ID allows us to reliably identify *our* injected node
+			// later and remove it again.
+			$xml  = 'encoding="UTF-8" id="' . Str::random(10) . '"';
+			$load = $this->doc->loadHTML('<?xml ' . $xml . '>' . $code);
 
-			// remove the injected XML declaration again
-			$pis = $this->query('//processing-instruction()');
-			foreach (iterator_to_array($pis, false) as $pi) {
-				if ($pi->data === $xmlDeclaration) {
-					static::remove($pi);
+
+			// Newer libxml2 versions may not attach the injected XML node
+			// inside <html>. Instead, they may convert it into a top-level
+			// comment node that sits before <html>:
+			//   <!--?xml encoding="UTF-8" id="XYZ"--><html>...
+			//
+			//  XPath queries like //comment() or //processing-instruction()
+			//  often operate relative to the document element (<html>) and
+			//  therefore miss this node entirely.
+			//  To fix this, we must also inspect and clean up the document’s
+			//  top-level child nodes explicitly.
+			//
+			// Walk all top-level nodes of the document and remove
+			// any node that matches the injected XML marker
+			for ($node = $this->doc->firstChild; $node !== null; $node = $next) {
+				$next = $node->nextSibling;
+
+				if (
+					// Case 1: libxml preserved it as a processing instruction
+					($node->nodeType === XML_PI_NODE && $node->data === $xml) ||
+					// Case 2: libxml converted it into a comment node
+					// (<!--?xml encoding="UTF-8" id="..."-->)
+					($node->nodeType === XML_COMMENT_NODE && strpos($node->data, $xml) !== false)
+				) {
+					static::remove($node);
+					break;
 				}
 			}
 
-			// remove the default doctype
+			// Remove the default doctype
 			if (Str::contains($code, '<!DOCTYPE ', true) === false) {
 				static::remove($this->doc->doctype);
 			}
@@ -104,7 +109,7 @@ class Dom
 		// get one error for use below and reset the global state
 		$error = libxml_get_last_error();
 		libxml_clear_errors();
-		libxml_use_internal_errors($intErrorsSetting);
+		libxml_use_internal_errors($errors);
 
 		if ($load !== true) {
 			$message = 'The markup could not be parsed';
@@ -113,10 +118,10 @@ class Dom
 				$message .= ': ' . $error->message;
 			}
 
-			throw new InvalidArgumentException([
-				'fallback' => $message,
-				'details'  => compact('error')
-			]);
+			throw new InvalidArgumentException(
+				fallback: $message,
+				details: compact('error')
+			);
 		}
 	}
 
@@ -138,7 +143,6 @@ class Dom
 
 	/**
 	 * Extracts all URLs wrapped in a url() wrapper. E.g. for style attributes.
-	 * @internal
 	 */
 	public static function extractUrls(string $value): array
 	{
@@ -161,16 +165,14 @@ class Dom
 
 	/**
 	 * Checks for allowed attributes according to the allowlist
-	 * @internal
 	 *
 	 * @return true|string If not allowed, an error message is returned
 	 */
 	public static function isAllowedAttr(
 		DOMAttr $attr,
 		array $options
-	): bool|string {
-		$options = static::normalizeSanitizeOptions($options);
-
+	): true|string {
+		$options     = static::normalizeSanitizeOptions($options);
 		$allowedTags = $options['allowedTags'];
 
 		// check if the attribute is in the list of global allowed attributes
@@ -182,31 +184,38 @@ class Dom
 		}
 
 		// configuration per tag name
-		$tagName            = $attr->ownerElement->nodeName;
-		$listedTagName      = static::listContainsName(array_keys($options['allowedTags']), $attr->ownerElement, $options);
-		$allowedAttrsForTag = $listedTagName ? ($allowedTags[$listedTagName] ?? true) : true;
+		$tag       = $attr->ownerElement->nodeName;
+		$listedTag = static::listContainsName(
+			array_keys($allowedTags),
+			$attr->ownerElement,
+			$options
+		);
+		$allowedAttrs = match ($listedTag) {
+			false   => true,
+			default => $allowedTags[$listedTag] ?? true
+		};
 
 		// the element allows all global attributes
-		if ($allowedAttrsForTag === true) {
+		if ($allowedAttrs === true) {
 			return $isAllowedGlobalAttr;
 		}
 
 		// specific attributes are allowed in addition to the global ones
-		if (is_array($allowedAttrsForTag) === true) {
+		if (is_array($allowedAttrs) === true) {
 			// if allowed globally, we don't need further checks
 			if ($isAllowedGlobalAttr === true) {
 				return true;
 			}
 
 			// otherwise the tag configuration decides
-			if (static::listContainsName($allowedAttrsForTag, $attr, $options) !== false) {
+			if (static::listContainsName($allowedAttrs, $attr, $options) !== false) {
 				return true;
 			}
 
-			return 'Not allowed by the "' . $tagName . '" element';
+			return 'Not allowed by the "' . $tag . '" element';
 		}
 
-		return 'The "' . $tagName . '" element does not allow attributes';
+		return 'The "' . $tag . '" element does not allow attributes';
 	}
 
 	/**
@@ -218,13 +227,12 @@ class Dom
 	public static function isAllowedGlobalAttr(
 		DOMAttr $attr,
 		array $options
-	): bool|string {
-		$options = static::normalizeSanitizeOptions($options);
-
+	): true|string {
+		$options      = static::normalizeSanitizeOptions($options);
 		$allowedAttrs = $options['allowedAttrs'];
 
+		// all attributes are allowed
 		if ($allowedAttrs === true) {
-			// all attributes are allowed
 			return true;
 		}
 
@@ -251,17 +259,15 @@ class Dom
 
 	/**
 	 * Checks if the URL is acceptable for URL attributes
-	 * @internal
 	 *
 	 * @return true|string If not allowed, an error message is returned
 	 */
 	public static function isAllowedUrl(
 		string $url,
 		array $options
-	): bool|string {
+	): true|string {
 		$options = static::normalizeSanitizeOptions($options);
-
-		$url = Str::lower($url);
+		$url     = Str::lower($url);
 
 		// allow empty URL values
 		if (empty($url) === true) {
@@ -280,7 +286,10 @@ class Dom
 
 		// allow site-internal URLs that didn't match the
 		// protocol-relative check above
-		if (mb_substr($url, 0, 1) === '/' && $options['allowHostRelativeUrls'] !== true) {
+		if (
+			mb_substr($url, 0, 1) === '/' &&
+			$options['allowHostRelativeUrls'] !== true
+		) {
 			// if a CMS instance is active, only allow the URL
 			// if it doesn't point outside of the index URL
 			if ($kirby = App::instance(null, true)) {
@@ -337,7 +346,7 @@ class Dom
 
 			$hostname = parse_url($url, PHP_URL_HOST);
 
-			if (in_array($hostname, $options['allowedDomains']) === true) {
+			if (in_array($hostname, $options['allowedDomains'], true) === true) {
 				return true;
 			}
 
@@ -415,8 +424,8 @@ class Dom
 	}
 
 	/**
-	 * Checks if a list contains the name of a node considering
-	 * the allowed namespaces
+	 * Checks if a list contains the name of a node
+	 * considering the allowed namespaces
 	 * @internal
 	 *
 	 * @param array $options See `Dom::sanitize()`
@@ -438,13 +447,17 @@ class Dom
 		// if the configuration does not define namespace URIs or if the
 		// currently checked node is from the special `xml:` namespace
 		// that has a fixed namespace according to the XML spec...
-		if ($allowedNamespaces === true || $node->namespaceURI === 'http://www.w3.org/XML/1998/namespace') {
+		if (
+			$allowedNamespaces === true ||
+			$node->namespaceURI === 'http://www.w3.org/XML/1998/namespace'
+		) {
 			// ...take the list as it is and only consider
 			// exact matches of the local name (which will
 			// contain a namespace if that namespace name
 			// is not defined in the document)
 
-			// the list contains the `xml:` prefix, so add it to the name as well
+			// the list contains the `xml:` prefix,
+			// so add it to the name as well
 			if ($node->namespaceURI === 'http://www.w3.org/XML/1998/namespace') {
 				$localName = 'xml:' . $localName;
 			}
@@ -461,14 +474,14 @@ class Dom
 		// we need to consider the namespaces
 		foreach ($list as $item) {
 			// try to find the expected origin namespace URI
-			$namespaceUri = null;
-			$itemLocal    = $item;
+			$itemLocal = $item;
+
+			// list items without namespace are from the default namespace
+			$namespaceUri = $allowedNamespaces[''] ?? null;
+
 			if (Str::contains($item, ':') === true) {
 				[$namespaceName, $itemLocal] = explode(':', $item);
 				$namespaceUri = $allowedNamespaces[$namespaceName] ?? null;
-			} else {
-				// list items without namespace are from the default namespace
-				$namespaceUri = $allowedNamespaces[''] ?? null;
 			}
 
 			// try if we can find an exact namespaced match
@@ -573,12 +586,14 @@ class Dom
 
 		// validate all processing instructions like <?xml-stylesheet
 		$pis = $this->query('//processing-instruction()');
+
 		foreach (iterator_to_array($pis, false) as $pi) {
 			$this->sanitizePI($pi, $options, $errors);
 		}
 
 		// validate all elements in the document tree
 		$elements = $this->doc->getElementsByTagName('*');
+
 		foreach (iterator_to_array($elements, false) as $element) {
 			$this->sanitizeElement($element, $options, $errors);
 		}
@@ -596,11 +611,10 @@ class Dom
 	 */
 	public function toString(bool $normalize = false): string
 	{
-		if ($this->type === 'HTML') {
-			$string = $this->exportHtml($normalize);
-		} else {
-			$string = $this->exportXml($normalize);
-		}
+		$string = match ($this->type) {
+			'HTML'  => $this->exportHtml($normalize),
+			default => $this->exportXml($normalize)
+		};
 
 		// add trailing newline if the input contained one
 		if (rtrim($this->code, "\r\n") !== $this->code) {
@@ -616,14 +630,34 @@ class Dom
 	 */
 	public static function unwrap(DOMNode $node): void
 	{
-		foreach ($node->childNodes as $childNode) {
+		// snapshot because `insertBefore` moves children out of `$node`,
+		// shifting the live `DOMNodeList`
+		foreach (iterator_to_array($node->childNodes, false) as $childNode) {
 			// discard text nodes as they can be unexpected
 			// directly in the parent element
 			if ($childNode instanceof DOMText) {
 				continue;
 			}
 
-			$node->parentNode->insertBefore(clone $childNode, $node);
+			// the child may use a default namespace (`xmlns="…"`)
+			// that was declared on `$node`; once `$node` is gone,
+			// libxml would rename it to `<default:child>`, so we
+			// copy the declaration to the child to suppress it
+			if (
+				$childNode instanceof DOMElement &&
+				($childNode->prefix === '' || $childNode->prefix === null) &&
+				is_string($childNode->namespaceURI) === true
+			) {
+				$childNode->setAttributeNS(
+					'http://www.w3.org/2000/xmlns/',
+					'xmlns',
+					$childNode->namespaceURI
+				);
+			}
+
+			// move (don't clone) so descendants pending in the
+			// `Dom::sanitize()` snapshot are still sanitized
+			$node->parentNode->insertBefore($childNode, $node);
 		}
 
 		static::remove($node);
@@ -665,6 +699,17 @@ class Dom
 		static::remove($metaTag);
 		$html = str_replace($this->doc->saveHTML($metaTag), '', $html);
 
+		// if the original input contained an HTML doctype, some libxml
+		// implementations expand it to the long HTML4 transitional doctype
+		// when saving. Normalize it back to the short `<!DOCTYPE html>`
+		// to keep behavior consistent across environments.
+		if (
+			Str::contains($this->code, '<!DOCTYPE ', true) === true &&
+			preg_match('/<!doctype\s+html/i', $this->code) === 1
+		) {
+			$html = preg_replace('/^<!DOCTYPE[^>]*>\s*/i', '<!DOCTYPE html>' . "\n", $html, 1);
+		}
+
 		return trim($html);
 	}
 
@@ -684,6 +729,7 @@ class Dom
 			// the input didn't contain an XML declaration;
 			// only return child nodes, which omits it
 			$result = [];
+
 			foreach ($this->doc->childNodes as $node) {
 				$result[] = $this->doc->saveXML($node);
 			}
@@ -869,14 +915,20 @@ class Dom
 
 				// custom check (if the attribute is still in the document)
 				if ($attr->ownerElement !== null && $options['attrCallback']) {
-					$errors = array_merge($errors, $options['attrCallback']($attr, $options) ?? []);
+					$errors = [
+						...$errors,
+						...$options['attrCallback']($attr, $options) ?? []
+					];
 				}
 			}
 		}
 
 		// custom check
 		if ($options['elementCallback']) {
-			$errors = array_merge($errors, $options['elementCallback']($element, $options) ?? []);
+			$errors = [
+				...$errors,
+				...$options['elementCallback']($element, $options) ?? []
+			];
 		}
 	}
 
@@ -894,7 +946,10 @@ class Dom
 		$name = $pi->nodeName;
 
 		// check for allow-listed processing instructions
-		if (is_array($options['allowedPIs']) === true && in_array($name, $options['allowedPIs']) === false) {
+		if (
+			is_array($options['allowedPIs']) === true &&
+			in_array($name, $options['allowedPIs'], true) === false
+		) {
 			$errors[] = new InvalidArgumentException(
 				'The "' . $name . '" processing instruction (line ' .
 				$pi->getLineNo() . ') is not allowed'
@@ -918,11 +973,15 @@ class Dom
 			empty($doctype->publicId) === false ||
 			empty($doctype->systemId) === false
 		) {
-			throw new InvalidArgumentException('The doctype must not reference external files');
+			throw new InvalidArgumentException(
+				message: 'The doctype must not reference external files'
+			);
 		}
 
 		if (empty($doctype->internalSubset) === false) {
-			throw new InvalidArgumentException('The doctype must not define a subset');
+			throw new InvalidArgumentException(
+				message: 'The doctype must not define a subset'
+			);
 		}
 
 		if ($options['doctypeCallback']) {

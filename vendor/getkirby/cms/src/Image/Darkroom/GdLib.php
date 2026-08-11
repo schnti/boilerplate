@@ -8,7 +8,7 @@ use Kirby\Image\Darkroom;
 use Kirby\Image\Focus;
 
 /**
- * GdLib
+ * GdLib darkroom driver
  *
  * @package   Kirby Image
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -28,9 +28,9 @@ class GdLib extends Darkroom
 
 		$image = new SimpleImage();
 		$image->fromFile($file);
+		$image->autoOrient();
 
 		$image = $this->resize($image, $options);
-		$image = $this->autoOrient($image, $options);
 		$image = $this->blur($image, $options);
 		$image = $this->grayscale($image, $options);
 		$image = $this->sharpen($image, $options);
@@ -41,34 +41,13 @@ class GdLib extends Darkroom
 	}
 
 	/**
-	 * Activates the autoOrient option in SimpleImage
-	 * unless this is deactivated
-	 */
-	protected function autoOrient(SimpleImage $image, array $options): SimpleImage
-	{
-		if ($options['autoOrient'] === false) {
-			return $image;
-		}
-
-		return $image->autoOrient();
-	}
-
-	/**
 	 * Wrapper around SimpleImage's resize and crop methods
 	 */
 	protected function resize(SimpleImage $image, array $options): SimpleImage
 	{
-		// just resize, no crop
-		if ($options['crop'] === false) {
-			return $image->resize($options['width'], $options['height']);
-		}
-
-		// crop based on focus point
-		if (Focus::isFocalPoint($options['crop']) === true) {
-			// get crop coords for focal point:
-			// if image needs to be cropped, crop before resizing
+		if ($crop = $options['crop'] ?? null) {
 			if ($focus = Focus::coords(
-				$options['crop'],
+				$crop,
 				$options['sourceWidth'],
 				$options['sourceHeight'],
 				$options['width'],
@@ -85,12 +64,8 @@ class GdLib extends Darkroom
 			return $image->thumbnail($options['width'], $options['height']);
 		}
 
-		// normal crop with crop anchor
-		return $image->thumbnail(
-			$options['width'],
-			$options['height'] ?? $options['width'],
-			$options['crop']
-		);
+
+		return $image->resize($options['width'], $options['height']);
 	}
 
 	/**

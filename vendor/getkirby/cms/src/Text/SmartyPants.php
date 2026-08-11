@@ -37,31 +37,32 @@ class SmartyPants
 	{
 		return [
 			'attr'                       => 1,
-			'doublequote.open'           => '&#8220;',
-			'doublequote.close'          => '&#8221;',
-			'doublequote.low'            => '&#8222;',
-			'singlequote.open'           => '&#8216;',
-			'singlequote.close'          => '&#8217;',
-			'backtick.doublequote.open'  => '&#8220;',
-			'backtick.doublequote.close' => '&#8221;',
-			'backtick.singlequote.open'  => '&#8216;',
-			'backtick.singlequote.close' => '&#8217;',
-			'emdash'                     => '&#8212;',
-			'endash'                     => '&#8211;',
-			'ellipsis'                   => '&#8230;',
+			'convert.quot'               => true,
+			'doublequote.open'           => '“',
+			'doublequote.close'          => '”',
+			'doublequote.low'            => '„',
+			'singlequote.open'           => '‘',
+			'singlequote.close'          => '’',
+			'backtick.doublequote.open'  => '“',
+			'backtick.doublequote.close' => '”',
+			'backtick.singlequote.open'  => '‘',
+			'backtick.singlequote.close' => '’',
+			'emdash'                     => '—',
+			'endash'                     => '–',
+			'ellipsis'                   => '…',
 			'space'                      => '(?: | |&nbsp;|&#0*160;|&#x0*[aA]0;)',
 			'space.emdash'               => ' ',
 			'space.endash'               => ' ',
-			'space.colon'                => '&#160;',
-			'space.semicolon'            => '&#160;',
-			'space.marks'                => '&#160;',
-			'space.frenchquote'          => '&#160;',
-			'space.thousand'             => '&#160;',
-			'space.unit'                 => '&#160;',
-			'guillemet.leftpointing'     => '&#171;',
-			'guillemet.rightpointing'    => '&#187;',
-			'geresh'                     => '&#1523;',
-			'gershayim'                  => '&#1524;',
+			'space.colon'                => "\u{00A0}",
+			'space.semicolon'            => "\u{00A0}",
+			'space.marks'                => "\u{00A0}",
+			'space.frenchquote'          => "\u{00A0}",
+			'space.thousand'             => "\u{00A0}",
+			'space.unit'                 => "\u{00A0}",
+			'guillemet.leftpointing'     => '«',
+			'guillemet.rightpointing'    => '»',
+			'geresh'                     => '׳',
+			'gershayim'                  => '״',
 			'skip'                       => 'pre|code|kbd|script|style|math',
 		];
 	}
@@ -72,10 +73,11 @@ class SmartyPants
 	 */
 	public function __construct(array $options = [])
 	{
-		$this->options = array_merge($this->defaults(), $options);
+		$this->options = [...$this->defaults(), ...$options];
 		$this->parser  = new SmartyPantsTypographer($this->options['attr']);
 
 		// configuration
+		$this->parser->convert_quot               = $this->options['convert.quot'];
 		$this->parser->smart_doublequote_open     = $this->options['doublequote.open'];
 		$this->parser->smart_doublequote_close    = $this->options['doublequote.close'];
 		$this->parser->smart_singlequote_open     = $this->options['singlequote.open'];
@@ -111,7 +113,6 @@ class SmartyPants
 	{
 		// prepare the text
 		$text ??= '';
-		$text   = str_replace('&quot;', '"', $text);
 
 		// parse the text
 		return $this->parser->transform($text);

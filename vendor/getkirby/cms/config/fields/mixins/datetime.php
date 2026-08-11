@@ -7,11 +7,14 @@ return [
 		/**
 		 * Defines a custom format that is used when the field is saved
 		 */
-		'format' => function (string $format = null) {
+		'format' => function (string|null $format = null) {
 			return $format;
 		}
 	],
 	'methods' => [
+		'emptyValue' => function () {
+			return '';
+		},
 		'toDatetime' => function ($value, string $format = 'Y-m-d H:i:s') {
 			if ($date = Date::optional($value)) {
 				if ($this->step) {

@@ -15,6 +15,13 @@ return [
 		'placeholder' => null,
 
 		/**
+		 * Show/hide the batch select toggle
+		 */
+		'batch' => function (bool $batch = false) {
+			return $batch;
+		},
+
+		/**
 		 * Arranges the checkboxes in the given number of columns
 		 */
 		'columns' => function (int $columns = 1) {
@@ -29,13 +36,13 @@ return [
 		/**
 		 * Maximum number of checked boxes
 		 */
-		'max' => function (int $max = null) {
+		'max' => function (int|null $max = null) {
 			return $max;
 		},
 		/**
 		 * Minimum number of checked boxes
 		 */
-		'min' => function (int $min = null) {
+		'min' => function (int|null $min = null) {
 			return $min;
 		},
 		'value' => function ($value = null) {
@@ -49,6 +56,11 @@ return [
 		'value' => function () {
 			return $this->sanitizeOptions($this->value);
 		},
+	],
+	'methods' => [
+		'emptyValue' => function () {
+			return [];
+		}
 	],
 	'save' => function ($value): string {
 		return A::join($value, ', ');

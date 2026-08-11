@@ -21,26 +21,17 @@ if ($defaultModule !== false) {
 
 // Exclude modules
 $excludedModules = option('medienbaecker.modules.exclude', []);
-if (!empty($excludedModules)) {
-
-  foreach($excludedModules as $excludedModule) {
-    if (in_array('module.' . $excludedModule, $blueprints)) {
-      $key = array_search('module.' . $excludedModule, $blueprints);
-      unset($blueprints[$key]);
-    }
+foreach ($excludedModules as $excludedModule) {
+  $key = array_search('module.' . $excludedModule, $blueprints);
+  if ($key !== false) {
+    unset($blueprints[$key]);
   }
 }
 
-$base = Section::$types['pages'];
-
-if (is_string($base)) {
-  $base = include $base;
-}
-
-return array_replace_recursive($base, [
+return array_replace_recursive(require Section::$types['pages'], [
   'props' => [
-    'create' => function ($create = null) use ($blueprints) {
-      return $create ?? $blueprints;
+    'templates' => function ($templates = null) use ($blueprints) {
+      return $templates ?? $blueprints;
     },
     'empty' => function ($empty = null) {
       return $empty ?? I18n::translate('modules.empty');
@@ -51,7 +42,11 @@ return array_replace_recursive($base, [
     'info' => function (string $info = '{{ page.moduleName }}') {
       return $info;
     },
-    'image' => false,
+    'image' => [
+      'query' => false,
+      'back' => 'item-color-back',
+      'color' => 'item-color',
+    ],
     'parent' => function ($parent = null) {
       $class = get_class($this->model()) === 'Kirby\Cms\Site' ? 'site' : 'page';
       return $this->model()->find('modules') ? $class . '.find("modules")' : $parent;

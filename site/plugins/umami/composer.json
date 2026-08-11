@@ -1,0 +1,31 @@
+{
+  "name": "schnti/umami",
+  "version": "1.0.0",
+  "type": "kirby-plugin",
+  "description": "Simple Kirby plugin adding an Umami analytics link to the Panel and a frontend tracking snippet.",
+  "homepage": "https://github.com/schnti/kirby-umami",
+  "authors": [
+    {
+      "name": "Timo Schneider",
+      "email": "info@kleiner-als.de",
+      "homepage": "https://kleiner-als.de/"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "kirby",
+    "kirby-cms",
+    "kirby-plugin"
+  ],
+  "require": {
+    "getkirby/composer-installer": "^1.1",
+    "getkirby/cms": "^4.0 || ^5.0"
+  },
+  "autoload": {},
+  "config": {
+    "optimize-autoloader": true
+  },
+  "extra": {
+    "installer-name": "umami"
+  }
+}

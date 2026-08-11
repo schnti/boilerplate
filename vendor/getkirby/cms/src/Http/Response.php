@@ -4,8 +4,10 @@ namespace Kirby\Http;
 
 use Closure;
 use Exception;
+use Kirby\Cms\App;
 use Kirby\Exception\LogicException;
 use Kirby\Filesystem\F;
+use Stringable;
 
 /**
  * Representation of an Http response,
@@ -18,7 +20,7 @@ use Kirby\Filesystem\F;
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
  */
-class Response
+class Response implements Stringable
 {
 	/**
 	 * Store for all registered headers,
@@ -74,7 +76,7 @@ class Response
 		$this->charset = $charset ?? 'UTF-8';
 
 		// automatic mime type detection
-		if (strpos($this->type, '/') === false) {
+		if (str_contains($this->type, '/') === false) {
 			$this->type = F::extensionToMime($this->type) ?? 'text/html';
 		}
 	}
@@ -134,7 +136,7 @@ class Response
 		array $props = []
 	): static {
 		if (file_exists($file) === false) {
-			throw new Exception('The file could not be found');
+			throw new Exception(message: 'The file could not be found');
 		}
 
 		$filename ??= basename($file);
@@ -160,6 +162,23 @@ class Response
 	}
 
 	/**
+	 * Ensures safe MIME type handling by forcing plain text
+	 * for files without recognizable MIME types to harden
+	 * against attacks from malicious file uploads
+	 * @since 5.3.0
+	 * @internal
+	 */
+	public static function ensureSafeMimeType(array $props): array
+	{
+		if ($props['type'] === null) {
+			$props['type'] = 'text/plain';
+			$props['headers']['X-Content-Type-Options'] = 'nosniff';
+		}
+
+		return $props;
+	}
+
+	/**
 	 * Creates a response for a file and
 	 * sends the file content to the browser
 	 *
@@ -167,22 +186,24 @@ class Response
 	 */
 	public static function file(string $file, array $props = []): static
 	{
-		$props = array_merge([
-			'body' => F::read($file),
-			'type' => F::extensionToMime(F::extension($file))
-		], $props);
+		$request = App::instance(lazy: true)?->request();
 
-		// if we couldn't serve a correct MIME type, force
-		// the browser to display the file as plain text to
-		// harden against attacks from malicious file uploads
-		if ($props['type'] === null) {
-			if (isset($props['headers']) !== true) {
-				$props['headers'] = [];
-			}
-
-			$props['type'] = 'text/plain';
-			$props['headers']['X-Content-Type-Options'] = 'nosniff';
+		// handle byte-range requests (e.g., for video streaming in Safari)
+		if ($range = $request?->header('Range')) {
+			return Range::response($file, $range, $props);
 		}
+
+		// always indicate that byte-range requests are supported
+		$props['headers'] = [
+			'Accept-Ranges' => 'bytes',
+			...$props['headers'] ?? []
+		];
+
+		$props = static::ensureSafeMimeType([
+			'body' => F::read($file),
+			'type' => F::extensionToMime(F::extension($file)),
+			...$props
+		]);
 
 		return new static($props);
 	}
@@ -273,6 +294,26 @@ class Response
 	}
 
 	/**
+	 * Creates a refresh response, which will
+	 * send the visitor to the given location
+	 * after the specified number of seconds.
+	 *
+	 * @since 5.0.3
+	 */
+	public static function refresh(
+		string $location = '/',
+		int $code = 302,
+		int $refresh = 0
+	): static {
+		return new static([
+			'code'    => $code,
+			'headers' => [
+				'Refresh' => $refresh . '; url=' . Url::unIdn($location)
+			]
+		]);
+	}
+
+	/**
 	 * Sends all registered headers and
 	 * returns the response body
 	 */
@@ -287,10 +328,23 @@ class Response
 		}
 
 		// send the content type header
-		header('Content-Type:' . $this->type() . '; charset=' . $this->charset());
+		header('Content-Type: ' . $this->type() . '; charset=' . $this->charset());
 
 		// print the response body
 		return $this->body();
+	}
+
+	/**
+	 * Sets the provided headers in case they are not already set
+	 * @internal
+	 * @return $this
+	 */
+	public function setHeaderFallbacks(array $headers): static
+	{
+		// the case-insensitive nature of headers will be
+		// handled by PHP's `header()` functions
+		$this->headers = [...$headers, ...$this->headers];
+		return $this;
 	}
 
 	/**

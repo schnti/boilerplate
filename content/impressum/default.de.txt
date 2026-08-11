@@ -4,7 +4,7 @@ Title: Impressum
 
 Text: 
 
-## Angaben gemäß § 5 TMG
+## Angaben
 
 Muster GmbH
 Musterstraße 111
@@ -47,18 +47,13 @@ Musterweg 10
 Geltungsraum der Versicherung:
 Deutschland
 
-### Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+### Verantwortlich für den Inhalt
 
 [Anschriften und Themengebiete der verantwortlichen Personen]
 
 ### Streitschlichtung
 
-Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr.
-Unsere E-Mail-Adresse finden Sie oben im Impressum.
-
 Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
-
-(legal: disclaimer)
 
 **Website Konzeption, Gestaltung und Umsetzung**
 timo schneider / kleiner als / webdesign 

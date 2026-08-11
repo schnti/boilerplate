@@ -2,8 +2,8 @@
 
 namespace Kirby\Cms;
 
-use Exception;
 use Kirby\Data\Data;
+use Kirby\Toolkit\BlockCollectionAccess;
 use Kirby\Toolkit\Str;
 
 /**
@@ -68,10 +68,11 @@ class Translation
 			return $this->data;
 		}
 
-		// get the fallback array
-		$fallback = App::instance()->translation('en')->data();
-
-		return array_merge($fallback, $this->data);
+		return [
+			// add the fallback array
+			...App::instance()->translation('en')->data(),
+			...$this->data
+		];
 	}
 
 	/**
@@ -87,7 +88,7 @@ class Translation
 	 * Returns a single translation
 	 * string by key
 	 */
-	public function get(string $key, string $default = null): string|null
+	public function get(string $key, string|null $default = null): string|null
 	{
 		return $this->data[$key] ?? $default;
 	}
@@ -105,16 +106,16 @@ class Translation
 	 * Loads the translation from the
 	 * json file in Kirby's translations folder
 	 */
+	#[BlockCollectionAccess]
 	public static function load(
 		string $code,
 		string $root,
 		array $inject = []
 	): static {
-		try {
-			$data = array_merge(Data::read($root), $inject);
-		} catch (Exception) {
-			$data = [];
-		}
+		$data = [
+			...Data::read($root, fail: false),
+			...$inject
+		];
 
 		return new static($code, $data);
 	}

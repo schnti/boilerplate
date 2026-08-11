@@ -4,16 +4,22 @@ use Kirby\Cms\App;
 use Kirby\Cms\Collection;
 use Kirby\Cms\File;
 use Kirby\Cms\FileVersion;
+use Kirby\Cms\ModelWithContent;
 use Kirby\Cms\Page;
 use Kirby\Cms\User;
+use Kirby\Content\PlainTextStorage;
+use Kirby\Content\Storage;
 use Kirby\Data\Data;
 use Kirby\Email\PHPMailer as Emailer;
+use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\NotFoundException;
+use Kirby\Filesystem\Asset;
 use Kirby\Filesystem\F;
 use Kirby\Filesystem\Filename;
 use Kirby\Http\Uri;
 use Kirby\Http\Url;
 use Kirby\Image\Darkroom;
+use Kirby\Session\SessionStore;
 use Kirby\Template\Snippet;
 use Kirby\Template\Template;
 use Kirby\Text\Markdown;
@@ -58,35 +64,43 @@ return [
 	/**
 	 * Adapt file characteristics
 	 *
-	 * @param \Kirby\Cms\File|\Kirby\Filesystem\Asset $file The file object
 	 * @param array $options All thumb options (width, height, crop, blur, grayscale)
-	 * @return \Kirby\Cms\File|\Kirby\Cms\FileVersion|\Kirby\Filesystem\Asset
 	 */
 	'file::version' => function (
 		App $kirby,
-		$file,
+		File|Asset $file,
 		array $options = []
-	) {
+	): File|Asset|FileVersion {
 		// if file is not resizable, return
 		if ($file->isResizable() === false) {
 			return $file;
 		}
 
 		// create url and root
-		$mediaRoot = dirname($file->mediaRoot());
+		$mediaRoot = $file->mediaDir();
 		$template  = $mediaRoot . '/{{ name }}{{ attributes }}.{{ extension }}';
 		$thumbRoot = (new Filename($file->root(), $template, $options))->toString();
 		$thumbName = basename($thumbRoot);
+		$job       = $mediaRoot . '/.jobs/' . $thumbName . '.json';
 
-		// check if the thumb already exists
-		if (file_exists($thumbRoot) === false) {
+		// additional protection against path traversal
+		// e.g. from dynamic user-controlled file or asset objects
+		// or malicious data in the `$options`; we check both for `../` and `..\` (Windows)
+		if (Str::contains(Str::replace($thumbRoot, '\\', '/'), '../') === true) {
+			throw new InvalidArgumentException('Received unexpected generated thumb root');
+		}
+
+		// check if the thumb or job file already exists
+		if (
+			file_exists($thumbRoot) === false &&
+			file_exists($job) === false
+		) {
 			// if not, create job file
-			$job = $mediaRoot . '/.jobs/' . $thumbName . '.json';
-
 			try {
-				Data::write($job, array_merge($options, [
-					'filename' => $file->filename()
-				]));
+				Data::write(
+					$job,
+					[...$options, 'filename' => $file->filename()]
+				);
 			} catch (Throwable) {
 				// if thumb doesn't exist yet and job file cannot
 				// be created, return
@@ -98,7 +112,7 @@ return [
 			'modifications' => $options,
 			'original'      => $file,
 			'root'          => $thumbRoot,
-			'url'           => dirname($file->mediaUrl()) . '/' . $thumbName,
+			'url'           => $file->mediaUrl($thumbName),
 		]);
 	},
 
@@ -118,7 +132,7 @@ return [
 	 */
 	'markdown' => function (
 		App $kirby,
-		string $text = null,
+		string|null $text = null,
 		array $options = []
 	): string {
 		static $markdown;
@@ -149,16 +163,15 @@ return [
 			$params = ['fields' => Str::split($params, '|')];
 		}
 
-		$defaults = [
+		$collection = clone $collection;
+		$query      = trim($query ?? '');
+		$options    = [
 			'fields'    => [],
 			'minlength' => 2,
 			'score'     => [],
 			'words'     => false,
+			...$params
 		];
-
-		$collection  = clone $collection;
-		$options     = array_merge($defaults, $params);
-		$query       = trim($query ?? '');
 
 		// empty or too short search query
 		if (Str::length($query) < $options['minlength']) {
@@ -203,10 +216,11 @@ return [
 				$keys[] = 'role';
 			} elseif ($item instanceof Page) {
 				// apply the default score for pages
-				$options['score'] = array_merge(
-					['id' => 64, 'title' => 64],
-					$options['score']
-				);
+				$options['score'] = [
+					'id'    => 64,
+					'title' => 64,
+					...$options['score']
+				];
 			}
 
 			if (empty($options['fields']) === false) {
@@ -263,6 +277,13 @@ return [
 	},
 
 	/**
+	 * Add your own session store
+	 */
+	'session::store' => function (App $kirby): string|SessionStore {
+		return $kirby->root('sessions');
+	},
+
+	/**
 	 * Add your own SmartyPants parser
 	 *
 	 * @param string $text Text to parse
@@ -270,7 +291,7 @@ return [
 	 */
 	'smartypants' => function (
 		App $kirby,
-		string $text = null,
+		string|null $text = null,
 		array $options = []
 	): string {
 		static $smartypants;
@@ -302,6 +323,16 @@ return [
 	},
 
 	/**
+	 * Create a new storage object for the given model
+	 */
+	'storage' => function (
+		App $kirby,
+		ModelWithContent $model
+	): Storage {
+		return new PlainTextStorage(model: $model);
+	},
+
+	/**
 	 * Add your own template engine
 	 *
 	 * @param string $name Template name
@@ -324,7 +355,6 @@ return [
 	 * @param string $src Root of the original file
 	 * @param string $dst Template string for the root to the desired destination
 	 * @param array $options All thumb options that should be applied: `width`, `height`, `crop`, `blur`, `grayscale`
-	 * @return string
 	 */
 	'thumb' => function (
 		App $kirby,
@@ -336,11 +366,31 @@ return [
 			$kirby->option('thumbs.driver', 'gd'),
 			$kirby->option('thumbs', [])
 		);
-		$options = $darkroom->preprocess($src, $options);
-		$root    = (new Filename($src, $dst, $options))->toString();
+		$options   = $darkroom->preprocess($src, $options);
+		$root      = (new Filename($src, $dst, $options))->toString();
+		$extension = F::extension($root);
 
-		F::copy($src, $root, true);
-		$darkroom->process($root, $options);
+		// generate the thumb in a temp file so broken output never appears at the final path
+		$tempRoot  = F::dirname($root) . '/' . F::name($root) . '.tmp-' . uniqid();
+
+		// keep the original extension so the darkroom can infer the output format.
+		if ($extension !== '') {
+			$tempRoot .= '.' . $extension;
+		}
+
+		F::copy($src, $tempRoot, true);
+
+		try {
+			$darkroom->process($tempRoot, $options);
+
+			// move the finished file into place so the final path
+			// only appears once generation succeeded
+			F::move($tempRoot, $root, true);
+		} catch (Throwable $e) {
+			// clean up the temp file so failed jobs don't leave broken output behind
+			F::remove($tempRoot);
+			throw $e;
+		}
 
 		return $root;
 	},
@@ -354,7 +404,7 @@ return [
 	 */
 	'url' => function (
 		App $kirby,
-		string $path = null,
+		string|null $path = null,
 		$options = null
 	): string {
 		$language = null;
@@ -377,12 +427,20 @@ return [
 
 			if ($parts[0] ?? null) {
 				$page = $kirby->site()->find($parts[0]);
+
+				// get the extension of the url, if there is one, to add it back later
+				$extension = F::extension($parts[0]);
 			} else {
 				$page = $kirby->site()->page();
 			}
 
 			if ($page) {
 				$path = $page->url($language);
+
+				// add the extension back to the url, if there was one
+				if (isset($extension) === true && $extension !== '') {
+					$path .= '.' . $extension;
+				}
 
 				if (isset($parts[1]) === true) {
 					$path .= '#' . $parts[1];
@@ -393,7 +451,7 @@ return [
 		// keep relative urls
 		if (
 			$path !== null &&
-			(substr($path, 0, 2) === './' || substr($path, 0, 3) === '../')
+			(str_starts_with($path, './')  || str_starts_with($path, '../'))
 		) {
 			return $path;
 		}
@@ -401,15 +459,14 @@ return [
 		// support UUIDs
 		if (
 			$path !== null &&
-			(
-				Uuid::is($path, 'page') === true ||
-				Uuid::is($path, 'file') === true
-			)
+			Uuid::is($path, ['page', 'file']) === true
 		) {
 			$model = Uuid::for($path)->model();
 
 			if ($model === null) {
-				throw new NotFoundException('The model could not be found for "' . $path . '" uuid');
+				throw new NotFoundException(
+					message: 'The model could not be found for "' . $path . '" uuid'
+				);
 			}
 
 			$path = $model->url();

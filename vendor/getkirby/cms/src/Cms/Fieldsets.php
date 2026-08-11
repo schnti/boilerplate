@@ -16,6 +16,8 @@ use Kirby\Toolkit\Str;
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
+ *
+ * @extends \Kirby\Cms\Items<\Kirby\Cms\Fieldset>
  */
 class Fieldsets extends Items
 {
@@ -53,8 +55,8 @@ class Fieldsets extends Items
 			// extract groups
 			if ($fieldset['type'] === 'group') {
 				$result    = static::createFieldsets($fieldset['fieldsets'] ?? []);
-				$fieldsets = array_merge($fieldsets, $result['fieldsets']);
-				$label     = $fieldset['label'] ?? Str::ucfirst($type);
+				$fieldsets = [...$fieldsets, ...$result['fieldsets']];
+				$label     = $fieldset['label'] ?? Str::label($type);
 
 				$groups[$type] = [
 					'label'     => I18n::translate($label, $label),
@@ -74,7 +76,7 @@ class Fieldsets extends Items
 	}
 
 	public static function factory(
-		array $items = null,
+		array|null $items = null,
 		array $params = []
 	): static {
 		$items ??= App::instance()->option('blocks.fieldsets', [

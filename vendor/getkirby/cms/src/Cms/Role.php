@@ -2,10 +2,12 @@
 
 namespace Kirby\Cms;
 
-use Exception;
 use Kirby\Data\Data;
 use Kirby\Filesystem\F;
+use Kirby\Toolkit\BlockCollectionAccess;
 use Kirby\Toolkit\I18n;
+use Kirby\Toolkit\Str;
+use Stringable;
 
 /**
  * Represents a User role with attached
@@ -17,7 +19,7 @@ use Kirby\Toolkit\I18n;
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
  */
-class Role
+class Role implements Stringable
 {
 	protected string|null $description;
 	protected string $name;
@@ -48,13 +50,14 @@ class Role
 		return $this->name();
 	}
 
-	public static function admin(array $inject = []): static
+	public static function defaultAdmin(array $inject = []): static
 	{
-		try {
-			return static::load('admin');
-		} catch (Exception) {
-			return static::factory(static::defaults()['admin'], $inject);
-		}
+		return static::factory(static::defaults()['admin'], $inject);
+	}
+
+	public static function defaultNobody(array $inject = []): static
+	{
+		return static::factory(static::defaults()['nobody'], $inject);
 	}
 
 	protected static function defaults(): array
@@ -82,12 +85,58 @@ class Role
 
 	public static function factory(array $props, array $inject = []): static
 	{
-		return new static($props + $inject);
+		// ensure to properly extend the blueprint
+		$props = $props + $inject;
+		$props = Blueprint::extend($props);
+
+		return new static($props);
 	}
 
 	public function id(): string
 	{
 		return $this->name();
+	}
+
+	/**
+	 * Compares the current object with the given role object
+	 * @since 5.4.0
+	 */
+	public function is(Role|null $role = null): bool
+	{
+		if ($role === null) {
+			return false;
+		}
+
+		return $this->id() === $role->id();
+	}
+
+	/**
+	 * Checks if the role is accessible to the current user
+	 * @since 5.4.0
+	 */
+	public function isAccessible(): bool
+	{
+		$user = App::instance()->user();
+
+		// no access without authenticated user
+		if ($user === null) {
+			return false;
+		}
+
+		// check `user.access` for the current user with the same role
+		// (also ensures `access` option of the user's current role)
+		if ($user->role()->is($this) === true) {
+			return $user->isAccessible();
+		}
+
+		// check `users.access` for different roles
+		// (also ensures `access` option of the target role)
+		$tmpUser = new User([
+			'email' => 'test@getkirby.com',
+			'role'  => $this->id()
+		]);
+
+		return $tmpUser->isAccessible();
 	}
 
 	public function isAdmin(): bool
@@ -100,10 +149,13 @@ class Role
 		return $this->name() === 'nobody';
 	}
 
+	#[BlockCollectionAccess]
 	public static function load(string $file, array $inject = []): static
 	{
-		$data = Data::read($file);
-		$data['name'] = F::name($file);
+		$data = [
+			...Data::read($file),
+			'name' => F::name($file)
+		];
 
 		return static::factory($data, $inject);
 	}
@@ -113,15 +165,6 @@ class Role
 		return $this->name;
 	}
 
-	public static function nobody(array $inject = []): static
-	{
-		try {
-			return static::load('nobody');
-		} catch (Exception) {
-			return static::factory(static::defaults()['nobody'], $inject);
-		}
-	}
-
 	public function permissions(): Permissions
 	{
 		return $this->permissions;
@@ -129,7 +172,7 @@ class Role
 
 	public function title(): string
 	{
-		return $this->title ??= ucfirst($this->name());
+		return $this->title ??= Str::label($this->name());
 	}
 
 	/**

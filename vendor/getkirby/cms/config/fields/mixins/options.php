@@ -14,6 +14,9 @@ return [
 		 * An array with options
 		 */
 		'options' => function ($options = []) {
+			// make sure to flush the options cache when
+			// new options are being passed
+			$this->optionsCache = null;
 			return $options;
 		},
 		/**
@@ -25,7 +28,7 @@ return [
 	],
 	'computed' => [
 		'options' => function (): array {
-			return $this->getOptions();
+			return $this->optionsCache ??= $this->getOptions();
 		}
 	],
 	'methods' => [
@@ -36,7 +39,7 @@ return [
 		},
 		'sanitizeOption' => function ($value) {
 			$options = array_column($this->options(), 'value');
-			return in_array($value, $options) === true ? $value : null;
+			return in_array($value, $options) ? $value : null;
 		},
 		'sanitizeOptions' => function ($values) {
 			$options = array_column($this->options(), 'value');

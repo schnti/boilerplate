@@ -76,7 +76,7 @@ class Dir
 
 			if (
 				is_array($ignore) === true &&
-				in_array($root, $ignore) === true
+				in_array($root, $ignore, true) === true
 			) {
 				continue;
 			}
@@ -114,9 +114,14 @@ class Dir
 	/**
 	 * Checks if the directory exists on disk
 	 */
-	public static function exists(string $dir): bool
+	public static function exists(string $dir, string|null $in = null): bool
 	{
-		return is_dir($dir) === true;
+		try {
+			static::realpath($dir, $in);
+			return true;
+		} catch (Exception) {
+			return false;
+		}
 	}
 
 	/**
@@ -140,8 +145,8 @@ class Dir
 	/**
 	 * Read the directory and all subdirectories
 	 *
-	 * @todo Remove support for `$ignore = null` in a major release
-	 * @param array|false|null $ignore Array of absolut file paths;
+	 * @todo Remove support for `$ignore = null` in v6
+	 * @param array|false|null $ignore Array of absolute file paths;
 	 *                                 `false` to disable `Dir::$ignore` list
 	 *                                 (passing null is deprecated)
 	 */
@@ -149,7 +154,7 @@ class Dir
 		string $dir,
 		bool $recursive = false,
 		array|false|null $ignore = [],
-		string $path = null
+		string|null $path = null
 	): array {
 		$result = [];
 		$dir    = realpath($dir);
@@ -160,7 +165,7 @@ class Dir
 
 			if (
 				is_array($ignore) === true &&
-				in_array($root, $ignore) === true
+				in_array($root, $ignore, true) === true
 			) {
 				continue;
 			}
@@ -184,7 +189,7 @@ class Dir
 	 */
 	public static function isEmpty(string $dir): bool
 	{
-		return count(static::read($dir)) === 0;
+		return static::read($dir) === [];
 	}
 
 	/**
@@ -211,8 +216,6 @@ class Dir
 	 * relevant information.
 	 *
 	 * Don't use outside the Cms context.
-	 *
-	 * @internal
 	 */
 	public static function inventory(
 		string $dir,
@@ -242,7 +245,10 @@ class Dir
 		// loop through all directory items and collect all relevant information
 		foreach ($items as $item) {
 			// ignore all items with a leading dot or underscore
-			if (in_array(substr($item, 0, 1), ['.', '_']) === true) {
+			if (
+				str_starts_with($item, '.') ||
+				str_starts_with($item, '_')
+			) {
 				continue;
 			}
 
@@ -262,7 +268,7 @@ class Dir
 			$extension = pathinfo($item, PATHINFO_EXTENSION);
 
 			// don't track files with these extensions
-			if (in_array($extension, ['htm', 'html', 'php']) === true) {
+			if (in_array($extension, ['htm', 'html', 'php'], true) === true) {
 				continue;
 			}
 
@@ -314,7 +320,7 @@ class Dir
 		}
 
 		// determine the model
-		if (empty(Page::$models) === false) {
+		if (Page::$models !== []) {
 			if ($multilang === true) {
 				$code = App::instance()->defaultLanguage()->code();
 				$contentExtension = $code . '.' . $contentExtension;
@@ -434,7 +440,7 @@ class Dir
 	 */
 	public static function modified(
 		string $dir,
-		string $format = null,
+		string|null $format = null,
 		string|null $handler = null
 	): int|string {
 		$modified = filemtime($dir);
@@ -445,7 +451,10 @@ class Dir
 				true  => filemtime($dir . '/' . $item),
 				false => static::modified($dir . '/' . $item)
 			};
-			$modified = ($newModified > $modified) ? $newModified : $modified;
+
+			if ($newModified > $modified) {
+				$modified = $newModified;
+			}
 		}
 
 		return Str::date($modified, $format, $handler);
@@ -510,7 +519,7 @@ class Dir
 
 		// create the ignore pattern
 		$ignore ??= static::$ignore;
-		$ignore   = array_merge($ignore, ['.', '..']);
+		$ignore   = [...$ignore, '.', '..'];
 
 		// scan for all files and dirs
 		$result = array_values((array)array_diff(scandir($dir), $ignore));
@@ -521,6 +530,43 @@ class Dir
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Returns the absolute path to the directory if the directory can be found.
+	 * @since 4.7.1
+	 */
+	public static function realpath(string $dir, string|null $in = null): string
+	{
+		$realpath = realpath($dir);
+
+		if ($realpath === false || is_dir($realpath) === false) {
+			throw new Exception(sprintf('The directory does not exist at the given path: "%s"', $dir));
+		}
+
+		if ($in !== null) {
+			$parent = realpath($in);
+
+			if ($parent === false || is_dir($parent) === false) {
+				throw new Exception(sprintf('The parent directory does not exist: "%s"', $in));
+			}
+
+			// require a path separator boundary so that
+			// a sibling directory sharing the same name prefix
+			// (e.g. `/site2` for the parent `/site`)
+			// cannot pass the containment check
+			$parent = rtrim($parent, '/\\');
+
+			// TODO: Tighten to only allow **inside** $parent in v6
+			if (
+				$realpath !== $parent &&
+				str_starts_with($realpath, $parent . DIRECTORY_SEPARATOR) === false
+			) {
+				throw new Exception('The directory is not within the parent directory');
+			}
+		}
+
+		return $realpath;
 	}
 
 	/**
@@ -538,21 +584,93 @@ class Dir
 			return F::unlink($dir);
 		}
 
+		// Attempt an atomic rename before deletion to prevent race conditions
+		// where concurrent processes write new files between our scandir() and
+		// rmdir() calls: once renamed, the original path is gone and concurrent
+		// writes land in a fresh directory.
+		// The system tmp dir is tried first so the OS can garbage-collect any
+		// leftovers automatically; rename() across filesystems fails immediately
+		// (e.g. Linux tmpfs), so we fall back to a same-filesystem sibling dir.
+		$tmp = null;
+
+		foreach ([sys_get_temp_dir(), dirname($dir)] as $tmpParent) {
+			$candidate = $tmpParent . '/.remove-' . uniqid('', true);
+
+			$renamed = Helpers::handleErrors(
+				fn (): bool => rename($dir, $candidate),
+				fn () => true,
+				false
+			);
+
+			if ($renamed === true) {
+				$tmp = $candidate;
+				break;
+			}
+		}
+
+		if ($tmp !== null) {
+			// Original path is atomically gone; clean up the renamed copy.
+			// If cleanup fails, we still return true because the original path
+			// no longer exists and any tmp leftovers will be garbage-collected by the OS.
+			try {
+				static::removeRecursive($tmp);
+			} catch (Throwable) {
+				// ignore
+			}
+			return true;
+		}
+
+		// Rename failed (e.g. permission on parent); fall back to in-place removal.
+		// Delete all contents first, then retry to tolerate transient
+		// "directory not empty" errors caused by concurrent writes.
+		static::removeRecursive($dir);
+
+		// removeRecursive may have already removed $dir successfully;
+		// only retry if it still exists
+		if (is_dir($dir) === false) {
+			return true;
+		}
+
+		for ($attempt = 0; $attempt < 5; $attempt++) {
+			if ($attempt > 0) {
+				usleep(10_000);
+			}
+
+			static::removeRecursive($dir);
+
+			if (is_dir($dir) === false) {
+				return true;
+			}
+		}
+
+		throw new Exception('The directory could not be deleted');
+	}
+
+	/**
+	 * Recursively removes all contents of a directory and then the directory
+	 * itself; errors on the final rmdir are silently suppressed so that
+	 * partial failures (e.g. inside a renamed tmp dir) do not abort callers
+	 */
+	protected static function removeRecursive(string $dir): void
+	{
 		foreach (scandir($dir) as $childName) {
-			if (in_array($childName, ['.', '..']) === true) {
+			if (in_array($childName, ['.', '..'], true) === true) {
 				continue;
 			}
 
 			$child = $dir . '/' . $childName;
 
 			if (is_dir($child) === true && is_link($child) === false) {
-				static::remove($child);
+				static::removeRecursive($child);
 			} else {
 				F::unlink($child);
 			}
 		}
 
-		return rmdir($dir);
+		Helpers::handleErrors(
+			fn (): bool => rmdir($dir),
+			fn () => true
+		);
 	}
 
 	/**
@@ -567,14 +685,20 @@ class Dir
 			return false;
 		}
 
-		// Get size for all direct files
-		$size = F::size(static::files($dir, null, true));
+		$size = 0;
 
-		// if recursive, add sizes of all subdirectories
-		if ($recursive === true) {
-			foreach (static::dirs($dir, null, true) as $subdir) {
-				$size += static::size($subdir);
+		// Read once and distinguish files from subdirs per entry
+		// instead of scanning the directory twice via ::files() and ::dirs()
+		foreach (static::read($dir, absolute: true) as $item) {
+			if (is_dir($item) === true) {
+				if ($recursive === true) {
+					$size += static::size($item);
+				}
+
+				continue;
 			}
+
+			$size += F::size($item);
 		}
 
 		return $size;

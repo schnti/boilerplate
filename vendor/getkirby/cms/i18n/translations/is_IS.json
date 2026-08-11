@@ -1,4 +1,5 @@
 {
+	"account": "Reikningur",
 	"account.changeName": "Breyta nafninu þínu",
 	"account.delete": "Eyða notandareikning þínum",
 	"account.delete.confirm": "Ertu alveg viss um að þú viljir endanlega eyða reikningnum þínum? Þú munt verða útskráð/ur án tafar. Ómögulegt verður að endurheimta reikninginn þinn.",
@@ -21,6 +22,8 @@
 	"copy": "Afrita",
 	"copy.all": "Afrita allt",
 	"copy.success": "Afritaði {count}!",
+	"copy.success.multiple": "Afritaði {count}!",
+	"copy.url": "Afrita slóð",
 	"create": "Stofna",
 	"custom": "Sérstillt",
 
@@ -40,6 +43,9 @@
 
 	"delete": "Eyða",
 	"delete.all": "Eyða hreint öllu",
+
+	"deselect": "Afvelja",
+	"deselect.all": "Afvelja allt",
 
 	"dialog.fields.empty": "Þessi valmynd hefur engin svið",
 	"dialog.files.empty": "Engar skrár til að velja úr",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Ógyld skyndiminnisgerð \"{type}\"",
 
+	"error.content.lock.delete": "Þessi útgáfa er læst og henni verður ekki eytt",
+	"error.content.lock.move": "Þessi útgáfa er læst og hún verður ekki færð",
+	"error.content.lock.publish": "Þessi útgáfa er núþegar útgefin",
+	"error.content.lock.replace": "Þessi útfáfa er læst og það verður ekki skipt út",
+	"error.content.lock.update": "Þessi útgáfa er læst og hún verður ekki uppfærð",
+
+	"error.entries.max.plural": "Ekki fleiri en {max} færslur",
+	"error.entries.max.singular": "Hámark ein færsla",
+	"error.entries.min.plural": "Að minnsta kosti {min} færslur",
+	"error.entries.min.singular": "Þú skalt setja inn a.m.k. eina færslu",
+	"error.entries.supports": "\"{type}\" sviðsgerðin er ekki studd fyrir færslu svið",
+	"error.entries.validation": "Það er villa í \"{field}\" sviðinu í röð {index}",
+
 	"error.email.preset.notFound": "Netfangstillingarnar: \"{name}\" fundust ekki",
 
 	"error.field.converter.invalid": "Ógildur umbreytari \"{converter}\"",
+	"error.field.link.options": "Ógildar stillingar: {options}",
 	"error.field.type.missing": "Sviðið \"{ name }\": Sviðgerðin er \"{type}\" er alls ekki til.",
 
 	"error.file.changeName.empty": "Nafn skal fylla út",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "Sniðmátinu fyrir skránna \"{id}\" er ekki hægt að breyta í  \"{template}\" (gild: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "Þú mátt ekkert breyta sniðmátinu fyrir skránna \"{id}\"",
 
+	"error.file.delete.multiple": "Ekki var unnt að eyða öllum skrám. Reyndu að eyða hverri og einni til þess að sjá hvort þessi villa hindri eyðingu.",
 	"error.file.duplicate": "Skrá með nafninu \"{filename}\" er nú þegar til",
 	"error.file.extension.forbidden": "Skrárendingin \"{extension}\" er ekki leyfð",
 	"error.file.extension.invalid": "Óleyfilegt skrársnið hér: {extension}",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Skrárnafnið má ekki skilja eftir tómt",
 	"error.file.notFound": "Skráin \"{filename}\" fannst ekki",
 	"error.file.orientation": "Snið myndarinnar þarf að vera \"{orientation}\"",
+	"error.file.sort.permission": "Þú mátt ekkert breyta röðuninni á  \"{filename}\"",
 	"error.file.type.forbidden": "Þú mátt ekkert hlaða inn {type} skrám",
 	"error.file.type.invalid": "Ógild skrártegund: {type}",
 	"error.file.undefined": "Skráin fannst ekki",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Ekki tókst að vista upplýsingar úr forminu",
 
 	"error.language.code": "Gófúslega settu inn gildan kóða fyrir tungumál",
+	"error.language.create.permission": "You are not allowed to create a language",
+	"error.language.delete.permission": "You are not allowed to delete the language",
 	"error.language.duplicate": "Þetta tungumál er nú þegar skráð",
 	"error.language.name": "Gott og gyllt nafn fyrir tungumálið",
 	"error.language.notFound": "Tungumálið fannst ekkert",
+	"error.language.update.permission": "You are not allowed to update the language",
 
 	"error.layout.validation.block": "Það er villa í {field} sviðinu í bálkinum {blockIndex} sem notar {fieldset} bálkgerðina í rammanum {layoutIndex}",
 	"error.layout.validation.settings": "Hér er villa í sitllingum fyrir ramman {index}",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Síðunni \"{slug}\" er ekki hægt að eyða",
 	"error.page.delete.confirm": "Ritaðu titil síðunnar til að staðfesta",
 	"error.page.delete.hasChildren": "Síðan hefur undirsíður og er því ekki hægt að eyða",
+	"error.page.delete.multiple": "Ekki var unnt að eyða öllum síðum. Reyndu að eyða hverri og einni til þess að sjá hvort þessi villa hindri eyðingu.",
 	"error.page.delete.permission": "Þú mátt ekkert eyða \"{slug}\"",
 	"error.page.draft.duplicate": "Uppkast með slóðinni \"{slug}\" er þegar til",
 	"error.page.duplicate": "Síða með slóðinni \"{slug}\" er þegar til",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "Það er ekki hægt að færa síðuna á sjálfa sig.",
 	"error.page.move.directory": "Ekki er reyndist unnt að færa möppu síðunnar.",
 	"error.page.move.duplicate": "Undirsíða með slóðinni og forskeytinu \"{slug}\" er núþegar til",
+	"error.page.move.noSections": "Síðan \"{parent}\" getur ekki átt undirsíður þar sem tilskylin svið til umsýslu á undirsíðum vantar",
 	"error.page.move.notFound": "Síðan sem færð var finnst því miður ekki",
 	"error.page.move.permission": "Þú mátt ekkert færa \"{slug}\"",
 	"error.page.move.template": "Sniðmátið \"{template}\" er ekki gillt sem undirsíða af \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Ákjósanlega síðustöðu takk",
 	"error.page.undefined": "Síðan fannst ekkert",
 	"error.page.update.permission": "Þú mátt ekkert uppfæra síðuna \"{slug}\"",
+
+	"error.role.notFound": "The role \"{name}\" cannot be found",
 
 	"error.section.files.max.plural": "Ekki fleiri en {max} skrár í  \"{section}\" svæðið",
 	"error.section.files.max.singular": "Aðeins ein skrá í  \"{section}\" svæðið",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Ekki skilja titilinn eftir tóman",
 	"error.site.changeTitle.permission": "Þú mátt ekkert breyta titil vefsvæðisins",
+	"error.site.notAccessible": "The site is not accessible",
 	"error.site.update.permission": "Þú mátt ekkert uppfæra vefsvæðið",
 
 	"error.structure.validation": "Það er villa í \"{field}\" sviðinu í röð {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Vinsamlegast gillt UUID (Notandakenni)",
 	"error.validation.url": "Ákjósanleg vefslóð",
 
+	"error.version.discard.permission": "Þú mátt ekki hunsa þessa útgáfu",
+	"error.version.publish.permission": "Þú mátt ekki gefa út þessa útgáfu",
+	"error.version.save.permission": "Þú mátt ekki breyta þessari útgáfu",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Þenja út",
-	"expand.all": "Þenja allt út",
+	"expand.all": "Sýna allt",
 
 	"field.invalid": "Þetta svið er bara ógillt sem stendur.",
 	"field.required": "Þetta svið er nauðsynlegt",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Fyrirsögn",
 	"field.blocks.heading.text": "Texti/Prósi",
 	"field.blocks.heading.placeholder": "Fyrirsögn …",
+	"field.blocks.figure.back.plain": "Látlaust",
+	"field.blocks.figure.back.pattern.light": "Mynstur (ljóst)",
+	"field.blocks.figure.back.pattern.dark": "Mynstur (dökkt)",
 	"field.blocks.image.alt": "ALT texti",
 	"field.blocks.image.caption": "Myndartexti",
 	"field.blocks.image.crop": "Kroppa",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Vefslóð",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Ætlar þú virkilega að eyða öllum færslum?",
+	"field.entries.empty": "Engar færslur enn",
+
 	"field.files.empty": "Engar skrár valdar ennþá",
+	"field.files.empty.single": "Engin skrá valin enn",
 
 	"field.layout.change": "Breyta uppsetningu ramma",
 	"field.layout.delete": "Eyða ramma",
@@ -342,12 +384,17 @@
 	"field.object.empty": "Engar upplýsingar enn",
 
 	"field.pages.empty": "Engar síður valdar ennþá",
+	"field.pages.empty.single": "Engin síða valin enn",
 
 	"field.structure.delete.confirm": "Viltu virkilega eyða þessari röð?",
 	"field.structure.delete.confirm.all": "Ætlar þú virkilega að eyða öllum færslum?",
+	"field.structure.delete.confirm.selected": "Viltu virkilega eyða völdum færslum?",
 	"field.structure.empty": "Engar færslur enn",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Engir notendur valdir enn",
+	"field.users.empty.single": "Enginn notandi valinn enn",
 
 	"fields.empty": "Hér eru engin svið enn",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Breyta röðun",
 
 	"files": "Skrár",
+	"files.delete.confirm.selected": "Viltu virkilega eyða völdum skrám? Hér verður ekki aftur snúið.",
 	"files.empty": "Engar skrár enn",
 
 	"filter": "Sigta",
+
+	"form.discard": "Hunsa breytingar",
+	"form.discard.confirm": "Ætlarðu virkilega að <strong>hunsa allar breytingar</strong>?",
+	"form.locked": "Efnið er þér ekki aðgengilegt þar sem annar notandi er nú þegar að vinna í því",
+	"form.unsaved": "Þessar breytingar hafa ekki verið vistaðar",
+	"form.preview": "Skoða breytingar",
+	"form.preview.draft": "Skoða uppkast",
 
 	"hide": "Fela",
 	"hour": "Klukkustund",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "Engar þýðingar enn",
 
 	"language.variable.delete.confirm": "Ertu viss um að þú viljir nú fjarlægja breytuna fyrir {key}?",
+	"language.variable.entries": "Gildi",
+	"language.variable.entries.help": "Hver strengur verður notaður fyrir samsvarandi fjölda, t.d. þrír strengir munu passa til að telja <code>0</code>, <code>1</code>, <code>2 og fleiri</code>. Notaðu <code>{count}</code> staðgengilinn fyrir raunverulegan fjölda.",
 	"language.variable.key": "Lykill",
+	"language.variable.multiple": "Teljanlegt?",
+	"language.variable.multiple.text": "Notaðu annan textastreng fyrir þýðingu",
+	"language.variable.multiple.help": "Þú getur notað mismunandi gildi eftir því hvaða talningu þú sendir með tungumálabreytunni, sem gerir þér kleift að búa til breytilegar þýðingar, t.d. eintölu og fleirtölu.",
 	"language.variable.notFound": "Breytan fannst hreint ekki",
 	"language.variable.value": "Gildi",
 
@@ -421,16 +481,23 @@
 
 	"license": "Leyfi",
 	"license.activate": "Virkja þetta nú",
-	"license.activate.label": "Vinsamlegast virkjaðu leyfið þitt",
+	"license.activate.label": "Uppsetning",
 	"license.activate.domain": "Leyfið þitt verður virkjað fyrir og tengt við <strong>{host}</strong>.",
-	"license.activate.local": "Þú ert að fara virkja leyfið þitt fyrir staðbundinn (e. local) vef:  <strong>{host}</strong>. Ef það er meiningin að færa vefinn síðar út á netið þá vinsamlegast virkjaðu leyfið þar. Ef {host} er lénið sem þú vilt tengja leyfið við þá vinsamlegast haltu áfram.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Staðfestu",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Virkjað",
 	"license.buy": "Kaupa leyfi",
 	"license.code": "Kóðasnið",
 	"license.code.help": "Þú fékkst leyfiskóðan sendan í tölvupósti eftir að þú borgaðir fyrir leyfið. Vinsamlegast afritaðu hann hingað.",
-	"license.code.label": "Vinsamlegast settu inn leyfiskóðan",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Að fjarlægja leyfið mun eyða leyfisskránni varanlega af þessu vefsvæði. Þú getur síðan virkjað vefsvæðið með öðrum leyfislykli eða skráð sama leyfislykil aftur, svo framarlega sem lénið helst óbreytt. </p><p> Til að breyta léninu sem leyfið er tengt við, vinsamlegast hafðu samband við Kirby-teymið.<a href='https://getkirby.com/license'>Lesa nánar &rarr;</a></p>",
 	"license.status.active.info": "Felur í sér allar útgáfur þar til {date}",
 	"license.status.active.label": "Gilt skráningarleyfi",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "Þessi uppsetning er til prófunar.",
 	"license.status.demo.label": "Prófunarútgáfa",
 	"license.status.inactive.info": "Endurnýja skráningarleyfi fyrir uppfærslur á nýjum útgáfum",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Er allt tilbúið til að gefa vefinn út?",
 	"license.status.missing.info": "Ekkert gilt skráningarleyfi",
 	"license.status.missing.label": "Vinsamlegast virkjaðu leyfið þitt",
+	"license.status.unknown.info": "Staða leyfis fyrir hugbúnaðinn er óþekkt",
+	"license.status.unknown.label": "Óþekkt",
 	"license.manage": "Sýslaðu með leyfin þín",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Verslað",
 	"license.success": "Þakka þér fyrir að velja Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Óskráð",
 
 	"link": "Tengill",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Óvistað breytingar",
 	"lock.unsaved.empty": "Það eru öngvar óvistaðar breytingar",
+	"lock.unsaved.files": "Óvistaðar skrár",
+	"lock.unsaved.pages": "Óvistaðar síður",
+	"lock.unsaved.users": "Óvistaðir notendareikningar",
 	"lock.isLocked": "Óvistaðar breytingar framkvæmdar af {email}",
 	"lock.unlock": "Aflæsa",
 	"lock.unlock.submit": "Aflæsa og yfirskrifa óvistaðar breytingar framkvæmdar af <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Síðan er útgefin en þó ólistuð.",
 
 	"pages": "Síður",
+	"pages.delete.confirm.selected": "Viltu virkilega eyða völdum síðum? Hér verður ekki aftur snúið.",
 	"pages.empty": "Engar síður enn",
 	"pages.status.draft": "Uppköst",
 	"pages.status.listed": "Útgefnar og listaðar",
@@ -574,7 +651,13 @@
 	"plugin": "Viðbót",
 	"plugins": "Viðbætur",
 	"prev": "Fyrri",
+
 	"preview": "Forskoða",
+	"preview.browser.scroll": "Skruna í takt",
+
+	"publish": "Útgefa",
+	"published": "Útgefnar og listaðar",
+
 	"remove": "Fjarlægja",
 	"rename": "Endurnefna",
 	"renew": "Endurnýja",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Enginn",
 
 	"save": "Vista",
+	"saved": "Vistað",
 	"search": "Leita",
+	"searching": "Leita ..",
 	"search.min": "Lágmark {min} stafir til að leita",
 	"search.all": "Sýna allar {count} niðurstöður.",
 	"search.results.none": "Engar niðurstöður",
@@ -604,6 +689,7 @@
 
 	"security": "Öryggi",
 	"select": "Velja",
+	"select.all": "Velja allt",
 	"server": "Vefþjónn",
 	"settings": "Stillingar",
 	"show": "Sýna",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Copy info",
 	"system.info.copied": "System info copied",
 	"system.issues.content": "Efnismappan virðist vera berskjölduð",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Uppsett Kirby eintak þitt hefur runnið sitt skeið á enda og mun ekki verða uppfært framar",
 	"system.issues.eol.plugin": "Uppsett eintak þitt  af viðbótinni  { plugin } hefur runnið sitt skeið á enda og mun ekki verða uppfærð framar",
 	"system.issues.eol.php": "Núverandi PHP útgáfa {release} hefur runnið sitt skeið og mun ekki verða uppfærð með öryggisuppfærslum.",
@@ -627,7 +715,9 @@
 	"system.issues.git": ".git mappan virðist vera berskjölduð",
 	"system.issues.https": "Við mælum harðlega með því að þú notir HTTPS fyrir öll þín vefsvæði",
 	"system.issues.kirby": "Kirby mappan virðist vera  berskjölduð",
+	"system.issues.local": "Vefsvæðið keyrir staðbundið (e. local) með ákaflega lágum öryggiskröfum.",
 	"system.issues.site": "Mappa vefsvæðisins virðist vera berskjölduð",
+	"system.issues.vue.compiler": "Vue sniðmátsþýðandinn er virkur",
 	"system.issues.vulnerability.kirby": "Uppsetningin þín gæti verið berskjölduð gagnvart eftirfarandi veikleika: ({ severity } veikleikinn): { description }",
 	"system.issues.vulnerability.plugin": "Uppsetningin þín gæti verið berskjölduð gagnvart eftirfarandi veikleika í viðbótinni { plugin }: ({ severity } veikleikinn): { description }",
 	"system.updateStatus": "Uppfærslustaða",
@@ -643,6 +733,12 @@
 	"tel": "Sími",
 	"tel.placeholder": "+3548561234",
 	"template": "Sniðmát",
+
+	"theme": "Þema",
+	"theme.light": "Ljósin kveikt",
+	"theme.dark": "Ljósin slökkt",
+	"theme.automatic": "Nota kerfisstillingu",
+
 	"title": "Titill",
 	"today": "Núna",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Breyta tungumáli",
 	"user.changeName": "Endurnefna þennan notanda",
 	"user.changePassword": "Breyta lykilorð",
+	"user.changePassword.current": "Þitt núverandi lykilorð",
 	"user.changePassword.new": "Nýtt lykilorð",
 	"user.changePassword.new.confirm": "Staðfestu nýtt lykilorð…",
+	"user.changePassword.own": "Þitt eigið lykilorð",
 	"user.changeRole": "Breyta hlutverki",
 	"user.changeRole.select": "Veldu nýtt hlutverk",
 	"user.create": "Bæta við nýjum notenda",
 	"user.delete": "Farga þessum notenda",
 	"user.delete.confirm": "Viltu virkilega eyða <br><strong>{email}</strong>?",
+	"user.setPassword": "Setja lykilorð",
 
 	"users": "Notendur",
 
 	"version": "Útgáfa",
+	"version.changes": "Breytt útgáfa",
+	"version.compare": "Bera saman útgáfur",
 	"version.current": "Núverandi útgáfa",
 	"version.latest": "Nýjasta útgáfa",
 	"versionInformation": "Útgáfuupplýsingar",
 
+	"view": "Sýn",
 	"view.account": "Þínar stillingar",
 	"view.installation": "Uppsetning",
 	"view.languages": "Tungumál",

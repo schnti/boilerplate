@@ -12,6 +12,7 @@ use Kirby\Filesystem\Dir;
 use Kirby\Filesystem\F;
 use Kirby\Panel\User as Panel;
 use Kirby\Session\Session;
+use Kirby\Toolkit\BlockCollectionAccess;
 use Kirby\Toolkit\Str;
 use SensitiveParameter;
 
@@ -24,11 +25,15 @@ use SensitiveParameter;
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
+ *
+ * @use \Kirby\Cms\HasSiblings<\Kirby\Cms\Users>
+ * @method \Kirby\Uuid\UserUuid uuid()
  */
 class User extends ModelWithContent
 {
 	use HasFiles;
 	use HasMethods;
+	use HasModels;
 	use HasSiblings;
 	use UserActions;
 
@@ -39,11 +44,6 @@ class User extends ModelWithContent
 	 * @todo Remove when support for PHP 8.2 is dropped
 	 */
 	public static array $methods = [];
-
-	/**
-	 * Registry with all User models
-	 */
-	public static array $models = [];
 
 	protected UserBlueprint|null $blueprint = null;
 	protected array $credentials;
@@ -63,7 +63,7 @@ class User extends ModelWithContent
 	{
 		// helper function to easily edit values (if not null)
 		// before assigning them to their properties
-		$set = function (string $key, Closure $callback) use ($props) {
+		$set = static function (string $key, Closure $callback) use ($props) {
 			if ($value = $props[$key] ?? null) {
 				$value = $callback($value);
 			}
@@ -76,8 +76,6 @@ class User extends ModelWithContent
 		// so it also gets stored in propertyData prop
 		$props['id'] ??= $this->createId();
 
-		parent::__construct($props);
-
 		$this->id       = $props['id'];
 		$this->email    = $set('email', fn ($email) => Str::lower(trim($email)));
 		$this->language = $set('language', fn ($language) => trim($language));
@@ -85,7 +83,19 @@ class User extends ModelWithContent
 		$this->password = $props['password'] ?? null;
 		$this->role     = $set('role', fn ($role) => Str::lower(trim($role)));
 
+		if (isset($props['credentials'])) {
+			$this->credentials = $props['credentials'];
+		}
+
+		// Set blueprint before setting content
+		// or translations in the parent constructor.
+		// Otherwise, the blueprint definition cannot be
+		// used when creating the right field values
+		// for the content.
 		$this->setBlueprint($props['blueprint'] ?? null);
+
+		parent::__construct($props);
+
 		$this->setFiles($props['files'] ?? null);
 	}
 
@@ -115,17 +125,19 @@ class User extends ModelWithContent
 	 */
 	public function __debugInfo(): array
 	{
-		return array_merge($this->toArray(), [
+		return [
+			...$this->toArray(),
 			'avatar'  => $this->avatar(),
 			'content' => $this->content(),
 			'role'    => $this->role()
-		]);
+		];
 	}
 
 	/**
 	 * Returns the url to the api endpoint
 	 * @internal
 	 */
+	#[BlockCollectionAccess]
 	public function apiUrl(bool $relative = false): string
 	{
 		if ($relative === true) {
@@ -149,7 +161,11 @@ class User extends ModelWithContent
 	public function blueprint(): UserBlueprint
 	{
 		try {
-			return $this->blueprint ??= UserBlueprint::factory('users/' . $this->role(), 'users/default', $this);
+			return $this->blueprint ??= UserBlueprint::factory(
+				'users/' . $this->role(),
+				'users/default',
+				$this
+			);
 		} catch (Exception) {
 			return $this->blueprint ??= new UserBlueprint([
 				'model' => $this,
@@ -162,7 +178,8 @@ class User extends ModelWithContent
 	/**
 	 * Prepares the content for the write method
 	 * @internal
-	 * @param string $languageCode|null Not used so far
+	 *
+	 * @param string|null $languageCode Not used so far
 	 */
 	public function contentFileData(
 		array $data,
@@ -178,20 +195,6 @@ class User extends ModelWithContent
 		);
 
 		return $data;
-	}
-
-	/**
-	 * Filename for the content file
-	 *
-	 * @internal
-	 * @deprecated 4.0.0
-	 * @todo Remove in v5
-	 * @codeCoverageIgnore
-	 */
-	public function contentFileName(): string
-	{
-		Helpers::deprecated('The internal $model->contentFileName() method has been deprecated. Please let us know via a GitHub issue if you need this method and tell us your use case.', 'model-content-file');
-		return 'user';
 	}
 
 	protected function credentials(): array
@@ -212,40 +215,42 @@ class User extends ModelWithContent
 	 */
 	public function exists(): bool
 	{
-		return $this->storage()->exists(
-			'published',
-			'default'
-		);
+		return $this->version('latest')->exists('default');
 	}
 
 	/**
 	 * Constructs a User object and also
-	 * takes User models into account.
-	 * @internal
+	 * takes User models into account
 	 */
 	public static function factory(mixed $props): static
 	{
-		if (empty($props['model']) === false) {
-			return static::model($props['model'], $props);
-		}
-
-		return new static($props);
+		return static::model($props['model'] ?? $props['role'] ?? 'default', $props);
 	}
 
 	/**
-	 * Hashes the user's password unless it is `null`,
+	 * Hashes the provided password unless it is `null`,
 	 * which will leave it as `null`
-	 * @internal
 	 */
+	#[BlockCollectionAccess]
 	public static function hashPassword(
 		#[SensitiveParameter]
-		string $password = null
+		string|null $password = null
 	): string|null {
-		if ($password !== null) {
+		if ($password !== null && $password !== '') {
 			$password = password_hash($password, PASSWORD_DEFAULT);
 		}
 
 		return $password;
+	}
+
+	/**
+	 * Checks if the user has a stored password
+	 * @since 5.3.0
+	 */
+	public function hasPassword(): bool
+	{
+		$password = $this->password();
+		return $password !== '' && $password !== null;
 	}
 
 	/**
@@ -260,6 +265,7 @@ class User extends ModelWithContent
 	 * Returns the inventory of files
 	 * children and content files
 	 */
+	#[BlockCollectionAccess]
 	public function inventory(): array
 	{
 		if ($this->inventory !== null) {
@@ -279,13 +285,22 @@ class User extends ModelWithContent
 	/**
 	 * Compares the current object with the given user object
 	 */
-	public function is(User $user = null): bool
+	public function is(User|null $user = null): bool
 	{
 		if ($user === null) {
 			return false;
 		}
 
 		return $this->id() === $user->id();
+	}
+
+	/**
+	 * Checks if the user is accessible to the current user
+	 * @since 5.4.0
+	 */
+	public function isAccessible(): bool
+	{
+		return UserPermissions::canFromCache($this, 'access');
 	}
 
 	/**
@@ -303,6 +318,20 @@ class User extends ModelWithContent
 	public function isKirby(): bool
 	{
 		return $this->isAdmin() && $this->id() === 'kirby';
+	}
+
+	/**
+	 * Checks if the user is listable by the current user
+	 * @since 5.4.0
+	 */
+	public function isListable(): bool
+	{
+		// not accessible also means not listable
+		if ($this->isAccessible() === false) {
+			return false;
+		}
+
+		return UserPermissions::canFromCache($this, 'list');
 	}
 
 	/**
@@ -356,6 +385,7 @@ class User extends ModelWithContent
 	 *
 	 * @param \Kirby\Session\Session|array|null $session Session options or session object to set the user in
 	 */
+	#[BlockCollectionAccess]
 	public function login(
 		#[SensitiveParameter]
 		string $password,
@@ -372,11 +402,14 @@ class User extends ModelWithContent
 	 *
 	 * @param \Kirby\Session\Session|array|null $session Session options or session object to set the user in
 	 */
+	#[BlockCollectionAccess]
 	public function loginPasswordless(
 		Session|array|null $session = null
 	): void {
 		if ($this->id() === 'kirby') {
-			throw new PermissionException('The almighty user "kirby" cannot be used for login, only for raising permissions in code via `$kirby->impersonate()`');
+			throw new PermissionException(
+				message: 'The almighty user "kirby" cannot be used for login, only for raising permissions in code via `$kirby->impersonate()`'
+			);
 		}
 
 		$kirby   = $this->kirby();
@@ -407,6 +440,7 @@ class User extends ModelWithContent
 	 *
 	 * @param \Kirby\Session\Session|array|null $session Session options or session object to unset the user in
 	 */
+	#[BlockCollectionAccess]
 	public function logout(Session|array|null $session = null): void
 	{
 		$kirby   = $this->kirby();
@@ -435,38 +469,29 @@ class User extends ModelWithContent
 	}
 
 	/**
-	 * Returns the root to the media folder for the user
-	 * @internal
+	 * Returns the absolute path to the media folder for the user
 	 */
-	public function mediaRoot(): string
+	#[BlockCollectionAccess]
+	public function mediaDir(): string
 	{
 		return $this->kirby()->root('media') . '/users/' . $this->id();
 	}
 
 	/**
+	 * @see `::mediaDir`
+	 */
+	#[BlockCollectionAccess]
+	public function mediaRoot(): string
+	{
+		return $this->mediaDir();
+	}
+
+	/**
 	 * Returns the media url for the user object
-	 * @internal
 	 */
 	public function mediaUrl(): string
 	{
 		return $this->kirby()->url('media') . '/users/' . $this->id();
-	}
-
-	/**
-	 * Creates a user model if it has been registered
-	 * @internal
-	 */
-	public static function model(string $name, array $props = []): static
-	{
-		if ($class = (static::$models[$name] ?? null)) {
-			$object = new $class($props);
-
-			if ($object instanceof self) {
-				return $object;
-			}
-		}
-
-		return new static($props);
 	}
 
 	/**
@@ -477,7 +502,7 @@ class User extends ModelWithContent
 		string|null $handler = null,
 		string|null $languageCode = null
 	): int|string|false {
-		$modifiedContent = $this->storage()->modified('published', $languageCode);
+		$modifiedContent = $this->version('latest')->modified($languageCode ?? 'current');
 		$modifiedIndex   = F::modified($this->root() . '/index.php');
 		$modifiedTotal   = max([$modifiedContent, $modifiedIndex]);
 
@@ -502,13 +527,11 @@ class User extends ModelWithContent
 	 */
 	public function nameOrEmail(): Field
 	{
-		$name = $this->name();
-		return $name->isNotEmpty() ? $name : new Field($this, 'email', $this->email());
+		return $this->name()->or(new Field($this, 'email', $this->email()));
 	}
 
 	/**
 	 * Create a dummy nobody
-	 * @internal
 	 */
 	public static function nobody(): static
 	{
@@ -529,6 +552,7 @@ class User extends ModelWithContent
 	/**
 	 * Returns the encrypted user password
 	 */
+	#[BlockCollectionAccess]
 	public function password(): string|null
 	{
 		return $this->password ??= $this->readPassword();
@@ -538,6 +562,7 @@ class User extends ModelWithContent
 	 * Returns the timestamp when the password
 	 * was last changed
 	 */
+	#[BlockCollectionAccess]
 	public function passwordTimestamp(): int|null
 	{
 		$file = $this->secretsFile();
@@ -568,44 +593,67 @@ class User extends ModelWithContent
 			return $this->role;
 		}
 
-		$name = $this->role ?? $this->credentials()['role'] ?? 'visitor';
+		$name = $this->role ?? $this->credentials()['role'] ?? 'default';
 
-		return $this->role = $this->kirby()->roles()->find($name) ?? Role::nobody();
+		return $this->role =
+			$this->kirby()->roles()->find($name) ??
+			Role::defaultNobody();
 	}
 
 	/**
-	 * Returns all available roles
-	 * for this user, that can be selected
-	 * by the authenticated user
+	 * Returns the roles that the authenticated user
+	 * may assign to this user via a role change.
+	 *
+	 * The result is intentionally scoped to the context
+	 * of this specific user — it answers the question
+	 * "which roles can I give to *this* user right now?"
+	 * rather than "which roles exist in the system?".
+	 * It is primarily used to populate the role dropdown
+	 * in the Panel and to validate role changes.
+	 *
+	 * Two scenarios are possible:
+	 *
+	 * 1. The authenticated user does not have the
+	 *    `changeRole` permission for this user:
+	 *    Only the user's current role is returned,
+	 *    provided it is accessible. This keeps the
+	 *    dropdown functional (a role must be selected)
+	 *    without exposing any other options.
+	 *
+	 * 2. The authenticated user has the `changeRole`
+	 *    permission: All roles that are accessible and
+	 *    that the authenticated user is allowed to
+	 *    create are returned via `Roles::canBeCreated()`.
+	 *    The create-permission check is used here because
+	 *    assigning a role to a user is equivalent to
+	 *    creating a user with that role.
+	 *
+	 * In both cases inaccessible roles are excluded,
+	 * because `Roles::canBeCreated()` applies
+	 * `filter('isAccessible', true)` internally and
+	 * the no-permission branch applies it explicitly.
+	 *
+	 * For all roles the authenticated user can assign
+	 * independent of a specific user context,
+	 * use `$kirby->roles()->canBeCreated()`.
 	 */
 	public function roles(): Roles
 	{
 		$kirby = $this->kirby();
-		$roles = $kirby->roles();
 
-		// a collection with just the one role of the user
-		$myRole = $roles->filter('id', $this->role()->id());
-
-		// if there's an authenticated user …
-		// admin users can select pretty much any role
-		if ($kirby->user()?->isAdmin() === true) {
-			// except if the user is the last admin
-			if ($this->isLastAdmin() === true) {
-				// in which case they have to stay admin
-				return $myRole;
-			}
-
-			// return all roles for mighty admins
-			return $roles;
+		// if the authenticated user doesn't have the permission to change
+		// the role of this user, only the current role is available
+		if ($this->permissions()->can('changeRole') === false) {
+			return $kirby->roles()->filter('isAccessible', true)->filter('id', $this->role()->id());
 		}
 
-		// any other user can only keep their role
-		return $myRole;
+		return $kirby->roles()->canBeCreated();
 	}
 
 	/**
 	 * The absolute path to the user directory
 	 */
+	#[BlockCollectionAccess]
 	public function root(): string
 	{
 		return $this->kirby()->root('accounts') . '/' . $this->id();
@@ -624,6 +672,7 @@ class User extends ModelWithContent
 	 * Reads a specific secret from the user secrets file on disk
 	 * @since 4.0.0
 	 */
+	#[BlockCollectionAccess]
 	public function secret(string $key): mixed
 	{
 		return $this->readSecrets()[$key] ?? null;
@@ -634,11 +683,13 @@ class User extends ModelWithContent
 	 *
 	 * @return $this
 	 */
-	protected function setBlueprint(array $blueprint = null): static
+	protected function setBlueprint(array|null $blueprint = null): static
 	{
 		if ($blueprint !== null) {
-			$blueprint['model'] = $this;
-			$this->blueprint = new UserBlueprint($blueprint);
+			$this->blueprint = new UserBlueprint([
+				...$blueprint,
+				'model' => $this
+			]);
 		}
 
 		return $this;
@@ -652,10 +703,10 @@ class User extends ModelWithContent
 	protected function sessionFromOptions(Session|array|null $session): Session
 	{
 		// use passed session options or session object if set
-		if (is_array($session) === true) {
+		$session ??= ['detect' => true];
+
+		if ($session instanceof Session === false) {
 			$session = $this->kirby()->session($session);
-		} elseif ($session instanceof Session === false) {
-			$session = $this->kirby()->session(['detect' => true]);
 		}
 
 		return $session;
@@ -666,23 +717,25 @@ class User extends ModelWithContent
 	 */
 	protected function siblingsCollection(): Users
 	{
-		return $this->kirby()->users();
+		return $this->kirby()->users()->sortBy('username', 'asc');
 	}
 
 	/**
 	 * Converts the most important user properties
 	 * to an array
 	 */
+	#[BlockCollectionAccess]
 	public function toArray(): array
 	{
-		return array_merge(parent::toArray(), [
+		return [
+			...parent::toArray(),
 			'avatar'   => $this->avatar()?->toArray(),
 			'email'    => $this->email(),
 			'id'       => $this->id(),
 			'language' => $this->language(),
 			'role'     => $this->role()->name(),
 			'username' => $this->username()
-		]);
+		];
 	}
 
 	/**
@@ -692,13 +745,17 @@ class User extends ModelWithContent
 	 *                              (`null` to keep the original token)
 	 */
 	public function toString(
-		string $template = null,
+		string|null $template = null,
 		array $data = [],
 		string|null $fallback = '',
 		string $handler = 'template'
 	): string {
-		$template ??= $this->email();
-		return parent::toString($template, $data, $fallback, $handler);
+		return parent::toString(
+			$template ?? $this->email(),
+			$data,
+			$fallback,
+			$handler
+		);
 	}
 
 	/**
@@ -708,7 +765,7 @@ class User extends ModelWithContent
 	 */
 	public function username(): string|null
 	{
-		return $this->name()->or($this->email())->value();
+		return $this->nameOrEmail()->value();
 	}
 
 	/**
@@ -718,39 +775,40 @@ class User extends ModelWithContent
 	 * @throws \Kirby\Exception\InvalidArgumentException If the entered password is not valid
 	 *                                                   or does not match the user password
 	 */
+	#[BlockCollectionAccess]
 	public function validatePassword(
 		#[SensitiveParameter]
-		string $password = null
+		string|null $password = null
 	): bool {
-		if (empty($this->password()) === true) {
-			throw new NotFoundException(['key' => 'user.password.undefined']);
+		if ($this->hasPassword() === false) {
+			throw new NotFoundException(
+				key: 'user.password.undefined'
+			);
 		}
 
 		// `UserRules` enforces a minimum length of 8 characters,
 		// so everything below that is a typo
 		if (Str::length($password) < 8) {
-			throw new InvalidArgumentException(['key' => 'user.password.invalid']);
+			throw new InvalidArgumentException(
+				key: 'user.password.invalid'
+			);
 		}
 
 		// too long passwords can cause DoS attacks
 		if (Str::length($password) > 1000) {
-			throw new InvalidArgumentException(['key' => 'user.password.excessive']);
+			throw new InvalidArgumentException(
+				key: 'user.password.excessive'
+			);
 		}
 
 		if (password_verify($password, $this->password()) !== true) {
-			throw new InvalidArgumentException(['key' => 'user.password.wrong', 'httpCode' => 401]);
+			throw new InvalidArgumentException(
+				key: 'user.password.wrong',
+				httpCode: 401
+			);
 		}
 
 		return true;
-	}
-
-	/**
-	 * @deprecated 4.0.0 Use `->secretsFile()` instead
-	 * @codeCoverageIgnore
-	 */
-	protected function passwordFile(): string
-	{
-		return $this->secretsFile();
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace Kirby\Cms;
 
+use Kirby\Exception\LogicException;
 use Kirby\Toolkit\A;
 
 /**
@@ -15,18 +16,17 @@ use Kirby\Toolkit\A;
  */
 abstract class ModelPermissions
 {
-	protected string $category;
-	protected ModelWithContent $model;
+	protected const CATEGORY = 'model';
 	protected array $options;
-	protected Permissions $permissions;
-	protected User $user;
 
-	public function __construct(ModelWithContent $model)
+	public static array $cache = [];
+
+	public function __construct(protected ModelWithContent|Language $model)
 	{
-		$this->model       = $model;
-		$this->options     = $model->blueprint()->options();
-		$this->user        = $model->kirby()->user() ?? User::nobody();
-		$this->permissions = $this->user->role()->permissions();
+		$this->options = match (true) {
+			$model instanceof ModelWithContent => $model->blueprint()->options(),
+			default                            => []
+		};
 	}
 
 	public function __call(string $method, array $arguments = []): bool
@@ -43,10 +43,30 @@ abstract class ModelPermissions
 		return $this->toArray();
 	}
 
-	public function can(string $action): bool
+	/**
+	 * Can be overridden by specific child classes
+	 * to return a model-specific value used to
+	 * cache a once determined permission in memory
+	 * @codeCoverageIgnore
+	 */
+	protected static function cacheKey(ModelWithContent|Language $model): string
 	{
-		$user = $this->user->id();
-		$role = $this->user->role()->id();
+		return '';
+	}
+
+	/**
+	 * Returns whether the current user is allowed to do
+	 * a certain action on the model
+	 *
+	 * @param bool $default Will be returned if $action does not exist
+	 */
+	public function can(
+		string $action,
+		bool $default = false
+	): bool {
+		$user   = static::user();
+		$userId = $user->id();
+		$role   = $user->role()->id();
 
 		// users with the `nobody` role can do nothing
 		// that needs a permission check
@@ -65,7 +85,7 @@ abstract class ModelPermissions
 		}
 
 		// the almighty `kirby` user can do anything
-		if ($user === 'kirby' && $role === 'admin') {
+		if ($userId === 'kirby' && $role === 'admin') {
 			return true;
 		}
 
@@ -95,12 +115,54 @@ abstract class ModelPermissions
 			}
 		}
 
-		return $this->permissions->for($this->category, $action);
+		$permissions = $user->role()->permissions();
+		return $permissions->for(static::category($this->model), $action, $default);
 	}
 
-	public function cannot(string $action): bool
+	/**
+	 * Quickly determines a permission for the current user role
+	 * and model blueprint unless dynamic checking is required
+	 */
+	public static function canFromCache(
+		ModelWithContent|Language $model,
+		string $action,
+		bool $default = false
+	): bool {
+		$role     = $model->kirby()->role()?->id() ?? '__none__';
+		$category = static::category($model);
+		$cacheKey = $category . '.' . $action . '/' . static::cacheKey($model) . '/' . $role . '/' . ($default === true ? 'true' : 'false');
+
+		if (isset(static::$cache[$cacheKey]) === true) {
+			return static::$cache[$cacheKey];
+		}
+
+		if (method_exists(static::class, 'can' . $action) === true) {
+			throw new LogicException('Cannot use permission cache for dynamically-determined permission');
+		}
+
+		return static::$cache[$cacheKey] = $model->permissions()->can($action, $default);
+	}
+
+	/**
+	 * Returns whether the current user is not allowed to do
+	 * a certain action on the model
+	 *
+	 * @param bool $default Will be returned if $action does not exist
+	 */
+	public function cannot(
+		string $action,
+		bool $default = true
+	): bool {
+		return $this->can($action, !$default) === false;
+	}
+
+	/**
+	 * Can be overridden by specific child classes
+	 * if the permission category needs to be dynamic
+	 */
+	protected static function category(ModelWithContent|Language $model): string
 	{
-		return $this->can($action) === false;
+		return static::CATEGORY;
 	}
 
 	public function toArray(): array
@@ -112,5 +174,13 @@ abstract class ModelPermissions
 		}
 
 		return $array;
+	}
+
+	/**
+	 * Returns the currently logged in user
+	 */
+	protected static function user(): User
+	{
+		return App::instance()->user() ?? User::nobody();
 	}
 }

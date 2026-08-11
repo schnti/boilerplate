@@ -7,6 +7,8 @@ use Kirby\Cms\ModelWithContent;
 use Kirby\Cms\Translation;
 use Kirby\Cms\Url;
 use Kirby\Filesystem\Asset;
+use Kirby\Panel\Ui\Buttons\ViewButtons;
+use Kirby\Panel\Ui\Item\UserItem;
 use Kirby\Toolkit\I18n;
 
 /**
@@ -40,6 +42,19 @@ class User extends Model
 	}
 
 	/**
+	 * Returns header buttons which should be displayed
+	 * on the user view
+	 */
+	public function buttons(): array
+	{
+		return ViewButtons::view($this)->defaults(
+			'theme',
+			'settings',
+			'languages'
+		)->render();
+	}
+
+	/**
 	 * Provides options for the user dropdown
 	 */
 	public function dropdown(array $options = []): array
@@ -70,7 +85,7 @@ class User extends Model
 			'dialog'   => $url . '/changeRole',
 			'icon'     => 'bolt',
 			'text'     => I18n::translate('user.changeRole'),
-			'disabled' => $this->isDisabledDropdownOption('changeRole', $options, $permissions)
+			'disabled' => $this->isDisabledDropdownOption('changeRole', $options, $permissions) || $this->model->roles()->count() < 2
 		];
 
 		$result[] = [
@@ -85,7 +100,7 @@ class User extends Model
 		$result[] = [
 			'dialog'   => $url . '/changePassword',
 			'icon'     => 'key',
-			'text'     => I18n::translate('user.changePassword'),
+			'text'     => I18n::translate('user.' . ($this->model->hasPassword() === true ? 'changePassword' : 'setPassword')),
 			'disabled' => $this->isDisabledDropdownOption('changePassword', $options, $permissions)
 		];
 
@@ -123,13 +138,14 @@ class User extends Model
 	 * Returns the setup for a dropdown option
 	 * which is used in the changes dropdown
 	 * for example.
+	 *
+	 * @deprecated 5.1.4 Use the Kirby\Panel\Ui\Item\UserItem class instead
 	 */
 	public function dropdownOption(): array
 	{
-		return [
-			'icon' => 'user',
-			'text' => $this->model->username(),
-		] + parent::dropdownOption();
+		return (new UserItem(user: $this->model))->props() + [
+			'icon' => 'user'
+		];
 	}
 
 	public function home(): string|null
@@ -147,16 +163,16 @@ class User extends Model
 	 */
 	protected function imageDefaults(): array
 	{
-		return array_merge(parent::imageDefaults(), [
+		return [
+			...parent::imageDefaults(),
 			'back'  => 'black',
 			'icon'  => 'user',
 			'ratio' => '1/1',
-		]);
+		];
 	}
 
 	/**
 	 * Returns the image file object based on provided query
-	 * @internal
 	 */
 	protected function imageSource(
 		string|null $query = null
@@ -186,60 +202,77 @@ class User extends Model
 	 */
 	public function pickerData(array $params = []): array
 	{
-		$params['text'] ??= '{{ user.username }}';
+		$item = new UserItem(
+			user:   $this->model,
+			image:  $params['image'] ?? null,
+			info:   $params['info'] ?? null,
+			layout: $params['layout'] ?? null,
+			text:   $params['text'] ?? null,
+		);
 
-		return array_merge(parent::pickerData($params), [
+		return [
+			...$item->props(),
 			'email'    => $this->model->email(),
+			'sortable' => true,
 			'username' => $this->model->username(),
-		]);
+		];
 	}
 
 	/**
 	 * Returns navigation array with
 	 * previous and next user
-	 *
-	 * @internal
 	 */
 	public function prevNext(): array
 	{
-		$user = $this->model;
+		$user     = $this->model;
+		$siblings = $user->siblings()->filter('isListable', true);
 
 		return [
-			'next' => fn () => $this->toPrevNextLink($user->next(), 'username'),
-			'prev' => fn () => $this->toPrevNextLink($user->prev(), 'username')
+			'next' => fn () => $this->toPrevNextLink($user->next($siblings), 'username'),
+			'prev' => fn () => $this->toPrevNextLink($user->prev($siblings), 'username')
 		];
 	}
 
 	/**
-	 * Returns the data array for the
-	 * view's component props
-	 *
-	 * @internal
+	 * Returns the data array for the view's component props
 	 */
 	public function props(): array
 	{
-		$user    = $this->model;
-		$account = $user->isLoggedIn();
+		$props       = parent::props();
+		$user        = $this->model;
+		$permissions = $this->options();
 
-		return array_merge(
-			parent::props(),
-			$account ? [] : $this->prevNext(),
-			[
-				'blueprint' => $this->model->role()->name(),
-				'model' => [
-					'account'  => $account,
-					'avatar'   => $user->avatar()?->url(),
-					'content'  => $this->content(),
-					'email'    => $user->email(),
-					'id'       => $user->id(),
-					'language' => $this->translation()->name(),
-					'link'     => $this->url(true),
-					'name'     => $user->name()->toString(),
-					'role'     => $user->role()->title(),
-					'username' => $user->username(),
-				]
-			]
-		);
+		// Additional model information
+		// @deprecated Use the top-level props instead
+		$model = [
+			'account'  => $user->isLoggedIn(),
+			'avatar'   => $user->avatar()?->url(),
+			'email'    => $user->email(),
+			'id'       => $props['id'],
+			'language' => $this->translation()->name(),
+			'link'     => $props['link'],
+			'name'     => $user->name()->toString(),
+			'role'     => $user->role()->title(),
+			'username' => $user->username(),
+			'uuid'     => $props['uuid'],
+		];
+
+		return [
+			...parent::props(),
+			...$this->prevNext(),
+			'avatar'            => $model['avatar'],
+			'blueprint'         => $this->model->role()->name(),
+			'canChangeEmail'    => $permissions['changeEmail'],
+			'canChangeLanguage' => $permissions['changeLanguage'],
+			'canChangeName'     => $permissions['changeName'],
+			'canChangeRole'     => $this->model->roles()->count() > 1,
+			'email'             => $model['email'],
+			'language'          => $model['language'],
+			'model'             => $model,
+			'name'              => $model['name'],
+			'role'              => $model['role'],
+			'username'          => $model['username'],
+		];
 	}
 
 	/**
@@ -254,10 +287,7 @@ class User extends Model
 	}
 
 	/**
-	 * Returns the data array for
-	 * this model's Panel view
-	 *
-	 * @internal
+	 * Returns the data array for this model's Panel view
 	 */
 	public function view(): array
 	{

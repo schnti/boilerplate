@@ -1,4 +1,5 @@
 {
+	"account": "Account",
 	"account.changeName": "Deinen Namen ändern",
 	"account.delete": "Deinen Account löschen",
 	"account.delete.confirm": "Willst du deinen Account wirklich löschen? Du wirst sofort danach abgemeldet. Dein Account kann nicht wieder hergestellt werden.",
@@ -20,7 +21,9 @@
 	"coordinates": "Koordinaten",
 	"copy": "Kopieren",
 	"copy.all": "Alle kopieren",
-	"copy.success": "{count} kopiert!",
+	"copy.success": "Kopiert",
+	"copy.success.multiple": "{count} kopiert!",
+	"copy.url": "URL kopieren",
 	"create": "Erstellen",
 	"custom": "Benutzerdefiniert",
 
@@ -40,6 +43,9 @@
 
 	"delete": "L\u00f6schen",
 	"delete.all": "Alle löschen",
+
+	"deselect": "Abwählen",
+	"deselect.all": "Alles abwählen",
 
 	"dialog.fields.empty": "Der Dialog hat keine Felder",
 	"dialog.files.empty": "Keine verfügbaren Dateien",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Ungültiger Cachetyp: \"{type}\"",
 
-	"error.email.preset.notFound": "Die E-Mailvorlage \"{name}\" wurde nicht gefunden",
+	"error.content.lock.delete": "Die Version ist blockiert und kann daher nicht gelöscht werden.",
+	"error.content.lock.move": "Die Ursprungsversion ist blockiert und kann daher nicht gelöscht werden",
+	"error.content.lock.publish": "Die Version wurde bereits veröffentlicht",
+	"error.content.lock.replace": "Die Version ist blockiert und kann daher nicht ersetzt werden",
+	"error.content.lock.update": "Die Version ist blockiert und kann daher nicht geändert werden",
+
+	"error.entries.max.plural": "Bitte füge nicht mehr als {max} Einträge hinzu",
+	"error.entries.max.singular": "Bitte füge nicht mehr als einen Eintrag hinzu",
+	"error.entries.min.plural": "Bitte füge mindestens {min} Einträge hinzu",
+	"error.entries.min.singular": "Bitte füge mindestens einen Eintrag hinzu",
+	"error.entries.supports": "Der Feldtyp \"{type}\" wird im Entries Feld nicht unterstützt.",
+	"error.entries.validation": "Fehler im Feld \"{field}\" in Zeile {index}",
+
+	"error.email.preset.notFound": "Die E-Mail-Vorlage \"{name}\" wurde nicht gefunden",
 
 	"error.field.converter.invalid": "Ungültiger Konverter:  \"{converter}\"",
+	"error.field.link.options": "Ungültige Optionen: {options}",
 	"error.field.type.missing": "Feld \"{ name }\": Der Feldtyp \"{ type }\" existiert nicht",
 
 	"error.file.changeName.empty": "Bitte gib einen Namen an",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "Die Vorlage für die Datei \"{id}\" kann nicht zu \"{template}\" geändert werden (gültig: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "Du kannst die Vorlage für die Datei \"{id}\" nicht ändern",
 
+	"error.file.delete.multiple": "Es konnten nicht alle Dateien gelöscht werden. Versuche verbleibende Dateien einzeln zu löschen, um die Ursachen festzustellen.",
 	"error.file.duplicate": "Eine Datei mit dem Dateinamen \"{filename}\" besteht bereits",
 	"error.file.extension.forbidden": "Verbotene Dateiendung \"{extension}\"",
 	"error.file.extension.invalid": "Verbotene Dateiendung \"{extension}\"",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Bitte gib einen Dateinamen an",
 	"error.file.notFound": "Die Datei \"{filename}\" konnte nicht gefunden werden",
 	"error.file.orientation": "Das Bildformat ist ungültig. Erwartetes Format: \"{orientation}\"",
+	"error.file.sort.permission": "Du darfst die Sortierung für \"{filename}\" nicht ändern.",
 	"error.file.type.forbidden": "Du kannst keinen {type}-Dateien hochladen",
 	"error.file.type.invalid": "Ungültiger Dateityp: {mime}",
 	"error.file.undefined": "Die Datei konnte nicht gefunden werden",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Das Formular konnte nicht gespeichert werden",
 
 	"error.language.code": "Bitte gib einen gültigen Code für die Sprache an",
+	"error.language.create.permission": "Du darfst keine Sprache anlegen",
+	"error.language.delete.permission": "Du darfst diese Sprache nicht löschen",
 	"error.language.duplicate": "Die Sprache besteht bereits",
 	"error.language.name": "Bitte gib einen gültigen Namen für die Sprache an",
 	"error.language.notFound": "Die Sprache konnte nicht gefunden werden",
+	"error.language.update.permission": "Du darfst diese Sprache nicht bearbeiten",
 
 	"error.layout.validation.block": "Fehler im \"{field}\" Feld in Block {blockIndex} mit dem Blocktyp \"{fieldset}\" in Layout {layoutIndex}",
 	"error.layout.validation.settings": "Fehler in den Einstellungen von Layout {index}",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Die Seite \"{slug}\" kann nicht gelöscht werden",
 	"error.page.delete.confirm": "Bitte gib zur Bestätigung den Seitentitel ein",
 	"error.page.delete.hasChildren": "Die Seite hat Unterseiten und kann nicht gelöscht werden",
+	"error.page.delete.multiple": "Es konnten nicht alle Seiten gelöscht werden. Versuche verbleibende Seiten einzeln zu löschen, um die Ursachen festzustellen.",
 	"error.page.delete.permission": "Du kannst die Seite \"{slug}\" nicht löschen",
 	"error.page.draft.duplicate": "Ein Entwurf mit dem URL-Kürzel \"{slug}\" besteht bereits",
 	"error.page.duplicate": "Eine Seite mit dem URL-Kürzel \"{slug}\" besteht bereits",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "Die Seite kann nicht in sich selbst verschoben werden",
 	"error.page.move.directory": "Der Ordner der Seite kann nicht verschoben werden",
 	"error.page.move.duplicate": "Eine Seite mit dem URL-Kürzel \"{slug}\" besteht bereits",
+	"error.page.move.noSections": "Die Seite \"{parent}\" kann nicht ausgewählt werden, weil sie keine Unterseiten haben kann. ",
 	"error.page.move.notFound": "Die verschobene Seite kann nicht gefunden werden",
 	"error.page.move.permission": "Du kannst die Seite \"{slug}\" nicht verschieben",
 	"error.page.move.template": "Die Vorlage \"{template}\" wird nicht als Unterseite von \"{parent}\" akzeptiert",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Bitte gib einen gültigen Seitenstatus an",
 	"error.page.undefined": "Die Seite konnte nicht gefunden werden",
 	"error.page.update.permission": "Du kannst die Seite \"{slug}\" nicht editieren",
+
+	"error.role.notFound": "Die Rolle \"{name}\" wurde nicht gefunden",
 
 	"error.section.files.max.plural": "Bitte füge nicht mehr als {max} Dateien zum Bereich \"{section}\" hinzu",
 	"error.section.files.max.singular": "Bitte füge nicht mehr als eine Datei zum Bereich \"{section}\" hinzu",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Bitte gib einen Titel an",
 	"error.site.changeTitle.permission": "Du kannst den Titel der Seite nicht ändern",
+	"error.site.notAccessible": "Die Seite ist nicht zugänglich",
 	"error.site.update.permission": "Du darfst die Seite nicht bearbeiten",
 
 	"error.structure.validation": "Fehler im Feld \"{field}\" in Zeile {index}",
@@ -271,6 +301,11 @@
 	"error.validation.uuid": "Bitte gib eine gültige UUID an",
 	"error.validation.url": "Bitte gib eine gültige URL ein",
 
+	"error.version.discard.permission": "Du darfst diese Version nicht verwerfen",
+	"error.version.publish.permission": "Du darfst diese Version nicht veröffentlichen",
+	"error.version.save.permission": "Du darfst diese Version nicht ändern",
+	"error.version.unlock.permission": "Du darfst diese Version nicht entsperren",
+
 	"expand": "Aufklappen",
 	"expand.all": "Alle aufklappen",
 
@@ -284,7 +319,7 @@
 	"field.blocks.delete.confirm.all": "Willst du wirklich alle Blöcke löschen?",
 	"field.blocks.delete.confirm.selected": "Willst du wirklich die ausgewählten Blöcke löschen?",
 	"field.blocks.empty": "Keine Blöcke",
-	"field.blocks.fieldsets.empty": "Keine Block Definition",
+	"field.blocks.fieldsets.empty": "Keine Blockdefinitionen",
 	"field.blocks.fieldsets.label": "Bitte wähle einen Blocktyp aus …",
 	"field.blocks.fieldsets.paste": "Drücke <kbd>{{ shortcut }}</kbd> um Layouts/Blocks von deinem Clipboard zu importieren. <small>Nur die, die im aktuellen Feld erlaubt sind werden eingefügt.</small>",
 	"field.blocks.gallery.name": "Galerie",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Überschrift",
 	"field.blocks.heading.text": "Text",
 	"field.blocks.heading.placeholder": "Überschrift …",
+	"field.blocks.figure.back.plain": "Ohne",
+	"field.blocks.figure.back.pattern.light": "Muster (hell)",
+	"field.blocks.figure.back.pattern.dark": "Muster (dunkel)",
 	"field.blocks.image.alt": "Alternativer Text",
 	"field.blocks.image.caption": "Bildunterschrift",
 	"field.blocks.image.crop": "Beschneiden",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Video-URL",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Möchtest du wirklich alle Einträge löschen?",
+	"field.entries.empty": "Keine Einträge",
+
 	"field.files.empty": "Keine Dateien ausgewählt",
+	"field.files.empty.single": "Keine Dateien ausgewählt",
 
 	"field.layout.change": "Layout ändern",
 	"field.layout.delete": "Layout löschen",
@@ -342,12 +384,17 @@
 	"field.object.empty": "Noch keine Information",
 
 	"field.pages.empty": "Keine Seiten ausgewählt",
+	"field.pages.empty.single": "Keine Seiten ausgewählt",
 
 	"field.structure.delete.confirm": "Willst du diesen Eintrag wirklich l\u00f6schen?",
 	"field.structure.delete.confirm.all": "Möchtest du wirklich alle Einträge löschen?",
+	"field.structure.delete.confirm.selected": "Willst du die ausgewählten Einträge wirklich löschen?",
 	"field.structure.empty": "Es bestehen keine Eintr\u00e4ge.",
 
+	"field.tags.placeholder": "Tag hinzufügen",
+
 	"field.users.empty": "Keine Accounts ausgewählt",
+	"field.users.empty.single": "Keine Accounts ausgewählt",
 
 	"fields.empty": "Keine Felder",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Position ändern",
 
 	"files": "Dateien",
+	"files.delete.confirm.selected": "Willst du wirklich die ausgewählten Dateien löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 	"files.empty": "Keine Dateien",
 
 	"filter": "Filter",
+
+	"form.discard": "Änderungen verwerfen",
+	"form.discard.confirm": "Willst du wirklich <strong>alle ungespeicherten Änderungen verwerfen</strong>? ",
+	"form.locked": "Dieser Inhalt ist gesperrt, weil er aktuell von einem anderen Account bearbeitet wird",
+	"form.unsaved": "Die aktuellen Änderungen wurden noch nicht gespeichert",
+	"form.preview": "Änderungsvorschau",
+	"form.preview.draft": "Entwurfsvorschau",
 
 	"hide": "Verbergen",
 	"hour": "Stunde",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "Keine Übersetzung",
 
 	"language.variable.delete.confirm": "Willst du wirklich die Variable \"{key}\" entfernen?",
+	"language.variable.entries": "Werte",
+	"language.variable.entries.help": "Jeder Eintrag wird für die entsprechende Anzahl verwendet, z. B. werden drei Einträge in der Reihenfolge mit den Anzahlen <code>0</code>, <code>1</code>, <code>2 und mehr</code> übereinstimmen. Verwende den Platzhalter <code>{count}</code>, um die tatsächliche Anzahl einzufügen.",
 	"language.variable.key": "Schlüssel",
+	"language.variable.multiple": "Zählbar?",
+	"language.variable.multiple.text": "Benutze unterschiedliche Übersetzungen, abhängig von der Anzahl",
+	"language.variable.multiple.help": "Du kannst verschiedene Werte anlegen, die von einer Anzahl abhängen. Diese übergibst du zusammen mit der Sprachvariablen. So kannst du dynamische Übersetzungen erstellen, zum Beispiel für Singular und Plural.",
 	"language.variable.notFound": "Die Variable konnte nicht gefunden werden",
 	"language.variable.value": "Wert",
 
@@ -421,16 +481,23 @@
 
 	"license": "Lizenz",
 	"license.activate": "Aktiviere Kirby jetzt",
-	"license.activate.label": "Bitte aktiviere deine Lizenz",
+	"license.activate.label": "Installation",
 	"license.activate.domain": "Deine Lizenz wird für die Domain <strong>{host}</strong> aktiviert.",
-	"license.activate.local": "Du bist dabei, deine Kirby Lizenz für die lokale Domain <strong>{host}</strong> zu aktivieren. Falls diese Seite später unter einer anderen Domain veröffentlicht wird, solltest du sie erst dort aktivieren. Falls {host} die Domain ist, die du für deine Lizenz nutzen möchtest, fahre bitte fort. ",
+	"license.activate.local": "Du bist dabei, deine Kirby-Lizenz für deine lokale Domain <strong>{host}</strong> zu aktivieren. Wenn diese Seite später auf einer öffentlichen Domain bereitgestellt werden soll und es sich hierbei um eine Kopie für die lokale Entwicklung handelt, aktiviere sie bitte als Entwicklungsinstallation.",
+	"license.activate.public": "Du bist dabei, eine kostenlose Entwicklungslizenz für deine öffentliche Domain <strong>{host}</strong> zu aktivieren. Du musst sicherstellen, dass sich deine Installation in einem privaten Netzwerk befindet oder passwortgeschützt ist. Wir behalten uns vor, zu überprüfen, ob Entwicklungsinstallationen weiterhin geschützt sind.",
+	"license.activate.acknowledge.label": "Bitte bestätige",
+	"license.activate.acknowledge.text": "Die Installation dient ausschließlich der Entwicklung",
+	"license.activate.acknowledge.help": "Weitere Informationen zu den zulässigen Anwendungsfällen findest du in unseren <a href=\"{url}\" target=\"_blank\">Lizenzbedingungen</a>. Wissentlich falsche Einstufungen werden von uns geahndet.",
 	"license.activated": "Aktiviert",
 	"license.buy": "Kaufe eine Lizenz",
 	"license.code": "Code",
-	"license.code.help": "Du hast deinen Lizenz Code nach dem Kauf per Email bekommen. Bitte kopiere sie aus der Email und füge sie hier ein. ",
-	"license.code.label": "Bitte gib deinen Lizenzcode ein",
+	"license.code.help": "Du hast deinen Lizenzschlüssel nach dem Kauf per E-Mail bekommen. Bitte kopiere ihn aus der E-Mail und füge ihn hier ein. ",
+	"license.code.label": "Lizenz-Code",
+	"license.remove.text": "<p>Durch das Entfernen der Lizenz wird die Lizenzdatei unwiderruflich von dieser Website gelöscht. Du kannst diese Website dann mit einem anderen Lizenzschlüssel aktivieren oder denselben Lizenzschlüssel erneut registrieren, wenn die Domain unverändert bleibt.</p> <p>Um die mit der Lizenz verknüpfte Domain zu ändern, wende dich bitte an das Kirby-Team. <a href='https://getkirby.com/license'>Weiterlesen &rarr;</a></p>",
 	"license.status.active.info": "Beinhaltet neue Major Versionen bis {date}",
 	"license.status.active.label": "Gültige Lizenz",
+	"license.status.acknowledged.info": "Du hast bestätigt, dass die <a href=\"https://getkirby.com/license/free-licenses\">Anforderungen für kostenlose Lizenzen</a> erfüllt werden.",
+	"license.status.acknowledged.label": "Aktive kostenlose Lizenz",
 	"license.status.demo.info": "Dies ist eine Demo Installation",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Lizenz erneuern, um auf neue Major Versionen upzudaten",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Bereit, deine Seite zu veröffentlichen?",
 	"license.status.missing.info": "Keine gültige Lizenz",
 	"license.status.missing.label": "Bitte aktiviere deine Lizenz",
+	"license.status.unknown.info": "Der Lizenzstatus ist unbekannt",
+	"license.status.unknown.label": "Unbekannt",
 	"license.manage": "Verwalte deine Lizenzen",
+	"license.manage.hub": "Verwalte deine Lizenzen in unserem <a href=\"{url}\" target=\"_blank\">Lizenz Hub</a>",
 	"license.purchased": "Gekauft",
 	"license.success": "Vielen Dank für deine Unterstützung",
+	"license.success.free": "Aktiviert als Entwicklungsinstallation",
+	"license.regular.label": "Regulär",
+	"license.free.label": "Entwicklung",
 	"license.unregistered.label": "Unregistriert",
 
 	"link": "Link",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Ungespeicherte Änderungen",
 	"lock.unsaved.empty": "Keine ungespeicherten Änderungen",
+	"lock.unsaved.files": "Geänderte Dateien",
+	"lock.unsaved.pages": "Geänderte Seiten",
+	"lock.unsaved.users": "Geänderte Accounts",
 	"lock.isLocked": "Ungespeicherte Änderungen von {email}",
 	"lock.unlock": "Entsperren",
 	"lock.unlock.submit": "Entsperre und überschreibe ungespeicherte Änderungen von <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Die Seite kann nur über die URL aufgerufen werden",
 
 	"pages": "Seiten",
+	"pages.delete.confirm.selected": "Willst du wirklich die ausgewählten Seiten löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 	"pages.empty": "Keine Seiten",
 	"pages.status.draft": "Entwürfe",
 	"pages.status.listed": "Veröffentlicht",
@@ -574,7 +651,13 @@
 	"plugin": "Plugin",
 	"plugins": "Plugins",
 	"prev": "Vorheriger Eintrag",
+
 	"preview": "Vorschau",
+	"preview.browser.scroll": "Scrollen synchronisieren",
+
+	"publish": "Veröffentlichen",
+	"published": "Veröffentlicht",
+
 	"remove": "Entfernen",
 	"rename": "Umbenennen",
 	"renew": "Erneuern",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Niemand",
 
 	"save": "Speichern",
+	"saved": "Gespeichert",
 	"search": "Suchen",
+	"searching": "Suchen",
 	"search.min": "Gib mindestens {min}  Zeichen ein, um zu suchen",
 	"search.all": "Zeige alle {count} Ergebnisse",
 	"search.results.none": "Keine Ergebnisse",
@@ -604,6 +689,7 @@
 
 	"security": "Sicherheit",
 	"select": "Auswählen",
+	"select.all": "Alles auswählen",
 	"server": "Server",
 	"settings": "Einstellungen",
 	"show": "Anzeigen",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Info kopieren",
 	"system.info.copied": "System Info wurde kopiert",
 	"system.issues.content": "Der content Ordner scheint öffentlich zugänglich zu sein",
+	"system.issues.content.salt": "Der Standardwert des Content-Salt wurde nicht geändert",
+	"system.issues.cookie.key": "Der Standardwert des Cookie-Signing-Key wurde nicht geändert",
 	"system.issues.eol.kirby": "Deine Kirby Installation ist veraltet und erhält keine weiteren Sicherheitsupdates",
 	"system.issues.eol.plugin": "Deine Version des { plugin } Plugins ist veraltet und erhält keine weiteren Sicherheitsupdates",
 	"system.issues.eol.php": "Deine installierte PHP-Version { release } ist veraltet und erhält keinen Sicherheits-Updates mehr",
@@ -627,7 +715,9 @@
 	"system.issues.git": "Der .git Ordner scheint öffentlich zugänglich zu sein",
 	"system.issues.https": "Wir empfehlen HTTPS für alle deine Seiten",
 	"system.issues.kirby": "Der kirby Ordner scheint öffentlich zugänglich zu sein",
+	"system.issues.local": "Die Seite läuft lokal mit abgeschwächten Sicherheitschecks",
 	"system.issues.site": "Der site Ordner scheint öffentlich zugänglich zu sein",
+	"system.issues.vue.compiler": "Der Vue Template Compiler ist aktiviert",
 	"system.issues.vulnerability.kirby": "Deine Installation könnte von folgender Sicherheitslücke betroffen sein ({ severity } severity): { description }",
 	"system.issues.vulnerability.plugin": "Deine Installation könnte von folgender Sicherheitslücke im { plugin } Plugin betroffen sein ({ severity } severity): { description }",
 	"system.updateStatus": "Update Status",
@@ -643,6 +733,12 @@
 	"tel": "Telefon",
 	"tel.placeholder": "+49123456789",
 	"template": "Vorlage",
+
+	"theme": "Thema",
+	"theme.light": "Licht an",
+	"theme.dark": "Licht aus",
+	"theme.automatic": "Systemeinstellung übernehmen",
+
 	"title": "Titel",
 	"today": "Heute",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Sprache ändern",
 	"user.changeName": "Account umbenennen",
 	"user.changePassword": "Passwort ändern",
+	"user.changePassword.current": "Dein aktuelles Passwort",
 	"user.changePassword.new": "Neues Passwort",
 	"user.changePassword.new.confirm": "Wiederhole das Passwort …",
+	"user.changePassword.own": "Dein eigenes Passwort",
 	"user.changeRole": "Rolle ändern",
 	"user.changeRole.select": "Neue Rolle auswählen",
 	"user.create": "Neuen Account anlegen",
 	"user.delete": "Account löschen",
 	"user.delete.confirm": "Willst du den Account <br><strong>{email}</strong> wirklich löschen?",
+	"user.setPassword": "Passwort anlegen",
 
 	"users": "Accounts",
 
 	"version": "Version",
+	"version.changes": "Geänderte Version",
+	"version.compare": "Versionen vergleichen",
 	"version.current": "Aktuelle Version",
 	"version.latest": "Neueste Version",
 	"versionInformation": "Informationen zur Version",
 
+	"view": "Ansicht",
 	"view.account": "Dein Account",
 	"view.installation": "Installation",
 	"view.languages": "Sprachen",

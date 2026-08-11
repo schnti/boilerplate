@@ -22,12 +22,21 @@ use Throwable;
  */
 class License
 {
-	protected const HISTORY = [
+	public const HISTORY = [
 		'3' => '2019-02-05',
-		'4' => '2023-11-28'
+		'4' => '2023-11-28',
+		'5' => '2025-06-24'
 	];
 
+	/**
+	 * Backoff intervals (in minutes) that need to pass before
+	 * the next hub reissue attempt for an expired license is made.
+	 * @since 5.5.0
+	 */
+	protected const REISSUE_BACKOFF = [5, 60, 180, 720, 1440];
 	protected const SALT = 'kwAHMLyLPBnHEskzH9pPbJsBxQhKXZnX';
+
+	protected App $kirby;
 
 	// cache
 	protected LicenseStatus $status;
@@ -41,9 +50,23 @@ class License
 		protected string|null $order = null,
 		protected string|null $date = null,
 		protected string|null $signature = null,
+		protected string|null $expires = null,
+		protected int $failures = 0,
+		protected string|null $checked = null
 	) {
-		// normalize the email address
-		$this->email = $this->email === null ? null : $this->normalizeEmail($this->email);
+		if ($code !== null) {
+			$this->code = trim($code);
+		}
+
+		if ($email !== null) {
+			$this->email = $this->normalizeEmail($email);
+		}
+
+		if ($code === LicenseType::Free->prefix()) {
+			$this->email ??= 'licensing@getkirby.com';
+		}
+
+		$this->kirby = App::instance();
 	}
 
 	/**
@@ -61,6 +84,10 @@ class License
 	 */
 	public function code(bool $obfuscated = false): string|null
 	{
+		if ($this->isFree() === true) {
+			return null;
+		}
+
 		if ($this->code !== null && $obfuscated === true) {
 			return Str::substr($this->code, 0, 10) . str_repeat('X', 22);
 		}
@@ -73,15 +100,25 @@ class License
 	 */
 	public function content(): array
 	{
-		return [
+		$content = [
 			'activation' => $this->activation,
 			'code'       => $this->code,
 			'date'       => $this->date,
 			'domain'     => $this->domain,
 			'email'      => $this->email,
 			'order'      => $this->order,
+			'expires'    => $this->expires,
 			'signature'  => $this->signature,
 		];
+
+		// only persist the reissue bookkeeping while a
+		// retry cycle is actually running
+		if ($this->failures > 0) {
+			$content['failures'] = $this->failures;
+			$content['checked']  = $this->checked;
+		}
+
+		return $content;
 	}
 
 	/**
@@ -92,6 +129,15 @@ class License
 		string|null $handler = null
 	): int|string|null {
 		return $this->date !== null ? Str::date(strtotime($this->date), $format, $handler) : null;
+	}
+
+	/**
+	 * Deletes the license file if it exists
+	 * @since 5.1.0
+	 */
+	public function delete(): bool
+	{
+		return F::remove($this->root());
 	}
 
 	/**
@@ -148,6 +194,39 @@ class License
 	}
 
 	/**
+	 * Whether the validity of the license file has expired
+	 * @since 5.5.0
+	 */
+	public function isExpired(): bool
+	{
+		if ($this->expires === null) {
+			return false;
+		}
+
+		return strtotime($this->expires) < time();
+	}
+
+	/**
+	 * Whether it is a free license for development/private installation
+	 * @since 5.5.0
+	 */
+	public function isFree(): bool
+	{
+		return $this->type() === LicenseType::Free;
+	}
+
+	/**
+	 * Whether it is a free license and installed locally
+	 * @since 5.5.0
+	 */
+	public function isFreeAndLocal(): bool
+	{
+		return
+			$this->isFree() === true &&
+			$this->kirby->system()->isLocal() === true;
+	}
+
+	/**
 	 * The license is still valid for the currently
 	 * installed version, but it passed the 3 year period.
 	 */
@@ -167,25 +246,27 @@ class License
 
 		// without an activation date, the license
 		// renewal cannot be evaluated and the license
-		// has to be marked as expired
+		// has to be marked as coverage ended
 		if ($this->activation === null) {
 			return true;
 		}
 
 		// get release date of current major version
-		$major   = Str::before(App::instance()->version(), '.');
+		$major   = Str::before($this->kirby->version(), '.');
 		$release = strtotime(static::HISTORY[$major] ?? '');
 
 		// if there's no matching version in the history
 		// rather throw an exception to avoid further issues
 		// @codeCoverageIgnoreStart
 		if ($release === false) {
-			throw new InvalidArgumentException('The version for your license could not be found');
+			throw new InvalidArgumentException(
+				message: 'The version for your license could not be found'
+			);
 		}
 		// @codeCoverageIgnoreEnd
 
 		// If the renewal date is older than the version launch
-		// date, the license is expired
+		// date, the license coverage has ended
 		return $this->renewal() < $release;
 	}
 
@@ -211,7 +292,7 @@ class License
 		}
 
 		// compare domains
-		if ($this->normalizeDomain(App::instance()->system()->indexUrl()) !== $this->normalizeDomain($this->domain)) {
+		if ($this->normalizeDomain($this->kirby->system()->indexUrl()) !== $this->normalizeDomain($this->domain)) {
 			return false;
 		}
 
@@ -227,13 +308,17 @@ class License
 			return false;
 		}
 
-		// get the public key
-		$pubKey = F::read(App::instance()->root('kirby') . '/kirby.pub');
-
-		// verify the license signature
 		$data      = json_encode($this->signatureData());
 		$signature = hex2bin($this->signature);
 
+		if ($this->isFreeAndLocal() === true) {
+			return hash('sha256', $data) === $signature;
+		}
+
+		// get the public key
+		$pubKey = F::read($this->kirby->root('kirby') . '/kirby.pub');
+
+		// verify the license signature
 		return openssl_verify($data, $signature, $pubKey, 'RSA-SHA256') === 1;
 	}
 
@@ -309,6 +394,7 @@ class License
 			'domain'     => $license['domain']     ?? null,
 			'email'      => $license['email']      ?? null,
 			'order'      => $license['order']      ?? null,
+			'expires'    => $license['expires']    ?? null,
 			'signature'  => $license['signature']  ?? null,
 		];
 	}
@@ -320,40 +406,110 @@ class License
 	public static function read(): static
 	{
 		try {
-			$license = Json::read(App::instance()->root('license'));
+			$license = Json::read(static::root());
 		} catch (Throwable) {
 			return new static();
 		}
 
-		return new static(...static::polyfill($license));
+		return new static(
+			...static::polyfill($license),
+			failures: (int)($license['failures'] ?? 0),
+			checked: $license['checked'] ?? null
+		);
 	}
 
 	/**
 	 * Sends a request to the hub to register the license
 	 */
-	public function register(): static
+	public function register(bool $reissue = false): static
 	{
 		if ($this->type() === LicenseType::Invalid) {
-			throw new InvalidArgumentException(['key' => 'license.format']);
+			throw new InvalidArgumentException(
+				key: 'license.format'
+			);
 		}
 
 		if ($this->hasValidEmailAddress() === false) {
-			throw new InvalidArgumentException(['key' => 'license.email']);
+			throw new InvalidArgumentException(
+				key: 'license.email'
+			);
 		}
 
 		if ($this->domain === null) {
-			throw new InvalidArgumentException(['key' => 'license.domain']);
+			throw new InvalidArgumentException(
+				key: 'license.domain'
+			);
+		}
+
+		if ($this->isFreeAndLocal() === true) {
+			$response = $this->selfsign([
+				'activation' => date('Y-m-d H:i:s'),
+				'code'       => $this->code,
+				'date'       => date('Y-m-d H:i:s'),
+				'domain'     => $this->domain,
+				'email'      => $this->email,
+				'order'      => '12345678',
+			]);
 		}
 
 		// @codeCoverageIgnoreStart
-		$response = $this->request('register', [
+		$response ??= $this->request('register', [
 			'license' => $this->code,
 			'email'   => $this->email,
-			'domain'  => $this->domain
+			'domain'  => $this->domain,
+			'reissue' => $reissue
 		]);
 
 		return $this->update($response);
 		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Tries to reissue an expired license via the license hub.
+	 *
+	 * Uses an exponential backoff (see `::REISSUE_BACKOFF`) so
+	 * that a temporarily unreachable hub neither triggers a
+	 * request on every single Panel request nor wipes a
+	 * potentially re-issuable license. Once all retires have been
+	 * made unsuccessfully, the expired license file is deleted.
+	 *
+	 * @since 5.5.0
+	 */
+	public function reissue(): void
+	{
+		// only expired licenses need to be reissued
+		if ($this->isExpired() === false) {
+			return;
+		}
+
+		// give up once all backoff intervals have been used up
+		if ($this->failures > count(static::REISSUE_BACKOFF)) {
+			$this->delete();
+			return;
+		}
+
+		// after a previous failure, wait for its backoff window
+		// (in minutes) to pass before contacting the hub again
+		if (
+			$this->failures > 0 &&
+			$this->checked !== null &&
+			time() - strtotime($this->checked) < static::REISSUE_BACKOFF[$this->failures - 1] * 60
+		) {
+			return;
+		}
+
+		try {
+			$this->register(reissue: true);
+		} catch (Throwable) {
+			// a transient hub or network problem must not
+			// immediately delete a license: record the failed
+			// attempt so following requests back off
+			$this->failures++;
+			$this->checked = date('Y-m-d H:i:s');
+
+			// persist the backoff state directly
+			Json::write($this->root(), $this->content());
+		}
 	}
 
 	/**
@@ -378,18 +534,33 @@ class License
 	{
 		// @codeCoverageIgnoreStart
 		$response = Remote::get(static::hub() . '/' . $path, [
-			'data' => $data
+			'data'    => $data,
+			'headers' => [
+				'Kirby-Version' => $this->kirby->version()
+			]
 		]);
 
 		// handle request errors
 		if ($response->code() !== 200) {
 			$message = $response->json()['message'] ?? 'The request failed';
 
-			throw new LogicException($message, $response->code());
+			throw new LogicException(
+				key: $response->code(),
+				message: $message,
+			);
 		}
 
 		return $response->json();
 		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Returns the root path to the license file
+	 * @since 5.1.0
+	 */
+	public static function root(): string
+	{
+		return App::instance()->root('license');
 	}
 
 	/**
@@ -398,16 +569,32 @@ class License
 	public function save(): bool
 	{
 		if ($this->status()->activatable() !== true) {
-			throw new InvalidArgumentException([
-				'key' => 'license.verification'
-			]);
+			throw new InvalidArgumentException(
+				key: 'license.verification'
+			);
 		}
 
-		// where to store the license file
-		$file = App::instance()->root('license');
-
 		// save the license information
-		return Json::write($file, $this->content());
+		return Json::write(
+			file: $this->root(),
+			data: $this->content()
+		);
+	}
+
+	/**
+	 * Self-signs a license file where registration
+	 * will not communicate with the license hub
+	 */
+	protected function selfsign(array $payload): array
+	{
+		$data          = $payload;
+		$data['email'] = hash('sha256', $data['email'] . static::SALT);
+		$data          = json_encode($data);
+
+		return [
+			...$payload,
+			'signature' => bin2hex(hash('sha256', $data))
+		];
 	}
 
 	/**
@@ -434,7 +621,7 @@ class License
 			];
 		}
 
-		return [
+		$data = [
 			'activation' => $this->activation,
 			'code'       => $this->code,
 			'date'       => $this->date,
@@ -442,6 +629,12 @@ class License
 			'email'      => hash('sha256', $this->email . static::SALT),
 			'order'      => $this->order,
 		];
+
+		if ($this->expires !== null) {
+			$data['expires'] = $this->expires;
+		}
+
+		return $data;
 	}
 
 	/**
@@ -452,10 +645,11 @@ class License
 	public function status(): LicenseStatus
 	{
 		return $this->status ??= match (true) {
-			$this->isMissing()  === true => LicenseStatus::Missing,
-			$this->isLegacy()   === true => LicenseStatus::Legacy,
-			$this->isInactive() === true => LicenseStatus::Inactive,
-			default                      => LicenseStatus::Active
+			$this->isMissing()  => LicenseStatus::Missing,
+			$this->isFree()     => LicenseStatus::Acknowledged,
+			$this->isLegacy()   => LicenseStatus::Legacy,
+			$this->isInactive() => LicenseStatus::Inactive,
+			default             => LicenseStatus::Active
 		};
 	}
 
@@ -479,7 +673,12 @@ class License
 		$this->code       = $data['code'];
 		$this->date       = $data['date'];
 		$this->order      = $data['order'];
+		$this->expires    = $data['expires'];
 		$this->signature  = $data['signature'];
+
+		// a successful (re)issue clears the backoff
+		$this->failures = 0;
+		$this->checked  = null;
 
 		// clear the caches
 		unset($this->status, $this->type);
@@ -509,7 +708,9 @@ class License
 		if (empty($response['url']) === false) {
 			// validate the redirect URL
 			if (Str::startsWith($response['url'], static::hub()) === false) {
-				throw new Exception('We couldn’t redirect you to the Hub');
+				throw new Exception(
+					message: 'We couldn’t redirect you to the Hub'
+				);
 			}
 
 			return [

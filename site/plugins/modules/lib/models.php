@@ -2,49 +2,76 @@
 
 use Kirby\Cms\Page;
 use Kirby\Cms\Pages;
-use Kirby\Template\Template;
+use Kirby\Cms\Site;
+use Kirby\Content\VersionId;
 
-class ModulePage extends Page {
-  public function parentUrl(): string {
-    return $this->parents()->count() > 0 ? $this->parents()->first()->url() : $this->site()->url();
+class ModulePage extends Page
+{
+  public function render(
+    array $data = [],
+    $contentType = 'html',
+    VersionId|string|null $versionId = null
+  ): string {
+    $parentUrl = $this->page()->url();
+    if ($token = get('_token')) {
+      $parentUrl .= '?_token=' . $token;
+    }
+
+    go($parentUrl . '#' . $this->slug());
   }
-  public function url($options = null): string {
-    return $this->parentUrl() . '#' . $this->slug();
-  }
-  public function render(array $data = [], $contentType = 'html'): string {
-    go($this->parentUrl() . '#' . $this->slug());
-  }
-  public function renderModule() {
-    $moduleTemplate = new Template($this->intendedTemplate());
-    echo $moduleTemplate->render([
+
+  public function toHtml(array $params = []): string
+  {
+    $name = str_replace('module.', '', $this->intendedTemplate()->name());
+    return snippet('modules/' . $name, [
       'page' => $this->parents()->first() ?? $this->site(),
       'module' => $this,
-      'site' => $this->site()
-    ]);
+      ...$params
+    ], true);
   }
-  public function moduleName() {
+
+  public function renderModule(array $params = [])
+  {
+    echo $this->toHtml($params);
+  }
+  public function page(): Page|Site
+  {
+    return $this->parent()->parent() ?? $this->site();
+  }
+  public function parentUrl(): string
+  {
+    return $this->page()->url();
+  }
+  public function moduleName(): string
+  {
     return $this->blueprint()->title();
   }
-  public function moduleId() {
+  public function moduleId(): string
+  {
     return str_replace('.', '--', $this->intendedTemplate());
   }
-  public function parents(): Pages {
+  public function parents(): Pages
+  {
     $parents = parent::parents();
     return $parents->filter('slug', '!=', 'modules');
   }
-	public function metaDefaults() {
-		return ['robotsIndex' => false];
-	}
+  public function metaDefaults(): array
+  {
+    return ['robotsIndex' => false];
+  }
 }
 
-class ModulesPage extends Page {
-  public function url($options = null): string {
-    return $this->parentUrl();
+class ModulesPage extends Page
+{
+  public function render(
+    array $data = [],
+    $contentType = 'html',
+    VersionId|string|null $versionId = null
+  ): string {
+    go($this->parent()->url());
   }
-  public function render(array $data = [], $contentType = 'html'): string {
-    go($this->parentUrl());
-  }
-  public function metaDefaults() {
+  public function metaDefaults()
+  {
     return ['robotsIndex' => false];
   }
 }

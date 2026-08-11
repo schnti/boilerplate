@@ -3,6 +3,7 @@
 use Kirby\Cms\App;
 use Kirby\Cms\Find;
 use Kirby\Cms\UserRules;
+use Kirby\Exception\Exception;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Panel\Field;
 use Kirby\Panel\Panel;
@@ -14,17 +15,22 @@ $fields = require __DIR__ . '/../fields/dialogs.php';
 $files = require __DIR__ . '/../files/dialogs.php';
 
 return [
-
-	// create
 	'user.create' => [
 		'pattern' => 'users/create',
 		'load' => function () {
 			$kirby = App::instance();
+			$roles = $kirby->roles()->canBeCreated();
 
 			// get default value for role
 			if ($role = $kirby->request()->get('role')) {
-				$role = $kirby->roles()->find($role)?->id();
+				$role = $roles->find($role)?->id();
 			}
+
+			// get role field definition, incl. available role options
+			$roles = Field::role(
+				roles: $roles,
+				props: ['required' => true]
+			);
 
 			return [
 				'component' => 'k-form-dialog',
@@ -35,13 +41,13 @@ return [
 							'link'     => false,
 							'required' => true
 						]),
-						'password'     => Field::password(),
+						'password'     => Field::password([
+							'autocomplete' => 'new-password'
+						]),
 						'translation'  => Field::translation([
 							'required' => true
 						]),
-						'role' => Field::role([
-							'required' => true
-						])
+						'role' => $roles
 					],
 					'submitButton' => I18n::translate('create'),
 					'value' => [
@@ -49,7 +55,7 @@ return [
 						'email'       => '',
 						'password'    => '',
 						'translation' => $kirby->panelLanguage(),
-						'role'        => $role ?? $kirby->user()->role()->name()
+						'role'        => $role ?: $roles['options'][0]['value'] ?? null
 					]
 				]
 			];
@@ -71,7 +77,6 @@ return [
 		}
 	],
 
-	// change email
 	'user.changeEmail' => [
 		'pattern' => 'users/(:any)/changeEmail',
 		'load' => function (string $id) {
@@ -106,7 +111,6 @@ return [
 		}
 	],
 
-	// change language
 	'user.changeLanguage' => [
 		'pattern' => 'users/(:any)/changeLanguage',
 		'load' => function (string $id) {
@@ -139,7 +143,6 @@ return [
 		}
 	],
 
-	// change name
 	'user.changeName' => [
 		'pattern' => 'users/(:any)/changeName',
 		'load' => function (string $id) {
@@ -171,42 +174,79 @@ return [
 		}
 	],
 
-	// change password
 	'user.changePassword' => [
 		'pattern' => 'users/(:any)/changePassword',
 		'load' => function (string $id) {
-			$user = Find::user($id);
+			$kirby = App::instance();
+			$user  = Find::user($id);
+
+			$fields = [
+				'currentPassword' => Field::password([
+					'label'        => I18n::translate('user.changePassword.' . ($kirby->user()->is($user) ? 'current' : 'own')),
+					'autocomplete' => 'current-password',
+					'help'         => I18n::translate('account') . ': ' . App::instance()->user()->email(),
+				]),
+				'line' => [
+					'type' => 'line',
+				],
+				'password' => Field::password([
+					'label'        => I18n::translate('user.changePassword.new'),
+					'autocomplete' => 'new-password',
+					'help'         => I18n::translate('account') . ': ' . $user->email(),
+				]),
+				'passwordConfirmation' => Field::password([
+					'label'        => I18n::translate('user.changePassword.new.confirm'),
+					'autocomplete' => 'new-password'
+				])
+			];
+
+			// if the currently logged in user tries to change their own password
+			// and has no password so far, password confirmation can be skipped
+			if ($user->isLoggedIn() === true && $user->hasPassword() === false) {
+				unset($fields['currentPassword'], $fields['line']);
+			}
 
 			return [
 				'component' => 'k-form-dialog',
 				'props' => [
-					'fields' => [
-						'password' => Field::password([
-							'label' => I18n::translate('user.changePassword.new'),
-						]),
-						'passwordConfirmation' => Field::password([
-							'label' => I18n::translate('user.changePassword.new.confirm'),
-						])
-					],
+					'fields'       => $fields,
 					'submitButton' => I18n::translate('change'),
 				]
 			];
 		},
 		'submit' => function (string $id) {
-			$request = App::instance()->request();
-
+			$kirby                = App::instance();
+			$request              = $kirby->request();
 			$user                 = Find::user($id);
+			$currentPassword      = $request->get('currentPassword');
 			$password             = $request->get('password');
 			$passwordConfirmation = $request->get('passwordConfirmation');
 
-			// validate the password
+			// if the currently logged in user tries to change their own password
+			// and has no password so far, password confirmation can be skipped
+			$canSkipConfirmation = $user->isLoggedIn() === true && $user->hasPassword() === false;
+
+			// validate the current password of the acting user
+			try {
+				if ($canSkipConfirmation === false) {
+					$kirby->user()->validatePassword($currentPassword);
+				}
+			} catch (Exception) {
+				// catching and re-throwing exception to avoid automatic
+				// sign-out of current user from the Panel
+				throw new InvalidArgumentException([
+					'key' => 'user.password.wrong'
+				]);
+			}
+
+			// validate the new password
 			UserRules::validPassword($user, $password ?? '');
 
 			// compare passwords
 			if ($password !== $passwordConfirmation) {
-				throw new InvalidArgumentException([
-					'key' => 'user.password.notSame'
-				]);
+				throw new InvalidArgumentException(
+					key: 'user.password.notSame'
+				);
 			}
 
 			// change password if everything's fine
@@ -218,7 +258,6 @@ return [
 		}
 	],
 
-	// change role
 	'user.changeRole' => [
 		'pattern' => 'users/(:any)/changeRole',
 		'load' => function (string $id) {
@@ -228,10 +267,13 @@ return [
 				'component' => 'k-form-dialog',
 				'props' => [
 					'fields' => [
-						'role' => Field::role([
-							'label'    => I18n::translate('user.changeRole.select'),
-							'required' => true,
-						])
+						'role' => Field::role(
+							roles: $user->roles(),
+							props: [
+								'label'    => I18n::translate('user.changeRole.select'),
+								'required' => true,
+							]
+						)
 					],
 					'submitButton' => I18n::translate('user.changeRole'),
 					'value' => [
@@ -252,7 +294,6 @@ return [
 		}
 	],
 
-	// delete
 	'user.delete' => [
 		'pattern' => 'users/(:any)/delete',
 		'load' => function (string $id) {
@@ -289,55 +330,41 @@ return [
 
 			return [
 				'event'    => 'user.delete',
-				'dispatch' => ['content/remove' => [$url]],
 				'redirect' => $redirect
 			];
 		}
 	],
 
-	// user field dialogs
 	'user.fields' => [
-		'pattern' => '(users/.*?)/fields/(:any)/(:all?)',
-		'load'    => $fields['model']['load'],
-		'submit'  => $fields['model']['submit']
+		...$fields['model'],
+		'pattern' => '(users/[^/]+)/fields/(:any)/(:all?)',
 	],
 
-	// change file name
 	'user.file.changeName' => [
-		'pattern' => '(users/.*?)/files/(:any)/changeName',
-		'load'    => $files['changeName']['load'],
-		'submit'  => $files['changeName']['submit'],
+		...$files['changeName'],
+		'pattern' => '(users/[^/]+)/files/(:any)/changeName',
 	],
 
-	// change file sort
 	'user.file.changeSort' => [
-		'pattern' => '(users/.*?)/files/(:any)/changeSort',
-		'load'    => $files['changeSort']['load'],
-		'submit'  => $files['changeSort']['submit'],
+		...$files['changeSort'],
+		'pattern' => '(users/[^/]+)/files/(:any)/changeSort',
 	],
 
-	// change file template
 	'user.file.changeTemplate' => [
-		'pattern' => '(users/.*?)/files/(:any)/changeTemplate',
-		'load'    => $files['changeTemplate']['load'],
-		'submit'  => $files['changeTemplate']['submit'],
+		...$files['changeTemplate'],
+		'pattern' => '(users/[^/]+)/files/(:any)/changeTemplate',
 	],
 
-	// delete file
 	'user.file.delete' => [
-		'pattern' => '(users/.*?)/files/(:any)/delete',
-		'load'    => $files['delete']['load'],
-		'submit'  => $files['delete']['submit'],
+		...$files['delete'],
+		'pattern' => '(users/[^/]+)/files/(:any)/delete',
 	],
 
-	// user file fields dialogs
 	'user.file.fields' => [
-		'pattern' => '(users/.*?)/files/(:any)/fields/(:any)/(:all?)',
-		'load'    => $fields['file']['load'],
-		'submit'  => $fields['file']['submit']
+		...$fields['file'],
+		'pattern' => '(users/[^/]+)/files/(:any)/fields/(:any)/(:all?)',
 	],
 
-	// user disable TOTP
 	'user.totp.disable' => [
 		'pattern' => 'users/(:any)/totp/disable',
 		'load'    => fn (string $id) => (new UserTotpDisableDialog($id))->load(),

@@ -1,20 +1,42 @@
 title: Legal
 
-fields:
+sections:
+  kopf:
+    type: fields
+    fields:
+      # Bleiben lokal beim Kunden — die API liefert nur den Rahmentext und
+      # setzt (verantwortlicheStelle: ) bzw. (datenschutzbeauftragter: ) ein.
+      verantwortlicheStelle:
+        label: Verantwortliche Stelle
+        type: textarea
+        size: small
+        width: 1/2
 
-  verantwortlicheStelle:
-    label: Verantwortliche Stelle
-    type: textarea
-    size: small
-    width: 1/2
+      datenschutzbeauftragter:
+        label: Datenschutzbeauftragter
+        type: textarea
+        size: small
+        width: 1/2
 
-  datenschutzbeauftragter:
-    label: Datenschutzbeauftragter
-    type: textarea
-    size: small
-    width: 1/2
+  # Kommt aus dem Plugin schnti/legal und erzeugt pro Kapitel der Legal-API
+  # eine Überschrift mit Checkbox-Gruppe. Gespeichert wird in Feldern mit
+  # dem Präfix "klauseln" — ein Feld je Kapitel.
+  #
+  # Nur Administratoren sehen die Auswahl; andere Rollen bekommen einen
+  # Hinweistext, und ein Hook blockt Änderungen zusätzlich serverseitig.
+  #
+  # Solange hier nichts gewählt ist, greift die alte Liste aus
+  # config.php -> schnti.legal.data.
+  klauseln: sections/legal-klauseln
 
-  text:
-    label: Text
-    type: textarea
-    size: small
+  fuss:
+    type: fields
+    fields:
+      # Hier gehört (legal: datenschutz) hinein.
+      #
+      # Kein (legal: disclaimer): der Tag liefert seit 01/2025 einen leeren
+      # String. Haftung und Urheberrecht stehen als Fließtext im Impressum.
+      text:
+        label: Text
+        type: textarea
+        size: small

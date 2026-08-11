@@ -1,4 +1,5 @@
 {
+	"account": "Account",
 	"account.changeName": "Zmeniť vaše meno",
 	"account.delete": "Zmazať váš účet",
 	"account.delete.confirm": "Do you really want to delete your account? You will be logged out immediately. Your account cannot be recovered.",
@@ -15,12 +16,14 @@
 	"changes": "Zmeny",
 	"confirm": "Ok",
 	"collapse": "Zabaliť",
-	"collapse.all": "Zabaliť všetky",
+	"collapse.all": "Collapse all",
 	"color": "Farba",
 	"coordinates": "Koordináty",
 	"copy": "Kopírovať",
 	"copy.all": "Copy all",
 	"copy.success": "{count} copied!",
+	"copy.success.multiple": "{count} copied!",
+	"copy.url": "Copy URL",
 	"create": "Vytvoriť",
 	"custom": "Custom",
 
@@ -40,6 +43,9 @@
 
 	"delete": "Zmazať",
 	"delete.all": "Zmazať všetky",
+
+	"deselect": "Deselect",
+	"deselect.all": "Deselect all",
 
 	"dialog.fields.empty": "This dialog has no fields",
 	"dialog.files.empty": "No files to select",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Invalid cache type \"{type}\"",
 
+	"error.content.lock.delete": "The version is locked and cannot be deleted",
+	"error.content.lock.move": "The source version is locked and cannot be moved",
+	"error.content.lock.publish": "This version is already published",
+	"error.content.lock.replace": "The version is locked and cannot be replaced",
+	"error.content.lock.update": "The version is locked and cannot be updated",
+
+	"error.entries.max.plural": "You must not add more than {max} entries",
+	"error.entries.max.singular": "You must not add more than one entry",
+	"error.entries.min.plural": "You must add at least {min} entries",
+	"error.entries.min.singular": "You must add at least one entry",
+	"error.entries.supports": "\"{type}\" field type is not supported for the entries field",
+	"error.entries.validation": "There's an error on the \"{field}\" field in row {index}",
+
 	"error.email.preset.notFound": "E-mailovú predvoľbu \"{name}\" nie je možné nájsť",
 
 	"error.field.converter.invalid": "Neplatný converter \"{converter}\"",
+	"error.field.link.options": "Invalid options: {options}",
 	"error.field.type.missing": "Field \"{ name }\": The field type \"{ type }\" does not exist",
 
 	"error.file.changeName.empty": "Meno nesmie byť prázdne",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "The template for the file \"{id}\" cannot be changed to \"{template}\" (valid: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "You are not allowed to change the template for the file \"{id}\"",
 
+	"error.file.delete.multiple": "Not all files could be deleted. Try each remaining file individually to see the specific error that prevents deletion.",
 	"error.file.duplicate": "Súbor s názvom \"{filename}\" už existuje",
 	"error.file.extension.forbidden": "Prípona \"{extension}\" nie je povolená",
 	"error.file.extension.invalid": "Neplatná prípona: \"{extension}\"",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Názov súboru nemôže byť prázdny",
 	"error.file.notFound": "Súbor \"{filename}\" sa nepodarilo nájsť",
 	"error.file.orientation": "The orientation of the image must be \"{orientation}\"",
+	"error.file.sort.permission": "You are not allowed to change the sorting of \"{filename}\"",
 	"error.file.type.forbidden": "Nemáte povolenie na nahrávanie súborov s typom {type}",
 	"error.file.type.invalid": "Neplatný typ súboru: \"{type}\"",
 	"error.file.undefined": "Súbor nie je možné nájsť",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Formulár sa nepodarilo uložiť",
 
 	"error.language.code": "Please enter a valid code for the language",
+	"error.language.create.permission": "You are not allowed to create a language",
+	"error.language.delete.permission": "You are not allowed to delete the language",
 	"error.language.duplicate": "The language already exists",
 	"error.language.name": "Please enter a valid name for the language",
 	"error.language.notFound": "The language could not be found",
+	"error.language.update.permission": "You are not allowed to update the language",
 
 	"error.layout.validation.block": "There's an error on the \"{field}\" field in block {blockIndex} using the \"{fieldset}\" block type in layout {layoutIndex}",
 	"error.layout.validation.settings": "There's an error in layout {index} settings",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Stránku \"{slug}\" nie je možné vymazať",
 	"error.page.delete.confirm": "Prosím, zadajte titulok stránky pre potvrdenie",
 	"error.page.delete.hasChildren": "Táto stránka obsahuje podstránky a nemôže byť zmazaná",
+	"error.page.delete.multiple": "Not all pages could be deleted. Try each remaining page individually to see the specific error that prevents deletion.",
 	"error.page.delete.permission": "Nemáte povolenie na zmazanie stránky \"{slug}\"",
 	"error.page.draft.duplicate": "Koncept stránky s URL appendix-om \"{slug}\" už existuje",
 	"error.page.duplicate": "Stránka s URL appendix-om \"{slug}\" už existuje",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "The page cannot be moved into itself",
 	"error.page.move.directory": "The page directory cannot be moved",
 	"error.page.move.duplicate": "A sub page with the URL appendix \"{slug}\" already exists",
+	"error.page.move.noSections": "The page \"{parent}\" cannot be a parent of any page because it lacks any pages sections in its blueprint",
 	"error.page.move.notFound": "The moved page could not be found",
 	"error.page.move.permission": "You are not allowed to move \"{slug}\"",
 	"error.page.move.template": "The \"{template}\" template is not accepted as a subpage of \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Prosím, nastavte platnú status pre stránku",
 	"error.page.undefined": "Stránku nie je možné nájsť",
 	"error.page.update.permission": "Nemáte povolenie na aktualizáciu \"{slug}\"",
+
+	"error.role.notFound": "The role \"{name}\" cannot be found",
 
 	"error.section.files.max.plural": "Nemôžete pridať viac ako {max} súbory/ov do sekcie \"{section}\"",
 	"error.section.files.max.singular": "Nemôžete pridať viac ako 1 súbor do sekcie \"{section}\"",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Titulok nemôže byť prázdny",
 	"error.site.changeTitle.permission": "Nemáte povolenie na zmenu titulku pre portál",
+	"error.site.notAccessible": "The site is not accessible",
 	"error.site.update.permission": "Nemáte povolenie na aktualizovanie portálu",
 
 	"error.structure.validation": "There's an error on the \"{field}\" field in row {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Please enter a valid UUID",
 	"error.validation.url": "Prosím, zadajte platnú URL",
 
+	"error.version.discard.permission": "You are not allowed to discard this version",
+	"error.version.publish.permission": "You are not allowed to publish this version",
+	"error.version.save.permission": "You are not allowed to change this version",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Rozbaliť",
-	"expand.all": "Rozbaliť všetky",
+	"expand.all": "Expand all",
 
 	"field.invalid": "The field is invalid",
 	"field.required": "The field is required",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Nadpis",
 	"field.blocks.heading.text": "Text",
 	"field.blocks.heading.placeholder": "Nadpis ...",
+	"field.blocks.figure.back.plain": "Plain",
+	"field.blocks.figure.back.pattern.light": "Pattern (light)",
+	"field.blocks.figure.back.pattern.dark": "Pattern (dark)",
 	"field.blocks.image.alt": "Alternative text",
 	"field.blocks.image.caption": "Popis",
 	"field.blocks.image.crop": "Orezanie",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "Video-URL",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Do you really want to delete all entries?",
+	"field.entries.empty": "Zatiaľ žiadne údaje",
+
 	"field.files.empty": "Žiadne súbory zatiaľ neboli zvolené",
+	"field.files.empty.single": "No file selected yet",
 
 	"field.layout.change": "Change layout",
 	"field.layout.delete": "Delete layout",
@@ -342,12 +384,17 @@
 	"field.object.empty": "No information yet",
 
 	"field.pages.empty": "Žiadne stránky zatiaľ neboli zvolené",
+	"field.pages.empty.single": "No page selected yet",
 
 	"field.structure.delete.confirm": "Ste si istý, že chcete zmazať tento riadok?",
 	"field.structure.delete.confirm.all": "Do you really want to delete all entries?",
+	"field.structure.delete.confirm.selected": "Do you really want to delete the selected entries?",
 	"field.structure.empty": "Zatiaľ žiadne údaje",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Žiadni užívatelia zatiaľ neboli zvolení",
+	"field.users.empty.single": "No user selected yet",
 
 	"fields.empty": "No fields yet",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Change position",
 
 	"files": "Súbory",
+	"files.delete.confirm.selected": "Do you really want to delete the selected files? This action cannot be undone.",
 	"files.empty": "Zatiaľ žiadne súbory",
 
 	"filter": "Filter",
+
+	"form.discard": "Discard changes",
+	"form.discard.confirm": "Do you really want to <strong>discard all your changes</strong>?",
+	"form.locked": "This content is disabled for you as it is currently edited by another user",
+	"form.unsaved": "The current changes have not yet been saved",
+	"form.preview": "Preview changes",
+	"form.preview.draft": "Preview draft",
 
 	"hide": "Hide",
 	"hour": "Hodina",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "No translations yet",
 
 	"language.variable.delete.confirm": "Do you really want to delete the variable for {key}?",
+	"language.variable.entries": "Values",
+	"language.variable.entries.help": "Each string will be used for its matching count, e.g. three strings will match in order to counts <code>0</code>, <code>1</code>, <code>2 and more</code>. Use the <code>{count}</code> placeholder to insert the actual count.",
 	"language.variable.key": "Key",
+	"language.variable.multiple": "Countable?",
+	"language.variable.multiple.text": "Use different translation strings",
+	"language.variable.multiple.help": "You can use different values depending on a count you pass along with the language variable, allowing you to create dynamic translations, e.g. singular and plural.",
 	"language.variable.notFound": "The variable could not be found",
 	"language.variable.value": "Value",
 
@@ -421,16 +481,23 @@
 
 	"license": "Licencia",
 	"license.activate": "Activate it now",
-	"license.activate.label": "Please activate your license",
+	"license.activate.label": "Inštalácia",
 	"license.activate.domain": "Your license will be activated for <strong>{host}</strong>.",
-	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain, please activate it there instead. If {host} is the domain you want to use your license for, please continue.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Prosím, potvrďte",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Activated",
 	"license.buy": "Zakúpiť licenciu",
 	"license.code": "Kód",
 	"license.code.help": "You received your license code after the purchase via email. Please copy and paste it here.",
-	"license.code.label": "Prosím, zadajte váš licenčný kód",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Removing the license will irreversibly delete the license file from this site. You can then activate this site with a different license key or re-register the same license key if the domain remains the same.</p><p>To change the domain associated with the license, please contact the Kirby team. <a href='https://getkirby.com/license'>Read more &rarr;</a></p>",
 	"license.status.active.info": "Includes new major versions until {date}",
 	"license.status.active.label": "Valid license",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "This is a demo installation",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Renew license to update to new major versions",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Ready to launch your site?",
 	"license.status.missing.info": "No valid license",
 	"license.status.missing.label": "Please activate your license",
+	"license.status.unknown.info": "The license status is unknown",
+	"license.status.unknown.label": "Unknown",
 	"license.manage": "Manage your licenses",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Purchased",
 	"license.success": "Ďakujeme za vašu podporu Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Unregistered",
 
 	"link": "Odkaz",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Unsaved changes",
 	"lock.unsaved.empty": "There are no more unsaved changes",
+	"lock.unsaved.files": "Unsaved files",
+	"lock.unsaved.pages": "Unsaved pages",
+	"lock.unsaved.users": "Unsaved accounts",
 	"lock.isLocked": "Unsaved changes by {email}",
 	"lock.unlock": "Unlock",
 	"lock.unlock.submit": "Unlock and overwrite unsaved changes by <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Stránka je prístupná len prostredníctvom priamej URL",
 
 	"pages": "Stránky",
+	"pages.delete.confirm.selected": "Do you really want to delete the selected pages? This action cannot be undone.",
 	"pages.empty": "Zatiaľ žiadne stránky",
 	"pages.status.draft": "Koncepty",
 	"pages.status.listed": "Zverejnené",
@@ -574,7 +651,13 @@
 	"plugin": "Plugin",
 	"plugins": "Plugins",
 	"prev": "Predchádzajúci",
+
 	"preview": "Preview",
+	"preview.browser.scroll": "Sync scroll",
+
+	"publish": "Publish",
+	"published": "Zverejnené",
+
 	"remove": "Odstrániť",
 	"rename": "Premenovať",
 	"renew": "Renew",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Nobody",
 
 	"save": "Uložiť",
+	"saved": "Saved",
 	"search": "Hľadať",
+	"searching": "Searching",
 	"search.min": "Enter {min} characters to search",
 	"search.all": "Show all {count} results",
 	"search.results.none": "No results",
@@ -604,6 +689,7 @@
 
 	"security": "Security",
 	"select": "Zvoliť",
+	"select.all": "Select all",
 	"server": "Server",
 	"settings": "Nastavenia",
 	"show": "Show",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Copy info",
 	"system.info.copied": "System info copied",
 	"system.issues.content": "The content folder seems to be exposed",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Your installed Kirby version has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.plugin": "Your installed version of the { plugin } plugin is has reached end-of-life and will not receive further security updates",
 	"system.issues.eol.php": "Your installed PHP release { release } has reached end-of-life and will not receive further security updates",
@@ -627,7 +715,9 @@
 	"system.issues.git": "The .git folder seems to be exposed",
 	"system.issues.https": "We recommend HTTPS for all your sites",
 	"system.issues.kirby": "The kirby folder seems to be exposed",
+	"system.issues.local": "The site is running locally with relaxed security checks",
 	"system.issues.site": "The site folder seems to be exposed",
+	"system.issues.vue.compiler": "The Vue template compiler is enabled",
 	"system.issues.vulnerability.kirby": "Your installation might be affected by the following vulnerability ({ severity } severity): { description }",
 	"system.issues.vulnerability.plugin": "Your installation might be affected by the following vulnerability in the { plugin } plugin ({ severity } severity): { description }",
 	"system.updateStatus": "Update status",
@@ -643,6 +733,12 @@
 	"tel": "Phone",
 	"tel.placeholder": "+49123456789",
 	"template": "Šablóna",
+
+	"theme": "Theme",
+	"theme.light": "Lights on",
+	"theme.dark": "Lights off",
+	"theme.automatic": "Match system default",
+
 	"title": "Titulok",
 	"today": "Dnes",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Zmeniť jazyk",
 	"user.changeName": "Premenovať tohto užívateľa",
 	"user.changePassword": "Zmeniť heslo",
+	"user.changePassword.current": "Your current password",
 	"user.changePassword.new": "Nové heslo",
 	"user.changePassword.new.confirm": "Potvrdiť nové heslo...",
+	"user.changePassword.own": "Your own password",
 	"user.changeRole": "Zmeniť rolu",
 	"user.changeRole.select": "Zvoliť novú rolu",
 	"user.create": "Pridať nového užívateľa",
 	"user.delete": "Zmazať tohto užívateľa",
 	"user.delete.confirm": "Ste si istý, že chcete zmazať <br><strong>{email}</strong>?",
+	"user.setPassword": "Set password",
 
 	"users": "Užívatelia",
 
 	"version": "Verzia",
+	"version.changes": "Changed version",
+	"version.compare": "Compare versions",
 	"version.current": "Current version",
 	"version.latest": "Latest version",
 	"versionInformation": "Version information",
 
+	"view": "View",
 	"view.account": "Váš účet",
 	"view.installation": "Inštalácia",
 	"view.languages": "Jazyky",

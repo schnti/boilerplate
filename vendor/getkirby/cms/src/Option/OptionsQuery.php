@@ -10,11 +10,12 @@ use Kirby\Cms\StructureObject;
 use Kirby\Cms\User;
 use Kirby\Content\Field;
 use Kirby\Exception\InvalidArgumentException;
+use Kirby\Toolkit\A;
 use Kirby\Toolkit\Collection;
 use Kirby\Toolkit\Obj;
 
 /**
- * Options derrived from running a query against
+ * Options derived from running a query against
  * pages, files, users or structures to create
  * options out of them.
  *
@@ -30,17 +31,22 @@ class OptionsQuery extends OptionsProvider
 	public function __construct(
 		public string $query,
 		public string|null $text = null,
-		public string|null $value = null
+		public string|null $value = null,
+		public string|null $icon = null,
+		public string|null $info = null
 	) {
 	}
 
 	protected function collection(array $array): Collection
 	{
+		$isAssociative = A::isAssociative($array);
+
 		foreach ($array as $key => $value) {
 			if (is_scalar($value) === true) {
 				$array[$key] = new Obj([
-					'key'   => new Field(null, 'key', $key),
-					'value' => new Field(null, 'value', $value),
+					'key'          => new Field(null, 'key', $key),
+					'value'        => new Field(null, 'value', $value),
+					'hasStringKey' => $isAssociative,
 				]);
 			}
 		}
@@ -56,8 +62,10 @@ class OptionsQuery extends OptionsProvider
 
 		return new static(
 			query: $props['query'] ?? $props['fetch'],
-			text: $props['text'] ?? null,
-			value: $props['value'] ?? null
+			text : $props['text'] ?? null,
+			value: $props['value'] ?? null,
+			icon : $props['icon'] ?? null,
+			info : $props['info'] ?? null
 		);
 	}
 
@@ -68,6 +76,12 @@ class OptionsQuery extends OptionsProvider
 	protected function itemToDefaults(array|object $item): array
 	{
 		return match (true) {
+			$item instanceof Obj && $item->hasStringKey === true => [
+				'arrayItem',
+				'{{ item.value }}',
+				'{{ item.key }}'
+			],
+
 			is_array($item),
 			$item instanceof Obj => [
 				'arrayItem',
@@ -159,9 +173,11 @@ class OptionsQuery extends OptionsProvider
 		}
 
 		if ($result instanceof Collection === false) {
-			$type = is_object($result) === true ? get_class($result) : gettype($result);
+			$type = is_object($result) === true ? $result::class : gettype($result);
 
-			throw new InvalidArgumentException('Invalid query result data: ' . $type);
+			throw new InvalidArgumentException(
+				message: 'Invalid query result data: ' . $type
+			);
 		}
 
 		// create options array
@@ -178,9 +194,15 @@ class OptionsQuery extends OptionsProvider
 			$safeMethod = $safeMode === true ? 'toSafeString' : 'toString';
 			$text = $model->$safeMethod($this->text ?? $text, $data);
 
-			return compact('text', 'value');
+			// additional data
+			$icon = $this->icon !== null ? $model->toString($this->icon, $data) : null;
+			$info = $this->info !== null ? $model->$safeMethod($this->info, $data) : null;
+
+			return compact('text', 'value', 'icon', 'info');
 		});
 
-		return $this->options = Options::factory($options);
+		// ensure not to resolve Kirby queries again
+		// to prevent double-resolution of user-controlled content
+		return $this->options = Options::factory($options, resolve: false);
 	}
 }

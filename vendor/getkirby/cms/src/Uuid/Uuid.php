@@ -12,7 +12,10 @@ use Kirby\Cms\Site;
 use Kirby\Cms\User;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\LogicException;
+use Kirby\Exception\NotFoundException;
+use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;
+use Stringable;
 
 /**
  * The `Uuid` classes provide an interface to connect
@@ -21,7 +24,7 @@ use Kirby\Toolkit\Str;
  * It also provides methods to cache these connections
  * for faster lookup.
  *
- * ```
+ * ```php
  * // get UUID string
  * $model->uuid()->toString();
  *
@@ -40,7 +43,7 @@ use Kirby\Toolkit\Str;
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
  */
-abstract class Uuid
+abstract class Uuid implements Stringable
 {
 	protected const TYPE = 'uuid';
 
@@ -66,7 +69,9 @@ abstract class Uuid
 	) {
 		// throw exception when globally disabled
 		if (Uuids::enabled() === false) {
-			throw new LogicException('UUIDs have been disabled via the `content.uuid` config option.');
+			throw new LogicException(
+				message: 'UUIDs have been disabled via the `content.uuid` config option.'
+			);
 		}
 
 
@@ -82,7 +87,9 @@ abstract class Uuid
 			// in the rare case that both model and ID string
 			// got passed, make sure they match
 			if ($uuid && $uuid !== $this->uri->toString()) {
-				throw new LogicException('UUID: can\'t create new instance from both model and UUID string that do not match');
+				throw new LogicException(
+					message: 'UUID: can\'t create new instance from both model and UUID string that do not match'
+				);
 			}
 		} elseif ($uuid) {
 			$this->uri = new Uri($uuid);
@@ -93,18 +100,8 @@ abstract class Uuid
 	 * Removes the current UUID from cache,
 	 * recursively including all children if needed
 	 */
-	public function clear(bool $recursive = false): bool
+	public function clear(): bool
 	{
-		// For all models with children: if $recursive,
-		// also clear UUIDs from cache for all children
-		if ($recursive === true && $model = $this->model()) {
-			if (method_exists($model, 'children') === true) {
-				foreach ($model->children() as $child) {
-					$child->uuid()->clear(true);
-				}
-			}
-		}
-
 		if ($key = $this->key()) {
 			return Uuids::cache()->remove($key);
 		}
@@ -132,7 +129,9 @@ abstract class Uuid
 	 */
 	protected function findByCache(): Identifiable|null
 	{
-		throw new LogicException('UUID class needs to implement the ::findByCache() method');
+		throw new LogicException(
+			message: 'UUID class needs to implement the ::findByCache() method'
+		);
 	}
 
 	/**
@@ -144,7 +143,9 @@ abstract class Uuid
 	 */
 	protected function findByIndex(): Identifiable|null
 	{
-		throw new LogicException('UUID class needs to implement the ::findByIndex() method');
+		throw new LogicException(
+			message: 'UUID class needs to implement the ::findByIndex() method'
+		);
 	}
 
 	/**
@@ -171,7 +172,9 @@ abstract class Uuid
 					// TODO: activate for uuid-block-structure-support
 					// 'block'  => new BlockUuid(uuid: $seed, context: $context),
 					// 'struct' => new StructureUuid(uuid: $seed, context: $context),
-					default  => throw new InvalidArgumentException('Invalid UUID URI: ' . $seed)
+					default  => throw new InvalidArgumentException(
+						message: 'Invalid UUID URI: ' . $seed
+					)
 				};
 			}
 
@@ -185,7 +188,9 @@ abstract class Uuid
 				);
 			}
 
-			throw new InvalidArgumentException('Invalid UUID string: ' . $seed);
+			throw new InvalidArgumentException(
+				message: 'Invalid UUID string: ' . $seed
+			);
 		}
 
 		// for model object
@@ -203,8 +208,9 @@ abstract class Uuid
 			// 	=> new BlockUuid(model: $seed, context: $context),
 			// $seed instanceof StructureObject
 			// 	=> new StructureUuid(model: $seed, context: $context),
-			default
-			=> throw new InvalidArgumentException('UUID not supported for: ' . get_class($seed))
+			default => throw new InvalidArgumentException(
+				message: 'UUID not supported for: ' . $seed::class
+			)
 		};
 	}
 
@@ -217,11 +223,17 @@ abstract class Uuid
 			return (static::$generator)($length);
 		}
 
-		if (App::instance()->option('content.uuid') === 'uuid-v4') {
+		$option = App::instance()->option('content.uuid');
+
+		if (is_array($option) === true) {
+			$option = $option['format'] ?? null;
+		}
+
+		if ($option === 'uuid-v4') {
 			return Str::uuid();
 		}
 
-		return Str::random($length, 'alphaNum');
+		return Str::lower(Str::random($length, 'alphaNum'));
 	}
 
 	/**
@@ -261,14 +273,16 @@ abstract class Uuid
 	 */
 	final public static function is(
 		string $string,
-		string|null $type = null
+		string|array|null $type = null
 	): bool {
 		// always return false when UUIDs have been disabled
 		if (Uuids::enabled() === false) {
 			return false;
 		}
 
-		$type  ??= implode('|', Uri::$schemes);
+		// use all available schemes by default
+		$type  ??= Uri::$schemes;
+		$type    = implode('|', A::wrap($type));
 		$pattern = sprintf('!^(%s)://(.*)!', $type);
 
 		if (preg_match($pattern, $string, $matches) !== 1) {
@@ -332,6 +346,16 @@ abstract class Uuid
 		}
 
 		if ($lazy === false) {
+			if (App::instance()->option('content.uuid.index') === false) {
+				if (App::instance()->option('debug') === true) {
+					throw new NotFoundException(
+						message: 'Model for UUID ' . $this->uri->toString() . ' could not be found without searching in the site index'
+					);
+				}
+
+				return null;
+			}
+
 			if ($this->model = $this->findByIndex()) {
 				// lazily fill cache by writing to cache
 				// whenever looked up from index to speed
@@ -383,6 +407,32 @@ abstract class Uuid
 	}
 
 	/**
+	 * Returns the URL of the model, including the query and fragment
+	 * @since 5.1.0
+	 */
+	public function toUrl(): string|null
+	{
+		$model = $this->model();
+
+		if ($model === null) {
+			return null;
+		}
+
+		if (method_exists($model, 'url') === false) {
+			return null;
+		}
+
+		$url  = $model->url();
+		$url .= $this->uri->query()->toString(true);
+
+		if ($this->uri->hasFragment() === true) {
+			$url .= '#' . $this->uri->fragment();
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Returns value to be stored in cache
 	 */
 	public function value(): string|array
@@ -391,7 +441,7 @@ abstract class Uuid
 	}
 
 	/**
-	 * @see ::render
+	 * @see self::render()
 	 */
 	public function __toString(): string
 	{

@@ -1,4 +1,5 @@
 {
+	"account": "Cont",
 	"account.changeName": "Schimbă-ți numele",
 	"account.delete": "Șterge-ți contul",
 	"account.delete.confirm": "Chiar vrei să îți ștergi contul? Vei fi deconectat imediat. Contul nu poate fi recuperat.",
@@ -15,12 +16,14 @@
 	"changes": "Schimbări",
 	"confirm": "Ok",
 	"collapse": "Pliază",
-	"collapse.all": "Pliază toate",
+	"collapse.all": "Închide toate",
 	"color": "Culoare",
 	"coordinates": "Coordonate",
 	"copy": "Copiază",
 	"copy.all": "Copiază toate",
-	"copy.success": "Copiat {count}!",
+	"copy.success": "Copiat",
+	"copy.success.multiple": "Copiat {count}!",
+	"copy.url": "Copiază URL",
 	"create": "Creează",
 	"custom": "Personalizat",
 
@@ -40,6 +43,9 @@
 
 	"delete": "\u0218terge",
 	"delete.all": "Șterge toate",
+
+	"deselect": "Deselectează",
+	"deselect.all": "Deselectează toate",
 
 	"dialog.fields.empty": "Acest dialog nu are niciun câmp",
 	"dialog.files.empty": "Nu există fișiere de selectat",
@@ -90,9 +96,23 @@
 
 	"error.cache.type.invalid": "Tipul de cache \"{type}\" este nevalid",
 
+	"error.content.lock.delete": "Versiunea este blocată și nu poate fi ștearsă",
+	"error.content.lock.move": "Versiunea sursă este blocată și nu poate fi mutată",
+	"error.content.lock.publish": "Această versiune este deja publicată",
+	"error.content.lock.replace": "Versiunea este blocată și nu poate fi înlocuită",
+	"error.content.lock.update": "Versiunea este blocată și nu poate fi actualizată",
+
+	"error.entries.max.plural": "Nu sunt permise mai mult de {max} înregistrări",
+	"error.entries.max.singular": "Nu este permisă mai mult de o înregistrare",
+	"error.entries.min.plural": "Sunt necesare cel puțin {min} înregistrări",
+	"error.entries.min.singular": "Este necesară cel puțin o înregistrare",
+	"error.entries.supports": "Tipul de câmp \"{type}\" nu este disponibil în cadrul câmpului Înregistrări",
+	"error.entries.validation": "Există o eroare la câmpul \"{field}\" pe rândul {index}",
+
 	"error.email.preset.notFound": "Preset-ul de e-mail \"{name}\" nu a fost găsit",
 
 	"error.field.converter.invalid": "Convertorul \"{converter}\" nu este valid",
+	"error.field.link.options": "Opțiuni invalide: {options}",
 	"error.field.type.missing": "Câmpul \"{ name }\": Tipul de câmp \"{ type }\" nu există",
 
 	"error.file.changeName.empty": "Numele nu trebuie să fie gol",
@@ -100,6 +120,7 @@
 	"error.file.changeTemplate.invalid": "Șablonul pentru fișierul \"{id}\" nu poate fi schimbat la \"{template}\" (valide: \"{blueprints}\")",
 	"error.file.changeTemplate.permission": "Nu ai voie să schimbi șablonul pentru fișierul \"{id}\"",
 
+	"error.file.delete.multiple": "Nu toate fișierele s-au putut șterge. Încearcă, pe rând, fiecare fișier rămas pentru a vedea eroarea specifică ce-i împiedică ștergerea.",
 	"error.file.duplicate": "Există deja un fișier cu numele \"{filename}\"",
 	"error.file.extension.forbidden": "Extensia de fișier \"{extension}\" nu este permisă",
 	"error.file.extension.invalid": "Extensie de fișier nevalidă: {extension}",
@@ -118,6 +139,7 @@
 	"error.file.name.missing": "Numele fișierului nu poate fi gol",
 	"error.file.notFound": "Fișierul \"{filename}\" nu a fost găsit",
 	"error.file.orientation": "Orientarea imaginii trebuie să fie \"{orientation}\"",
+	"error.file.sort.permission": "Nu ai voie să schimbi ordinea la \"{filename}\"",
 	"error.file.type.forbidden": "Nu ai voie să încarci fișiere {type}",
 	"error.file.type.invalid": "Tip nevalid de fișier: {type}",
 	"error.file.undefined": "Fișierul nu a fost găsit",
@@ -126,9 +148,12 @@
 	"error.form.notSaved": "Formularul nu a putut fi salvat",
 
 	"error.language.code": "Te rog introdu un cod valid pentru limbă",
+	"error.language.create.permission": "You are not allowed to create a language",
+	"error.language.delete.permission": "You are not allowed to delete the language",
 	"error.language.duplicate": "Limba există deja",
 	"error.language.name": "Te rog introdu un nume valid pentru limbă",
 	"error.language.notFound": "Limba nu a fost găsită",
+	"error.language.update.permission": "You are not allowed to update the language",
 
 	"error.layout.validation.block": "Există o eroare la câmpul \"{field}\" în blocul {blockIndex} care utilizează tipul de bloc \"{fieldset}\" în aranjamentul {layoutIndex}",
 	"error.layout.validation.settings": "Există o eroare la setările aranjamentului {index}",
@@ -158,6 +183,7 @@
 	"error.page.delete": "Pagina \"{slug}\" nu poate fi ștearsă",
 	"error.page.delete.confirm": "Te rog introdu titlul paginii pentru a confirma",
 	"error.page.delete.hasChildren": "Pagina are subpagini și nu poate fi ștearsă",
+	"error.page.delete.multiple": "Nu toate paginile au putut fi șterse. Încearcă, pe rând, fiecare pagină rămasă pentru a vedea eroarea specifică ce-i împiedică ștergerea.",
 	"error.page.delete.permission": "Nu ai voie să ștergi \"{slug}\"",
 	"error.page.draft.duplicate": "Există deja o ciornă cu apendicele URL \"{slug}\"",
 	"error.page.duplicate": "Există deja o pagină cu apendicele URL \"{slug}\"",
@@ -165,6 +191,7 @@
 	"error.page.move.ancestor": "Pagina nu poate fi mutată în ea însăși",
 	"error.page.move.directory": "Directorul de pagini nu poate fi mutat",
 	"error.page.move.duplicate": "Există deja o sub-pagină cu apendicele URL \"{slug}\"",
+	"error.page.move.noSections": "Pagina \"{parent}\" nu poate fi părinte niciunei pagini fiindcă nu are în șablon vreo secțiune de pagini.",
 	"error.page.move.notFound": "Pagina mutată nu a fost găsită",
 	"error.page.move.permission": "Nu ai voie să muți \"{slug}\"",
 	"error.page.move.template": "Șablonul \"{template}\" nu este acceptat ca sub-pagină a \"{parent}\"",
@@ -176,6 +203,8 @@
 	"error.page.status.invalid": "Te rog stabilește o stare validă pentru pagină",
 	"error.page.undefined": "Pagina nu a fost găsită",
 	"error.page.update.permission": "Nu ai voie să actualizezi \"{slug}\"",
+
+	"error.role.notFound": "The role \"{name}\" cannot be found",
 
 	"error.section.files.max.plural": "Nu poți avea mai mult de {max} fișiere în secțiunea \"{section}\"",
 	"error.section.files.max.singular": "Nu poți avea mai mult de un fișier în secțiunea \"{section}\"",
@@ -192,6 +221,7 @@
 
 	"error.site.changeTitle.empty": "Titlul nu poate să rămână gol",
 	"error.site.changeTitle.permission": "Nu ai voie să schimbi titlul site-ului",
+	"error.site.notAccessible": "The site is not accessible",
 	"error.site.update.permission": "Nu ai voie să actualizezi site-ul",
 
 	"error.structure.validation": "Există o eroare la câmpul \"{field}\" pe rândul {index}",
@@ -271,8 +301,13 @@
 	"error.validation.uuid": "Te rog introdu un UUID valid",
 	"error.validation.url": "Te rog introdu un URL valid",
 
+	"error.version.discard.permission": "Nu ai voie să înlături această versiune",
+	"error.version.publish.permission": "Nu ai voie să publici această versiune",
+	"error.version.save.permission": "Nu ai voie să modifici această versiune",
+	"error.version.unlock.permission": "You are not allowed to unlock this version",
+
 	"expand": "Extinde",
-	"expand.all": "Extinde toate",
+	"expand.all": "Deschide toate",
 
 	"field.invalid": "Câmpul este nevalid",
 	"field.required": "Acest câmp este necesar",
@@ -294,6 +329,9 @@
 	"field.blocks.heading.name": "Subtitlu",
 	"field.blocks.heading.text": "Text",
 	"field.blocks.heading.placeholder": "Subtitlu …",
+	"field.blocks.figure.back.plain": "Simplu",
+	"field.blocks.figure.back.pattern.light": "Model (deschis)",
+	"field.blocks.figure.back.pattern.dark": "Model (închis)",
 	"field.blocks.image.alt": "Text alternativ",
 	"field.blocks.image.caption": "Etichetă",
 	"field.blocks.image.crop": "Decupaj",
@@ -330,7 +368,11 @@
 	"field.blocks.video.url.label": "URL-ul video-ului",
 	"field.blocks.video.url.placeholder": "https://youtube.com/?v=",
 
+	"field.entries.delete.confirm.all": "Chiar vrei să ștergi toate înregistrările?",
+	"field.entries.empty": "Nicio înregistrare deocamdată",
+
 	"field.files.empty": "Niciun fișier selectat deocamdată",
+	"field.files.empty.single": "Niciun fișier selectat încă",
 
 	"field.layout.change": "Schimbă aranjament",
 	"field.layout.delete": "Șterge aranjamentul",
@@ -342,12 +384,17 @@
 	"field.object.empty": "Nicio informație deocamdată",
 
 	"field.pages.empty": "Nicio pagină aleasă deocamdată",
+	"field.pages.empty.single": "Nicio pagină selectată încă",
 
 	"field.structure.delete.confirm": "Chiar vrei să ștergi acest rând?",
 	"field.structure.delete.confirm.all": "Chiar vrei să ștergi toate înregistrările?",
+	"field.structure.delete.confirm.selected": "Chiar vrei să ștergi toate intrările alese?",
 	"field.structure.empty": "Nicio înregistrare deocamdată",
 
+	"field.tags.placeholder": "Add tag",
+
 	"field.users.empty": "Niciun utilizator ales deocamdată",
+	"field.users.empty.single": "Niciun utilizator selectat încă",
 
 	"fields.empty": "Niciun câmp deocamdată",
 
@@ -362,9 +409,17 @@
 	"file.sort": "Schimbă poziția",
 
 	"files": "Fișiere",
+	"files.delete.confirm.selected": "Chiar vrei să ștergi fișierele selectate? Această acțiune este ireversibilă.",
 	"files.empty": "Niciun fișier deocamdată",
 
 	"filter": "Filtru",
+
+	"form.discard": "Renunță la schimbări",
+	"form.discard.confirm": "Chiar vrei să <strong>renunți la toate schimbările tale</strong>?",
+	"form.locked": "Acest conținut îți este dezactivat fiindcă îl editează alt utilizator momentan",
+	"form.unsaved": "Schimbările curente nu au fost încă salvate",
+	"form.preview": "Previzualizează schimbări",
+	"form.preview.draft": "Previzualizează ciornă",
 
 	"hide": "Ascunde",
 	"hour": "Ora",
@@ -409,7 +464,12 @@
 	"language.variables.empty": "Nicio traducere deocamdată",
 
 	"language.variable.delete.confirm": "Chiar vrei să ștergi variabila pentru {key}?",
+	"language.variable.entries": "Valori",
+	"language.variable.entries.help": "Fiecare string va fi folosit pentru numărul aferent; de exemplu, trei stringuri vor fi folosite pentru numerele <code>0</code>, <code>1</code>, <code>2 sau mai mare</code>. Folosește placeholderul <code>{count}</code> pentru a insera numărul propriu-zis.",
 	"language.variable.key": "Cheie",
+	"language.variable.multiple": "Numărabil?",
+	"language.variable.multiple.text": "Folosește stringuri de traducere diferite",
+	"language.variable.multiple.help": "Poți folosi valori diferite în funcție de numărul pe care îl transmiți împreună cu variabila de limbă, ceea ce îți permite să creezi traduceri dinamice, de ex. pentru singular și plural.",
 	"language.variable.notFound": "Variabila nu a fost găsită",
 	"language.variable.value": "Valoare",
 
@@ -421,16 +481,23 @@
 
 	"license": "Licența",
 	"license.activate": "Activați acum",
-	"license.activate.label": "Vă rugăm să activați licența",
+	"license.activate.label": "Instalare",
 	"license.activate.domain": "Licența va fi activată pentru <strong>{host}</strong>.",
-	"license.activate.local": "Sunteți pe cale să activați licența Kirby pentru domeniul local <strong>{host}</strong>. Dacă acest site va fi implementat pe un domeniu public, vă rugăm să o activați acolo în schimb. Dacă {host} este domeniul pentru care doriți să utilizați licența, vă rugăm să continuați.",
+	"license.activate.local": "You are about to activate your Kirby license for your local domain <strong>{host}</strong>. If this site will be deployed to a public domain and this is a copy for local development, please activate it as development installation.",
+	"license.activate.public": "You are about to activate a free development license for your public domain <strong>{host}</strong>. You must ensure that your installation is in a private network or password protected. We may verify that development installations remain protected.",
+	"license.activate.acknowledge.label": "Te rog confirmă",
+	"license.activate.acknowledge.text": "Installation is purely for development",
+	"license.activate.acknowledge.help": "See our <a href=\"{url}\" target=\"_blank\">license terms</a> for details on the allowed use cases. Knowingly false classifications will be challenged.",
 	"license.activated": "Activată",
 	"license.buy": "Cumpără o licență",
 	"license.code": "Cod",
 	"license.code.help": "Ați primit codul de licență după achiziție prin e-mail. Vă rugăm să-l copiați și să-l inserezi aici.",
-	"license.code.label": "Te rog introdu codul tău de licență",
+	"license.code.label": "License code",
+	"license.remove.text": "<p>Prin înlăturarea licenței se va șterge în mod ireversibil fișierul de licență de pe acest site. Vei putea apoi activa site-ul cu o altă cheie de licență sau să folosești din nou aceeași cheie în caz că domeniul rămâne același.</p><p>Pentru a schimba domeniul asociat licenței, contactează te rog echipa Kirby. <a href='https://getkirby.com/license'>Citește mai multe &rarr;</a></p>",
 	"license.status.active.info": "Include noi versiuni majore până la data de {date}",
 	"license.status.active.label": "Licență validă",
+	"license.status.acknowledged.info": "You confirmed to comply with the <a href=\"https://getkirby.com/license/free-licenses\">free license requirements</a>",
+	"license.status.acknowledged.label": "Active free license",
 	"license.status.demo.info": "Aceasta este o instalare demo",
 	"license.status.demo.label": "Demo",
 	"license.status.inactive.info": "Reînnoiți licența pentru a actualiza la noile versiuni majore",
@@ -441,9 +508,15 @@
 	"license.status.missing.bubble": "Sunteți pregătit să lansați site-ul?",
 	"license.status.missing.info": "Licență nevalidă",
 	"license.status.missing.label": "Vă rugăm să activați licența",
+	"license.status.unknown.info": "Statutul licenței este necunoscut",
+	"license.status.unknown.label": "Necunoscut",
 	"license.manage": "Gestionează-ți licențele",
+	"license.manage.hub": "Manage your licenses on our <a href=\"{url}\" target=\"_blank\">license hub</a>",
 	"license.purchased": "Achiziționat",
 	"license.success": "Mulțumim că susții Kirby",
+	"license.success.free": "Activated as development site",
+	"license.regular.label": "Regular",
+	"license.free.label": "Development",
 	"license.unregistered.label": "Neînregistrat",
 
 	"link": "Legătură",
@@ -453,6 +526,9 @@
 
 	"lock.unsaved": "Schimbări nesalvate",
 	"lock.unsaved.empty": "Nu mai există nicio schimbare nesalvată",
+	"lock.unsaved.files": "Fișiere nesalvate",
+	"lock.unsaved.pages": "Pagini nesalvate",
+	"lock.unsaved.users": "Conturi nesalvate",
 	"lock.isLocked": "Schimbări nesalvate de {email}",
 	"lock.unlock": "Deblochează",
 	"lock.unlock.submit": "Deblochează și suprascrie schimbările nesalvate de <strong>{email}</strong>",
@@ -559,6 +635,7 @@
 	"page.status.unlisted.description": "Pagina este accesibilă doar prin URL",
 
 	"pages": "Pagini",
+	"pages.delete.confirm.selected": "Chiar vrei să ștergi paginile selectate? Această acțiune este ireversibilă.",
 	"pages.empty": "Nicio pagină deocamdată",
 	"pages.status.draft": "Ciorne",
 	"pages.status.listed": "Publicate",
@@ -574,7 +651,13 @@
 	"plugin": "Plugin",
 	"plugins": "Plugin-uri",
 	"prev": "Precedenta",
+
 	"preview": "Previzualizează",
+	"preview.browser.scroll": "Sync scroll",
+
+	"publish": "Publică",
+	"published": "Publicate",
+
 	"remove": "Înlătură",
 	"rename": "Redenumește",
 	"renew": "Reînnoiți",
@@ -594,7 +677,9 @@
 	"role.nobody.title": "Nimeni",
 
 	"save": "Salveaz\u0103",
+	"saved": "Salvat",
 	"search": "Caută",
+	"searching": "Se caută",
 	"search.min": "Introdu {min} caractere pentru a căuta",
 	"search.all": "Afișați toate {count} rezultatele",
 	"search.results.none": "Niciun rezultat",
@@ -604,6 +689,7 @@
 
 	"security": "Securitate",
 	"select": "Alege",
+	"select.all": "Alege toate",
 	"server": "Server",
 	"settings": "Reglaje",
 	"show": "Arată",
@@ -620,6 +706,8 @@
 	"system.info.copy": "Copy info",
 	"system.info.copied": "System info copied",
 	"system.issues.content": "Directorul de conținut pare să fie expus",
+	"system.issues.content.salt": "The content salt has not been changed from its default value",
+	"system.issues.cookie.key": "The cookie signing key has not been changed from its default value",
 	"system.issues.eol.kirby": "Versiunea instalată de Kirby a ajuns la sfârșitul vieții utile și nu va mai primi actualizări de securitate.",
 	"system.issues.eol.plugin": "Versiunea instalată a plugin-ului { plugin } a ajuns la sfârșitul vieții utile și nu va mai primi actualizări de securitate.",
 	"system.issues.eol.php": "Versiunea PHP instalată { release } a ajuns la sfârșitul vieții și nu va mai primi actualizări de securitate",
@@ -627,7 +715,9 @@
 	"system.issues.git": "Directorul .git pare să fie expus",
 	"system.issues.https": "Recomandăm HTTPS pentru toate site-urile.",
 	"system.issues.kirby": "Directorul Kirby pare să fie expus",
+	"system.issues.local": "Acest site rulează local cu verificări de siguranță mai laxe.",
 	"system.issues.site": "Directorul site pare să fie expus",
+	"system.issues.vue.compiler": "Compilatorul de șabloane Vue este activat",
 	"system.issues.vulnerability.kirby": "Instalarea ta ar putea fi afectată de următoarea vulnerabilitate ({ severity } severity): { description }",
 	"system.issues.vulnerability.plugin": "Instalarea ta ar putea fi afectată de următoarea vulnerabilitate în plugin-ul { plugin } ({ severity } severity): { description }",
 	"system.updateStatus": "Starea actualizării",
@@ -643,6 +733,12 @@
 	"tel": "Telefon",
 	"tel.placeholder": "+40123456789",
 	"template": "Șablon",
+
+	"theme": "Temă",
+	"theme.light": "Lumina pornită",
+	"theme.dark": "Lumina stinsă",
+	"theme.automatic": "Aceeași cu sistemul",
+
 	"title": "Titlu",
 	"today": "Astăzi",
 
@@ -701,21 +797,27 @@
 	"user.changeLanguage": "Schimbă limba",
 	"user.changeName": "Redenumește acest utilizator",
 	"user.changePassword": "Schimbă parola",
+	"user.changePassword.current": "Parola ta curentă",
 	"user.changePassword.new": "Parola nouă",
 	"user.changePassword.new.confirm": "Confirmă parola nouă...",
+	"user.changePassword.own": "Parola proprie",
 	"user.changeRole": "Schimbă rolul",
 	"user.changeRole.select": "Alege un rol nou",
 	"user.create": "Adaugă un nou utilizator",
 	"user.delete": "Șterge acest utilizator",
 	"user.delete.confirm": "Chiar vrei să ștergi <br><strong>{email}</strong>?",
+	"user.setPassword": "Set password",
 
 	"users": "Utilizatori",
 
 	"version": "Versiune",
+	"version.changes": "Versiune schimbată",
+	"version.compare": "Compară versiuni",
 	"version.current": "Versiunea curentă",
 	"version.latest": "Ultima versiune",
 	"versionInformation": "Informații despre versiune",
 
+	"view": "Vezi",
 	"view.account": "Contul t\u0103u",
 	"view.installation": "Instalare",
 	"view.languages": "Limbi",
