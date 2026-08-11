@@ -22,6 +22,15 @@
 
 	//	'cookie' => ['key' => ''],
 
+	// Nur einschalten, wenn ein Panel-Plugin seine Vue-Templates erst im
+	// Browser übersetzt. Prüfen mit:
+	//
+	//   grep -rlE 'template:\s*[`"'"'"']' site/plugins/*/ --include='*.js'
+	//
+	// Gepunktet, weil die Host-Configs 'panel' => true setzen und Kirby mit
+	// array_replace_recursive merged — ein Skalar ersetzt ein Array komplett.
+	'panel.vue.compiler'                => false,
+
 	'home'                              => 'home',
 
 	//	'medienbaecker.modules.default' => 'gallery',
@@ -124,9 +133,20 @@
 		//							"datenschutz/zahlungsanbieter/paydirect",
 		//							"datenschutz/eigene-dienste/bewerbungen",
 
-		// Hosting — genau EINE Zeile aktiv.
+		// Hosting — genau EINE Anbieterzeile aktiv. Das Plugin verweigert ab
+		// 1.5.1 das Speichern, wenn im Panel zwei ausgewählt sind; in dieser
+		// Datei greift die Prüfung nicht, hier muss man selbst aufpassen.
+		//
+		// Default ist ka-server: die Klausel nennt die Agentur als Betreiber
+		// und das Rechenzentrum dahinter. Die übrigen nur für Seiten, die
+		// tatsächlich dort liegen — es ist eine Tatsachenangabe.
+		//
 		// auftragsverarbeitung erst einsetzen, wenn die AVV-Vorlage vorliegt.
 		"datenschutz/hosting/hosting-durch-kleiner-als",
+		//							"datenschutz/hosting/domainfactory",
+		//							"datenschutz/hosting/ionos",
+		//							"datenschutz/hosting/strato",
+		//							"datenschutz/hosting/webnet-service",
 		//							"datenschutz/hosting/auftragsverarbeitung",
 	],
 
