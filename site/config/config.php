@@ -72,10 +72,9 @@
 	'schnti.legal.password'   => '',
 	'schnti.legal.cache.data' => false,
 
-	// Fallback für Seiten ohne eigene Auswahl. Ab schnti/legal 1.5 wird die
-	// Klauselauswahl im Panel gepflegt (Legal-Seite -> Abschnitt "Klauseln");
-	// sobald dort etwas gewählt ist, hat das Vorrang vor dieser Liste.
-	// Die auskommentierten Zeilen bleiben als Nachschlagewerk stehen.
+	// Die Klauselauswahl steht im Panel (Legal-Seite -> Abschnitt "Klauseln"),
+	// nicht mehr hier. Die Vorauswahl für neue Projekte liegt in
+	// content/datenschutzerklaerung/legal.de.txt.
 
 	// Leer lassen und pro Projekt füllen. Ohne Werte gibt das Snippet nichts
 	// aus und der Panel-Menüpunkt "Analytics" bleibt ausgegraut.
