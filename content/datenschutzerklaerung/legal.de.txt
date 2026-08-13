@@ -2,4 +2,40 @@ Title: Datenschutzerklärung
 
 ----
 
+Verantwortlichestelle:
+
+----
+
+Datenschutzbeauftragter:
+
+----
+
+Klauseln-datenschutz-datenschutz-auf-einen-blick: datenschutz/datenschutz-auf-einen-blick/allgemeine-hinweise, datenschutz/datenschutz-auf-einen-blick/datenerfassung-auf-unserer-website
+
+----
+
+Klauseln-datenschutz-hosting: datenschutz/hosting/hosting-durch-kleiner-als
+
+----
+
+Klauseln-datenschutz-allgemeine-hinweise-und-pflichtinformationen: datenschutz/allgemeine-hinweise-und-pflichtinformationen/datenschutz, datenschutz/allgemeine-hinweise-und-pflichtinformationen/hinweis-zur-verantwortlichen-stelle, datenschutz/allgemeine-hinweise-und-pflichtinformationen/speicherdauer, datenschutz/allgemeine-hinweise-und-pflichtinformationen/allgemeine-hinweise-zu-den-rechtsgrundlagen, datenschutz/allgemeine-hinweise-und-pflichtinformationen/empfanger-von-personenbezogenen-daten, datenschutz/allgemeine-hinweise-und-pflichtinformationen/widerruf-ihrer-einwilligung-zur-datenverarbeitung, datenschutz/allgemeine-hinweise-und-pflichtinformationen/widerspruchsrecht-gegen-die-datenerhebung-in-besonderen-fallen-sowie-gegen-direktwerbung-art-21-dsgvo, datenschutz/allgemeine-hinweise-und-pflichtinformationen/beschwerderecht-bei-der-zustaendigen-aufsichtsbehoerde, datenschutz/allgemeine-hinweise-und-pflichtinformationen/recht-auf-datenubertragbarkeit, datenschutz/allgemeine-hinweise-und-pflichtinformationen/ssl-bzw-tls-verschlusselung, datenschutz/allgemeine-hinweise-und-pflichtinformationen/auskunft-sperrung-loschung, datenschutz/allgemeine-hinweise-und-pflichtinformationen/recht-auf-einschrankung-der-verarbeitung, datenschutz/allgemeine-hinweise-und-pflichtinformationen/widerspruch-gegen-werbe-mails
+
+----
+
+Klauseln-datenschutz-datenerfassung-auf-unserer-website: datenschutz/datenerfassung-auf-unserer-website/server-log-dateien, datenschutz/datenerfassung-auf-unserer-website/anfrage-per-e-mail-telefon-oder-telefax
+
+----
+
+Klauseln-datenschutz-analyse-tools-und-werbung: datenschutz/analyse-tools-und-werbung/umami
+
+----
+
+Klauseln-datenschutz-newsletter:
+
+----
+
+Klauseln-datenschutz-plugins-und-tools:
+
+----
+
 Text: (legal: datenschutz)
