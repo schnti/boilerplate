@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'schnti/boilerplate',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'af9ff5befc21acc853090ea9a091022daceff8b0',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -143,9 +143,9 @@
             'dev_requirement' => false,
         ),
         'schnti/boilerplate' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'af9ff5befc21acc853090ea9a091022daceff8b0',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -161,9 +161,9 @@
             'dev_requirement' => false,
         ),
         'schnti/legal' => array(
-            'pretty_version' => '1.5.0',
-            'version' => '1.5.0.0',
-            'reference' => '66a2a0faede4ab49b5ec65de3c41348071461334',
+            'pretty_version' => '1.5.4',
+            'version' => '1.5.4.0',
+            'reference' => 'b1255455f847be4afccac45b5b6a9566df25bca7',
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../site/plugins/legal',
             'aliases' => array(),

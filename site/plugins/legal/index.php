@@ -1,6 +1,7 @@
 <?php
 
 use Kirby\Cms\Page;
+use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\PermissionException;
 use Kirby\Http\Remote;
 use Kirby\Toolkit\Str;
@@ -25,23 +26,96 @@ function legalAuth(): string
  */
 function legalParts(?Page $page = null): array
 {
-	if ($page !== null) {
-		// Die Auswahl liegt auf mehrere Felder verteilt — eines je Kapitel,
-		// damit im Panel Zwischenüberschriften möglich sind.
-		$parts = [];
-
-		foreach ($page->content()->toArray() as $key => $value) {
-			if (str_starts_with($key, 'klauseln') === true && $value !== '') {
-				$parts = [...$parts, ...Str::split((string)$value)];
-			}
-		}
-
-		if ($parts !== []) {
-			return $parts;
-		}
+	if ($page !== null && ($parts = legalAuswahl($page)) !== []) {
+		return $parts;
 	}
 
 	return (array)option('schnti.legal.data');
+}
+
+/**
+ * Die im Panel gewählten Klauseln dieser Seite.
+ *
+ * Die Auswahl liegt auf mehrere Felder verteilt — eines je Kapitel, damit im
+ * Panel Zwischenüberschriften möglich sind. Sie heißen `klauseln_<kapitel>`;
+ * ein Feld namens `klauseln` gibt es nie. Wer darauf prüft, findet auf einer
+ * migrierten Seite nichts und hält sie für unmigriert.
+ *
+ * Leeres Ergebnis heißt: keine eigene Auswahl, es gilt die Konfiguration.
+ */
+function legalAuswahl(Page $page): array
+{
+	$parts = [];
+
+	foreach ($page->content()->toArray() as $key => $value) {
+		if (str_starts_with($key, 'klauseln') === true && $value !== '') {
+			$parts = [...$parts, ...Str::split((string)$value)];
+		}
+	}
+
+	return $parts;
+}
+
+/**
+ * Welche Anbieter-Klauseln aus dem Kapitel „Hosting" wären nach diesem
+ * Speichern ausgewählt?
+ *
+ * Zusammengesetzt aus den neuen Werten und den Feldern, die das Formular nicht
+ * mitschickt — sonst würde ein Teilformular eine bestehende Auswahl übersehen.
+ * `auftragsverarbeitung` zählt nicht mit: die Klausel nennt keinen Anbieter,
+ * sondern gehört zu einem.
+ */
+function legalHostingAuswahl(Page $page, array $values): array
+{
+	$keys = array_unique([
+		...array_keys($page->content()->toArray()),
+		...array_keys($values)
+	]);
+
+	$anbieter = [];
+
+	foreach ($keys as $key) {
+		if (str_starts_with($key, 'klauseln') === false) {
+			continue;
+		}
+
+		$wert = array_key_exists($key, $values)
+			? $values[$key]
+			: $page->content()->get($key)->value();
+
+		if (is_array($wert) === true) {
+			$wert = implode(', ', $wert);
+		}
+
+		foreach (Str::split((string)$wert) as $uri) {
+			if (str_starts_with($uri, 'datenschutz/hosting/') === true
+				&& $uri !== 'datenschutz/hosting/auftragsverarbeitung') {
+				$anbieter[] = $uri;
+			}
+		}
+	}
+
+	return array_values(array_unique($anbieter));
+}
+
+/**
+ * Ein Feld der Seite als Kirbytext — oder ein Leerstring.
+ *
+ * Fehlt die Seite oder ist das Feld leer, wird nichts ausgegeben. Wichtig ist
+ * das Nichts: der Aufrufer hängt das Ergebnis in eine Seite, und ein `null`
+ * aus einem leeren Feld reicht bis in fremde kirbytags-Hooks durch.
+ */
+function legalFeldText(object $tag, string $feld): string
+{
+	$seite = $tag->parent();
+
+	if ($seite === null) {
+		return '';
+	}
+
+	$wert = $seite->content()->get($feld);
+
+	return $wert->isNotEmpty() === true ? $wert->kirbytext() : '';
 }
 
 /**
@@ -188,60 +262,80 @@ function getSectionData(string $url, string $section, ?Page $page = null, bool $
 		}
 	}
 
-	return kirbytext($cached['text'] ?? '');
+	// `parent` muss mit: die Klauseltexte enthalten Tags, die Felder DIESER
+	// Seite auflösen. Ohne die Angabe nimmt Kirby die gerade gerenderte Seite —
+	// beim Seitenaufruf zufällig die richtige, in einer API-Route wie
+	// legal-refresh aber keine, und der Tag liefert einen leeren Block.
+	$daten = $page !== null ? ['parent' => $page] : [];
+
+	return kirbytext($cached['text'] ?? '', $daten);
 }
 
-function sendMetaData($url, $force = false)
+/**
+ * Meldet Kirby-Version, Systemstatus, Lizenz und Plugin-Stand an die Legal-API.
+ *
+ * Gibt zurück, was passiert ist. Der Rückgabewert ist die einzige Spur nach
+ * außen: der Hook läuft im Seitenaufbau, wo nichts sichtbar werden darf, und
+ * ohne ihn meldet die Route meta-refresh auch dann Erfolg, wenn nichts ankommt.
+ */
+function sendMetaData($url, $force = false): string
 {
 	$versionCache = kirby()->cache('schnti.legal.meta');
 	$versionData = $versionCache->get('version');
 	$version = kirby()->version();
 
-	if ($force === true || $versionData !== $version) {
-		try {
+	if ($force === false && $versionData === $version) {
+		return 'Meta unverändert, nichts gesendet';
+	}
 
-			$system = kirby()->system();
+	try {
+		$system = kirby()->system();
 
-			// accounts, content, curl, sessions, mbstring, media, php
-			$data['status'] = $system->status();
+		// accounts, content, curl, sessions, mbstring, media, php
+		$data['status'] = $system->status();
 
-			// Version, Server, PHP, License, Languages
-			// Since 4.3.0
-			if (method_exists($system, 'info')) {
-				$data['info'] = $system->info();
-			} else {
-				$data['info']['kirby'] = $version;
-				$data['info']['php'] = phpversion();
-			}
-
-			// License
-			if (class_exists('Kirby\Cms\License')) {
-				$license = Kirby\Cms\License::read();
-				$data['license'] = [
-					'activation' =>  $license->activation(),
-					'code' =>  $license->code(),
-					'domain' =>  $license->domain(),
-					'email' =>  $license->email(),
-					'order' =>  $license->order(),
-					'date' =>  $license->date()
-				];
-			}
-
-			// Plugins
-			$plugins = $system->plugins();
-			foreach ($plugins as $plugin) {
-				$data['plugins'][] = $plugin->updateStatus()->toArray();
-			}
-
-			Remote::post("$url/meta", [
-				'basicAuth' => legalAuth(),
-				'data'      => $data
-			]);
-
-
-			$versionCache->set('version', $version, 60 * 24 * 7); // 60 Minuten * 24 Stunden * 7 Tage
-		} catch (Exception $e) {
+		// Version, Server, PHP, License, Languages
+		// Since 4.3.0
+		if (method_exists($system, 'info')) {
+			$data['info'] = $system->info();
+		} else {
+			$data['info']['kirby'] = $version;
+			$data['info']['php'] = phpversion();
 		}
+
+		// License
+		if (class_exists('Kirby\Cms\License')) {
+			$license = Kirby\Cms\License::read();
+			$data['license'] = [
+				'activation' =>  $license->activation(),
+				'code' =>  $license->code(),
+				'domain' =>  $license->domain(),
+				'email' =>  $license->email(),
+				'order' =>  $license->order(),
+				'date' =>  $license->date()
+			];
+		}
+
+		// Plugins
+		$plugins = $system->plugins();
+		foreach ($plugins as $plugin) {
+			$data['plugins'][] = $plugin->updateStatus()->toArray();
+		}
+
+		$response = Remote::post("$url/meta", [
+			'basicAuth' => legalAuth(),
+			'data'      => $data
+		]);
+
+		if ($response->code() !== 200) {
+			return 'Meta abgelehnt, HTTP ' . $response->code();
+		}
+
+		$versionCache->set('version', $version, 60 * 24 * 7); // 60 Minuten * 24 Stunden * 7 Tage
+
+		return 'Meta gesendet';
+	} catch (Throwable $e) {
+		return 'Meta fehlgeschlagen: ' . $e->getMessage();
 	}
 }
 
@@ -313,17 +407,15 @@ Kirby::plugin('schnti/legal', [
 		}
 	],
 	'tags'    => [
+		// Beide Tags geben nur aus, wenn das Feld gefüllt ist. Ein leeres
+		// Kirby-Feld hat den Wert null, und null durch kirbytext() zu schicken
+		// bringt jeden kirbytags-Hook zu Fall, der einen String erwartet — auf
+		// einer Kundenseite, deren Hooks dieses Plugin nicht kennt.
 		'verantwortlicheStelle' => [
-			'html' => function ($tag) {
-				$page = $tag->parent();
-				return $page->verantwortlicheStelle()->kirbytext();
-			}
+			'html' => fn($tag) => legalFeldText($tag, 'verantwortlicheStelle')
 		],
 		'datenschutzbeauftragter' => [
-			'html' => function ($tag) {
-				$page = $tag->parent();
-				return $page->datenschutzbeauftragter()->kirbytext();
-			}
+			'html' => fn($tag) => legalFeldText($tag, 'datenschutzbeauftragter')
 		],
 		'legal' => [
 			'attr' => [
@@ -342,9 +434,24 @@ Kirby::plugin('schnti/legal', [
 			}
 		},
 
-		// Das ausgeblendete Feld ist nur Oberfläche — die Sperre gehört hierher,
-		// sonst umgeht ein direkter Panel-API-Aufruf sie.
 		'page.update:before' => function (Page $page, array $values) {
+
+			// Gültigkeitsprüfung — gilt für ALLE, auch für Admins: Die
+			// Hosting-Klauseln nennen je einen Anbieter. Zwei davon gleichzeitig
+			// ergeben eine Erklärung mit zwei Hostern, und das faellt beim
+			// Speichern niemandem auf. Checkboxen koennen das nicht verhindern,
+			// also muss es hier stehen.
+			$anbieter = legalHostingAuswahl($page, $values);
+
+			if (count($anbieter) > 1) {
+				throw new InvalidArgumentException(
+					'Es darf nur eine Hosting-Klausel ausgewählt sein, gewählt sind: '
+					. implode(', ', $anbieter)
+				);
+			}
+
+			// Berechtigungsprüfung — das ausgeblendete Feld ist nur Oberfläche,
+			// sonst umgeht ein direkter Panel-API-Aufruf die Sperre.
 			if (kirby()->user()?->isAdmin() === true) {
 				return;
 			}
@@ -380,9 +487,12 @@ Kirby::plugin('schnti/legal', [
 
 					kirby()->cache('schnti.legal.structure')->flush();
 
-					// Seiten mit eigener Auswahl einzeln auffrischen …
+					// Seiten mit eigener Auswahl einzeln auffrischen. Der
+					// Cache-Schlüssel enthält die Auswahl — wer hier mit der
+					// Konfiguration auffrischt, wärmt einen Eintrag, den die
+					// migrierte Seite nie liest, und der Text bleibt stehen.
 					$pages = site()->index()->filter(
-						fn($p) => $p->klauseln()->isNotEmpty()
+						fn($p) => legalAuswahl($p) !== []
 					);
 
 					foreach ($pages as $page) {
@@ -475,8 +585,7 @@ Kirby::plugin('schnti/legal', [
 						return 'Meta Refresh übersprungen — vor weniger als einer Minute ausgeführt';
 					}
 
-					sendMetaData($url, true); // force = true
-					return 'Meta Data Refresh Done';
+					return sendMetaData($url, true); // force = true
 				}
 			]
 		]

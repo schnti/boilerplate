@@ -976,23 +976,23 @@
         },
         {
             "name": "schnti/legal",
-            "version": "1.5.0",
-            "version_normalized": "1.5.0.0",
+            "version": "1.5.4",
+            "version_normalized": "1.5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schnti/kirby-legal.git",
-                "reference": "66a2a0faede4ab49b5ec65de3c41348071461334"
+                "reference": "b1255455f847be4afccac45b5b6a9566df25bca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schnti/kirby-legal/zipball/66a2a0faede4ab49b5ec65de3c41348071461334",
-                "reference": "66a2a0faede4ab49b5ec65de3c41348071461334",
+                "url": "https://api.github.com/repos/schnti/kirby-legal/zipball/b1255455f847be4afccac45b5b6a9566df25bca7",
+                "reference": "b1255455f847be4afccac45b5b6a9566df25bca7",
                 "shasum": ""
             },
             "require": {
                 "getkirby/composer-installer": "^1.1"
             },
-            "time": "2026-08-10T19:43:20+00:00",
+            "time": "2026-08-11T14:24:43+00:00",
             "type": "kirby-plugin",
             "extra": {
                 "installer-name": "legal"
@@ -1018,7 +1018,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schnti/kirby-legal/issues",
-                "source": "https://github.com/schnti/kirby-legal/tree/1.5.0"
+                "source": "https://github.com/schnti/kirby-legal/tree/1.5.4"
             },
             "install-path": "../../site/plugins/legal"
         },
