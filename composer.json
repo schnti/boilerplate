@@ -29,6 +29,13 @@
     "allow-plugins": {
       "getkirby/*": true,
       "schnti/*": true
+    },
+    "policy": {
+      "advisories": {
+        "ignore-id": {
+          "PKSA-nktx-f1n1-b4yd": "symfony/yaml YAML-Parser-DoS: Kirby liest YAML per Spyc (yaml.handler nicht gesetzt), Symfony-Parser wird nicht aufgerufen. Entfernen, sobald Kirby symfony/yaml >= 7.4.23 mitbringt."
+        }
+      }
     }
   },
   "extra": {
