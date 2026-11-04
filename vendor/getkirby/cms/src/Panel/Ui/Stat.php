@@ -4,6 +4,7 @@ namespace Kirby\Panel\Ui;
 
 use Kirby\Cms\ModelWithContent;
 use Kirby\Exception\InvalidArgumentException;
+use Kirby\Http\Url;
 use Kirby\Toolkit\I18n;
 
 /**
@@ -86,9 +87,15 @@ class Stat extends Component
 
 	public function link(): string|null
 	{
-		return $this->stringTemplate(
+		$link = $this->stringTemplate(
 			$this->i18n($this->link)
 		);
+
+		if (Url::hasDangerousScheme($link) === true) {
+			return null;
+		}
+
+		return $link;
 	}
 
 	public function props(): array
@@ -125,7 +132,11 @@ class Stat extends Component
 
 	protected function i18n(string|array|null $param = null): string|null
 	{
-		return empty($param) === false ? I18n::translate($param, $param) : null;
+		if ($param === null) {
+			return null;
+		}
+
+		return I18n::translate($param, $param);
 	}
 
 	public function value(): string

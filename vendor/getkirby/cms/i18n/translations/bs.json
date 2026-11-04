@@ -148,12 +148,18 @@
 	"error.form.notSaved": "Forma se ne može spremiti",
 
 	"error.language.code": "Unesi važeći kod za jezik",
+	"error.language.create.default": "\"{name}\" ({code}) is already set as the default language",
 	"error.language.create.permission": "Nemate dozvolu da kreirate jezik",
 	"error.language.delete.permission": "Nemate dozvolu da obrišete jezik",
 	"error.language.duplicate": "Jezik već postoji",
 	"error.language.name": "Unesi važeći naziv za jezik",
 	"error.language.notFound": "Jezik nije pronađen",
 	"error.language.update.permission": "Nemate dozvolu da ažurirate jezik",
+	"error.language.variable.core": "\"{key}\" is one of Kirby's own translation strings and cannot be overwritten by a language variable",
+	"error.language.variable.duplicate": "A variable for \"{key}\" already exists",
+	"error.language.variable.key": "Please enter a valid key for the variable",
+	"error.language.variable.notFound": "Varijablu nije moguće pronaći",
+	"error.language.variable.numeric": "The variable key must not be numeric",
 
 	"error.layout.validation.block": "Postoji greška kod \"{field}\" polja, u bloku {blockIndex}, pri korištenju bloka tipa \"{fieldset}\" u rasporedu {layoutIndex}",
 	"error.layout.validation.settings": "Postoji greška u postavkama rasporeda {index}",
@@ -303,6 +309,7 @@
 
 	"error.version.discard.permission": "Nemate dozvolu da odbacite ovu verziju",
 	"error.version.publish.permission": "Nemate dozvolu da objavite ovu verziju",
+	"error.version.removed": "The version has been removed by another request",
 	"error.version.save.permission": "Nemate dozvolu da promenite ovu verziju",
 	"error.version.unlock.permission": "You are not allowed to unlock this version",
 
@@ -416,6 +423,7 @@
 
 	"form.discard": "Odbaci promjene",
 	"form.discard.confirm": "Da li stvarno želite <strong>odbaciti sve promjene</strong>?",
+	"form.discard.confirm.editor": "Do you really want to <strong>discard the unsaved changes</strong> made by <strong>{editor}</strong>?",
 	"form.locked": "Ovaj sadržaj je vama onemogućen jer ga trenutno uređuje drugi korisnik",
 	"form.unsaved": "Trenutne promjene još uvijek nisu spremljene",
 	"form.preview": "Pregledaj izmjene",
@@ -470,7 +478,6 @@
 	"language.variable.multiple": "Brojivo?",
 	"language.variable.multiple.text": "Koristite različite stringove za prevođenje",
 	"language.variable.multiple.help": "Možete koristiti različite vrijednosti ovisno o broju koji prosljeđujete zajedno s varijablom jezika, što vam omogućava kreiranje dinamičkih prijevoda, npr. jednine i množine.",
-	"language.variable.notFound": "Varijablu nije moguće pronaći",
 	"language.variable.value": "Vrijednost",
 
 	"languages": "Jezici",
@@ -654,6 +661,8 @@
 
 	"preview": "Pregled",
 	"preview.browser.scroll": "Sinhronizacija skrolanja",
+
+	"protected": "Protected",
 
 	"publish": "Objavi",
 	"published": "Javno",

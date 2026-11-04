@@ -6,6 +6,7 @@ use Closure;
 use Kirby\Cms\App;
 use Kirby\Cms\Language;
 use Kirby\Cms\ModelWithContent;
+use Kirby\Http\Url;
 use Kirby\Panel\Panel;
 use Kirby\Panel\Ui\Button;
 use Kirby\Toolkit\Controller;
@@ -164,24 +165,31 @@ class ViewButton extends Button
 
 	public function props(): array
 	{
-		// helper for props that support Kirby queries
+		// helper for props that support Kirby queries,
+		// only content models can resolve them, not languages
 		$resolve = fn (string|null $value) =>
 			$value ?
-			$this->model?->toSafeString($value) ?? $value :
+			($this->model instanceof ModelWithContent ? $this->model->toSafeString($value) : $value) :
 			null;
 
+		$props   = parent::props();
+		$link    = $resolve($props['link']);
 		$options = $this->options;
 
 		if (is_string($options) === true) {
 			$options = $resolve($options);
 		}
 
+		if (Url::hasDangerousScheme($link) === true) {
+			$link = null;
+		}
+
 		return [
-			...$props = parent::props(),
+			...$props,
 			'dialog'  => $resolve($props['dialog']),
 			'drawer'  => $resolve($props['drawer']),
 			'icon'    => $resolve($props['icon']),
-			'link'    => $resolve($props['link']),
+			'link'    => $link,
 			'text'    => $resolve($props['text']),
 			'theme'   => $resolve($props['theme']),
 			'options' => $options

@@ -9,6 +9,7 @@ use Kirby\Content\VersionCache;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\LogicException;
 use Kirby\Filesystem\F;
+use Kirby\Image\Darkroom;
 use Kirby\Toolkit\BlockCollectionAccess;
 use Kirby\Uuid\Uuid;
 use Kirby\Uuid\Uuids;
@@ -227,11 +228,13 @@ trait FileActions
 		$upload   = $file->assetFactory($props['source']);
 		$existing = null;
 
-		// merge the content with the defaults
-		$props['content'] = [
-			...$file->createDefaultContent(),
-			...$props['content'],
-		];
+		// check the rules before any user input is passed
+		// through the field classes
+		FileRules::create($file, $upload);
+
+		// merge the content with the defaults and run it through
+		// the fields to apply their save handlers
+		$props['content'] = $file->createContent($props['content']);
 
 		// reuse the existing content if the uploaded file
 		// is identical to an existing file
@@ -269,8 +272,11 @@ trait FileActions
 		// inject the content
 		$file->setContent($props['content']);
 
-		// inject the translations
-		$file->setTranslations($props['translations'] ?? null);
+		// inject the translations and run their content through
+		// the fields to apply their save handlers
+		$file->setTranslations(
+			$file->createTranslations($props['translations'] ?? null)
+		);
 
 		// if the format is different from the original,
 		// we need to already rename it so that the correct file rules
@@ -295,11 +301,11 @@ trait FileActions
 				// @codeCoverageIgnoreEnd
 			}
 
+			// store the content first, manipulate() works on a fresh clone
+			$file->changeStorage($storage);
+
 			// resize the file on upload if configured
 			$file = $file->manipulate($create);
-
-			// store the content if necessary
-			$file->changeStorage($storage);
 
 			$file->uuid()?->populate();
 
@@ -348,6 +354,10 @@ trait FileActions
 		if (empty($options) === true || $this->isResizable() === false) {
 			return $this;
 		}
+
+		// apply the options on top of the defaults
+		// instead of the global thumb settings
+		$options = [...Darkroom::defaultOptions(), ...$options];
 
 		// generate image file and overwrite it in place
 		$this->kirby()->thumb($this->root(), $this->root(), $options);

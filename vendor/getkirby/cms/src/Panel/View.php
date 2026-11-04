@@ -201,7 +201,12 @@ class View
 					'code'       => 200,
 					'path'       => Str::after($kirby->path(), '/'),
 					'props'      => [],
-					'query'      => App::instance()->request()->query()->toArray(),
+					// the State params are part of the transport and
+					// must not end up in the URL the Panel restores
+					'query'      => A::without(
+						$kirby->request()->query()->toArray(),
+						['_globals', '_json', '_only', '_pretty']
+					),
 					'referrer'   => Panel::referrer(),
 					'search'     => $kirby->option('panel.search.type', 'pages'),
 					'timestamp'  => (int)(microtime(true) * 1000),
@@ -272,6 +277,7 @@ class View
 				'theme'       => $kirby->option('panel.theme', 'system'),
 				'translation' => $kirby->option('panel.language', 'en'),
 				'upload'      => Upload::chunkSize(),
+				'uploads'     => $kirby->option('panel.uploads', 3),
 			],
 			'$system' => function () use ($kirby) {
 				$locales = [];
